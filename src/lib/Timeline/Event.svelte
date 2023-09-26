@@ -70,6 +70,8 @@
 		width: 100%;
 		z-index: 3;
 		opacity: 0.75;
+		text-align: center;
+		border: 1px solid var(--accent);
 	}
 	div:hover {
 		opacity: 1;

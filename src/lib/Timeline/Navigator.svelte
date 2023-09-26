@@ -35,14 +35,34 @@
 			label: 'Bahai Cycle'
 		},
 		{
-			startDate: '1890-02-01T08:00:00.000Z',
-			endDate: '1895-07-01T08:00:00.000Z',
-			label: 'Second Event'
+			startDate: '1844-01-01T08:00:00.000Z',
+			endDate: '1921-01-01T08:00:00.000Z',
+			label: 'Heroic Age'
 		},
 		{
-			startDate: '1996-08-01T08:00:00.000Z',
-			endDate: '2012-12-01T08:00:00.000Z',
-			label: 'Third Event'
+			startDate: '1921-01-01T08:00:00.000Z',
+			endDate: '2044-01-01T08:00:00.000Z',
+			label: 'Formative Age'
+		},
+		{
+			startDate: '1844-01-01T08:00:00.000Z',
+			endDate: '1853-01-01T08:00:00.000Z',
+			label: 'Ministry of the Báb'
+		},
+		{
+			startDate: '1853-01-01T08:00:00.000Z',
+			endDate: '1892-01-01T08:00:00.000Z',
+			label: 'Ministry of Bahaullah'
+		},
+		{
+			startDate: '1892-01-01T08:00:00.000Z',
+			endDate: '1921-01-01T08:00:00.000Z',
+			label: 'Ministry of Abdul-Baha'
+		},
+		{
+			startDate: '1937-01-01T08:00:00.000Z',
+			endDate: '2044-01-01T08:00:00.000Z',
+			label: 'Tablets of the Divine Plan'
 		}
 	];
 </script>
