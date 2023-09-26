@@ -50,8 +50,11 @@ Provides a navigation bar at the bottom of the page with the timeline.
 	<nav>
 		<!-- Listing all the significant dates -->
 		{#each decadesArray as year}
-			<time datetime={new Date('1 January ' + year).toISOString()} style="--decade-year:{year};">
-				{year}
+			<time
+				datetime={new Date('1 January ' + year).toISOString()}
+				style="--decade-year:{year};--content:'{year}';"
+			>
+				&nbsp;
 			</time>
 		{/each}
 	</nav>
@@ -77,6 +80,8 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		display: grid;
 		padding: var(--spacing);
 		grid-template-columns: var(--timeline-grid);
+		z-index: 1;
+		overflow: hidden;
 	}
 	nav {
 		position: absolute;
@@ -90,29 +95,45 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		right: 0;
 		bottom: 0;
 		margin: var(--spacing);
-		padding: 0.2em 0;
-		background: var(--accent-bg);
-		border-radius: calc(var(--spacing) / 8);
 	}
 	time {
+		position: relative;
 		width: max-content;
 		height: 1em;
-		text-align: center;
+		text-align: left;
 		align-self: center;
 		justify-self: center;
-		margin-top: -0.5ch;
 		color: var(--text-light);
-		--year-offset: calc(var(--decade-year) - var(--first-decade));
+		--year-offset: calc(var(--decade-year) - var(--first-decade) + 1);
 		grid-column-start: var(--year-offset);
 		grid-column-end: calc(var(--year-offset) + 10);
 		grid-row: 1 / 1;
 	}
 	time::before {
+		content: var(--content);
+		--padding: 0.35em;
+		border-radius: calc(var(--padding));
+		display: inline;
+		position: absolute;
+		left: calc(var(--padding) * -1 - 1em);
+		color: var(--text);
+		background-color: var(--accent-bg);
+		padding: calc(var(--padding) * 0.6) var(--padding);
+		box-sizing: unset;
+		z-index: 3;
+	}
+	time::after {
 		content: '';
-		display: block;
-		width: 0.2ch;
-		height: calc(var(--spacing) / 6);
-		background-color: rgb(138, 138, 138); /* Adjust the color of the dash as needed */
-		margin: 0 auto 0.2ch auto; /* Center the dash horizontally, adding a small margin below it */
+		position: absolute;
+		top: -100vh;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 200vh;
+		width: 1px;
+		z-index: 1; /* Place it behind other content */
+		border-left: 1px solid #959595; /* Thin line */
+		opacity: 0.25;
+		pointer-events: none; /* Allow clicks to go through it */
 	}
 </style>
