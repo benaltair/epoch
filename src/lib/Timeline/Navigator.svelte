@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Event from '$lib/Timeline/Event.svelte';
+
 	let significantDates = [1844, 1853, 1892, 1921, 2016, 2021, 2044];
 	export let firstYear: number;
 	export let lastYear: number;
@@ -25,15 +27,25 @@
 		decadesArray = getDecades(firstYear, lastYear);
 	}
 
-
+	let exampleEvents = [
+		{ startDate: '1890-02-01T08:00:00.000Z', endDate: '1895-07-01T08:00:00.000Z' },
+		{ startDate: '1996-08-01T08:00:00.000Z', endDate: '2012-12-01T08:00:00.000Z' }
+	];
 </script>
 
 <!-- @component
 Provides a navigation bar at the bottom of the page with the timeline.
  -->
 <main
-	style="--first-year:{firstYear};--last-year:{lastYear};--number-of-decades:{decadesArray.length};"
+	style="--first-year:{firstYear};
+	--last-year:{lastYear};
+	--first-decade:{decadesArray[0]};
+	--last-decade:{decadesArray[-1]};
+	--number-of-decades:{decadesArray.length};"
 >
+	{#each exampleEvents as { startDate, endDate }}
+		<Event {startDate} {endDate} />
+	{/each}
 	<nav>
 		<!-- Listing all the significant dates -->
 		{#each decadesArray as year}
