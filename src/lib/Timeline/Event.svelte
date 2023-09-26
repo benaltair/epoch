@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let startDate: string;
 	export let endDate: string;
+	export let label: string;
 
 	interface ToLocaleStringOptions {
 		localeMatcher?: 'best fit' | 'lookup';
@@ -55,12 +56,22 @@
 	style="--event-start-year:{extractYearFromDate(startDate)};
     --event-end-year:{extractYearFromDate(endDate)};"
 >
-	Event from {formatDateLocaleFriendly(startDate)} to {formatDateLocaleFriendly(endDate)}.
+	{label}
+	<!-- Event from {formatDateLocaleFriendly(startDate)} to {formatDateLocaleFriendly(endDate)}. -->
 </div>
 
 <style>
 	div {
-		grid-column-start: calc((var(--event-start-year) - var(--first-year)));
-		grid-column-end: calc((var(--event-end-year) - var(--first-year)));
+		grid-column-start: calc((var(--event-start-year) - var(--first-decade)) + 1);
+		grid-column-end: calc((var(--event-end-year) - var(--first-decade)) + 1);
+		background-color: var(--accent-bg);
+		padding: 0.2em 0.5em;
+		border-radius: 0.2em;
+		width: 100%;
+		z-index: 3;
+		opacity: 0.75;
+	}
+	div:hover {
+		opacity: 1;
 	}
 </style>

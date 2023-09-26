@@ -29,8 +29,21 @@
 	}
 
 	let exampleEvents = [
-		{ startDate: '1890-02-01T08:00:00.000Z', endDate: '1895-07-01T08:00:00.000Z' },
-		{ startDate: '1996-08-01T08:00:00.000Z', endDate: '2012-12-01T08:00:00.000Z' }
+		{
+			startDate: '1844-01-01T08:00:00.000Z',
+			endDate: '2044-01-01T08:00:00.000Z',
+			label: 'Bahai Cycle'
+		},
+		{
+			startDate: '1890-02-01T08:00:00.000Z',
+			endDate: '1895-07-01T08:00:00.000Z',
+			label: 'Second Event'
+		},
+		{
+			startDate: '1996-08-01T08:00:00.000Z',
+			endDate: '2012-12-01T08:00:00.000Z',
+			label: 'Third Event'
+		}
 	];
 </script>
 
@@ -44,8 +57,8 @@ Provides a navigation bar at the bottom of the page with the timeline.
 	--last-decade:{decadesArray[-1]};
 	--number-of-decades:{decadesArray.length};"
 >
-	{#each exampleEvents as { startDate, endDate }}
-		<Event {startDate} {endDate} />
+	{#each exampleEvents as { startDate, endDate, label }}
+		<Event {startDate} {endDate} {label} />
 	{/each}
 	<nav>
 		<!-- Listing all the decades -->
@@ -72,15 +85,16 @@ Provides a navigation bar at the bottom of the page with the timeline.
 			var(--number-of-years),
 			calc(var(--inner-width) / var(--number-of-years))
 		);
+		grid-template-columns: var(--timeline-grid);
+		grid-template-rows: auto;
+		row-gap: calc(var(--spacing) / 4);
 		display: grid;
 		align-content: baseline;
 		position: relative;
 		width: 100vw;
 		height: 100vh;
 		background-color: var(--bg);
-		display: grid;
 		padding: var(--spacing);
-		grid-template-columns: var(--timeline-grid);
 		z-index: 1;
 		overflow: hidden;
 	}
@@ -133,8 +147,8 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		height: 200vh;
 		width: 1px;
 		z-index: 1; /* Place it behind other content */
-		border-left: 1px solid #959595; /* Thin line */
-		opacity: 0.25;
+		border-left: 1px solid var(--accent); /* Thin line */
+		opacity: 0.15;
 		pointer-events: none; /* Allow clicks to go through it */
 	}
 </style>
