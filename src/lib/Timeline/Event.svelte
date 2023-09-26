@@ -2,6 +2,38 @@
 	export let startDate: string;
 	export let endDate: string;
 
+	interface ToLocaleStringOptions {
+		localeMatcher?: 'best fit' | 'lookup';
+		style?: 'decimal' | 'currency' | 'percent' | 'unit';
+		currency?: string;
+		currencyDisplay?: 'symbol' | 'narrowSymbol' | 'code' | 'name';
+		useGrouping?: boolean;
+		minimumIntegerDigits?: number;
+		minimumFractionDigits?: number;
+		maximumFractionDigits?: number;
+		minimumSignificantDigits?: number;
+		maximumSignificantDigits?: number;
+		notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
+		compactDisplay?: 'short' | 'long';
+		timeZone?: string;
+		hour12?: boolean;
+		hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
+		formatMatcher?: 'basic' | 'best fit';
+		weekday?: 'narrow' | 'short' | 'long';
+		era?: 'narrow' | 'short' | 'long';
+		year?: 'numeric' | '2-digit';
+		month?: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long';
+		day?: 'numeric' | '2-digit';
+		hour?: 'numeric' | '2-digit';
+		minute?: 'numeric' | '2-digit';
+		second?: 'numeric' | '2-digit';
+		fractionalSecondDigits?: 2 | 1 | 3 | undefined;
+		weekdayFallback?: boolean;
+		numberingSystem?: string;
+		calendar?: string;
+		timeZoneName?: 'short' | 'long';
+	}
+
 	function extractYearFromDate(isoDateString: string): number {
 		// Create a Date object from the ISO date string
 		const date = new Date(isoDateString);
@@ -13,7 +45,7 @@
 	}
 
 	function formatDateLocaleFriendly(isoDateString: string): string {
-		const options = { year: 'numeric', month: 'long', day: 'numeric' };
+		const options: ToLocaleStringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 		const date = new Date(isoDateString);
 		return date.toLocaleDateString(undefined, options);
 	}

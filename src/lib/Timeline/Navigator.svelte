@@ -48,7 +48,8 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		<Event {startDate} {endDate} />
 	{/each}
 	<nav>
-		<!-- Listing all the significant dates -->
+		<!-- Listing all the decades -->
+		<!-- TODO: When zoomed in to only a couple decades, label all individual years -->
 		{#each decadesArray as year}
 			<time
 				datetime={new Date('1 January ' + year).toISOString()}
