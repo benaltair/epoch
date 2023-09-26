@@ -17,10 +17,12 @@ This will be developed to run on a serverless architecture, using a jamstack met
 
 A separate  process of data management and carw will be needed to maintain the integrity of the source database. Further consultation with others and potentially institutions of the Faith will be necessary at that stage to think about how best to gather and maintain that information. There is potential for a small group of authorized moderators who have access to the CMS, paired with a feedback mechanism which allows users of the website to request the additon of additional events through an inline form. 
 
-Licensing will need to be selected and published in this repository soon. Right now it is under a default restrictive assumed copyright license but the goal is to open it up for easy collaboration and additional projects. This should also make it more resilient so if it's forgotten about, someone else can continue on. 
+This will use the gregorian calendar system for now. It would be nice to overlay the Bahá'í equivilant dates in the future, but this would need to be rendered from the gregorian. This brings into question an element of the scope of this project: current events. The goal is primarily to give historical context, eventually allowing some level of granular exploration of certain time periods of the Faith. It could however be helpful too in showing upcoming dates such as Holy Days. This will need to be decided in the future and for now only past events are generally going to be included.
 
 ## Contributing
 If you find this, you are welcome to submit issues, PRs, or contact the contributors with ideas. This may go nowhere, but it is started at this point.
+
+Licensing will need to be selected and published in this repository soon. Right now it is under a default restrictive assumed copyright license but the goal is to open it up for easy collaboration and additional projects. This should also make it more resilient so if it's forgotten about, someone else can continue on. 
 
 ## Developing
 
