@@ -202,6 +202,7 @@ Provides a navigation bar at the bottom of the page with the timeline.
 	--last-decade:{decadesArray[-1]};
 	--number-of-decades:{decadesArray.length};"
 >
+	<!-- TODO: These events will of course need to be derived from the headless CMS, and will need to be restructured at that point -->
 	{#each exampleEvents as { startDate, endDate, label }}
 		<Event {startDate} {endDate} {label} />
 	{/each}
@@ -249,12 +250,14 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		/* TODO: In the future when `subgrid` is supported, this can be refactored to avoid multiple grids */
 		grid-template-columns: var(--timeline-grid);
 		grid-template-rows: 1fr;
-		width: calc(100vw - var(--spacing) * 2);
+		/* width: calc(100vw - var(--spacing) * 2); */
+		width: 100vw;
 		height: var(--spacing);
 		left: 0;
 		right: 0;
 		bottom: 0;
-		margin: var(--spacing);
+		margin: var(--spacing) 0;
+		/* padding: 0 calc(var(--spacing) / 2); */
 	}
 	time {
 		position: relative;
@@ -285,11 +288,11 @@ Provides a navigation bar at the bottom of the page with the timeline.
 	time::after {
 		content: '';
 		position: absolute;
-		top: -100vh;
+		/* top: -100vh; */
 		left: 0;
 		right: 0;
-		bottom: 0;
-		height: 200vh;
+		bottom: calc(-1 * var(--spacing) * 1.5);
+		height: 100vh;
 		width: 1px;
 		z-index: 1; /* Place it behind other content */
 		border-left: 1px solid var(--accent); /* Thin line */

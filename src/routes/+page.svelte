@@ -2,4 +2,4 @@
 	import Navigator from '$lib/Timeline/Navigator.svelte';
 </script>
 
-<Navigator firstYear={1844} lastYear={2021} />
+<Navigator firstYear={1844} lastYear={2044} />
