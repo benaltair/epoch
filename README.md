@@ -15,6 +15,8 @@ At this stage mobile is out of scope, but the CSS scaffold I'm building would al
 ## Principles
 This will be developed to run on a serverless architecture, using a jamstack methodology. The data will be hosted in a headless CMS and structured logically, with the build process ideally producing a statically generated website.
 
+A separate  process of data management and carw will be needed to maintain the integrity of the source database. Further consultation with others and potentially institutions of the Faith will be necessary at that stage to think about how best to gather and maintain that information. There is potential for a small group of authorized moderators who have access to the CMS, paired with a feedback mechanism which allows users of the website to request the additon of additional events through an inline form. 
+
 ## Contributing
 If you find this, you are welcome to submit issues, PRs, or contact the contributors with ideas. This may go nowhere, but it is started at this point.
 
