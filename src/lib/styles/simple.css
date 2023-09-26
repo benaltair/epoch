@@ -21,7 +21,7 @@
 }
 
 /* Dark theme */
-/* @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root,
   ::backdrop {
     color-scheme: dark;
@@ -38,7 +38,7 @@
   video {
     opacity: 0.8;
   }
-} */
+}
 
 /* Reset box-sizing */
 *,
