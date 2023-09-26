@@ -17,12 +17,14 @@ This will be developed to run on a serverless architecture, using a jamstack met
 
 A separate  process of data management and carw will be needed to maintain the integrity of the source database. Further consultation with others and potentially institutions of the Faith will be necessary at that stage to think about how best to gather and maintain that information. There is potential for a small group of authorized moderators who have access to the CMS, paired with a feedback mechanism which allows users of the website to request the additon of additional events through an inline form. 
 
+Licensing will need to be selected and published in this repository soon. Right now it is under a default restrictive assumed copyright license but the goal is to open it up for easy collaboration and additional projects. This should also make it more resilient so if it's forgotten about, someone else can continue on. 
+
 ## Contributing
 If you find this, you are welcome to submit issues, PRs, or contact the contributors with ideas. This may go nowhere, but it is started at this point.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Begin by cloning this repository and installing dependencies with `npm install` (or `pnpm install` or `yarn`). Then start a development server:
 
 ```bash
 npm run dev
@@ -33,7 +35,9 @@ npm run dev -- --open
 
 ## Building
 
-To create a production version of your app:
+This app is configured to deploy automatically on Netlify (or any other serverless platform as needed) when the `main` branch is updated. This means it can be deployed to a variety of environments. 
+
+To create a local production version of this app:
 
 ```bash
 npm run build
