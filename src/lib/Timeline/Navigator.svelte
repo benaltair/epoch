@@ -2,6 +2,7 @@
 	import Event from '$lib/Timeline/Event.svelte';
 
 	let significantDates = [1844, 1853, 1892, 1921, 2016, 2021, 2044];
+
 	export let firstYear: number;
 	export let lastYear: number;
 
@@ -49,7 +50,7 @@ Provides a navigation bar at the bottom of the page with the timeline.
 	<nav>
 		<!-- Listing all the significant dates -->
 		{#each decadesArray as year}
-			<time datetime={new Date('1 January ' + year).toISOString()}>
+			<time datetime={new Date('1 January ' + year).toISOString()} style="--decade-year:{year};">
 				{year}
 			</time>
 		{/each}
@@ -61,9 +62,11 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		--spacing: 2.5em;
 		--inner-height: calc(100vh - var(--spacing) * 2);
 		--inner-width: calc(100vw - var(--spacing) * 2);
+		--number-of-years: calc(var(--last-decade) - var(--first-decade));
+		/* Create one column for each year */
 		--timeline-grid: repeat(
-			var(--number-of-decades),
-			calc(var(--inner-width) / var(--number-of-decades))
+			var(--number-of-years),
+			calc(var(--inner-width) / var(--number-of-years))
 		);
 		display: grid;
 		align-content: baseline;
@@ -73,14 +76,14 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		background-color: var(--bg);
 		display: grid;
 		padding: var(--spacing);
-		/* Create one column for each decade */
 		grid-template-columns: var(--timeline-grid);
 	}
 	nav {
 		position: absolute;
 		display: grid;
-		/* Create one column for each decade */
+		/* TODO: In the future when `subgrid` is supported, this can be refactored to avoid multiple grids */
 		grid-template-columns: var(--timeline-grid);
+		grid-template-rows: 1fr;
 		width: calc(100vw - var(--spacing) * 2);
 		height: var(--spacing);
 		left: 0;
@@ -99,6 +102,10 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		justify-self: center;
 		margin-top: -0.5ch;
 		color: var(--text-light);
+		--year-offset: calc(var(--decade-year) - var(--first-decade));
+		grid-column-start: var(--year-offset);
+		grid-column-end: calc(var(--year-offset) + 10);
+		grid-row: 1 / 1;
 	}
 	time::before {
 		content: '';

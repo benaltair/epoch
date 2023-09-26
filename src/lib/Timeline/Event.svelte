@@ -28,7 +28,7 @@
 
 <style>
 	div {
-		grid-column-start: calc((var(--event-start-year) - var(--first-year)) / 10);
-		grid-column-end: calc((var(--event-end-year) - var(--first-year)) / 10);
+		grid-column-start: calc((var(--event-start-year) - var(--first-year)));
+		grid-column-end: calc((var(--event-end-year) - var(--first-year)));
 	}
 </style>
