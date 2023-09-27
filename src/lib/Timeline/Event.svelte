@@ -39,14 +39,19 @@
 		// Create a Date object from the ISO date string
 		const date = new Date(isoDateString);
 
-		// Use the getFullYear method to get the year
-		const year = date.getFullYear();
+		// Use the getUTCFullYear method to get the year
+		const year = date.getUTCFullYear();
 
 		return year;
 	}
 
 	function formatDateLocaleFriendly(isoDateString: string): string {
-		const options: ToLocaleStringOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+		const options: ToLocaleStringOptions = {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+			timeZone: 'UTC'
+		};
 		const date = new Date(isoDateString);
 		return date.toLocaleDateString(undefined, options);
 	}
