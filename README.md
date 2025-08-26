@@ -37,12 +37,23 @@ npm run dev -- --open
 
 ## Building
 
-This app is configured to deploy automatically on Netlify (or any other serverless platform as needed) when the `main` branch is updated. This means it can be deployed to a variety of environments. 
+This app is deployable to serverless platforms (e.g., Netlify, Vercel) and traditional hosts. The project currently uses SvelteKit with `adapter-auto`; select and configure a specific adapter if you have a target environment in mind.
 
-To create a local production version of this app:
+To create a local production build:
 
 ```bash
 npm run build
 ```
 
 You can preview the production build with `npm run preview`.
+
+## Tech and scripts
+
+- Framework: SvelteKit 1 + Svelte 4 (Vite-based)
+- Package scripts:
+  - `dev`: `vite dev`
+  - `build`: `vite build`
+  - `preview`: `vite preview`
+  - `test`, `test:unit`, `test:integration`: Vitest and Playwright
+  - `check`/`check:watch`: type and Svelte checks
+  - `lint`/`format`: Prettier + ESLint
