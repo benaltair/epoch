@@ -1,0 +1,158 @@
+[
+	{
+		"startDate": "1844-01-01T08:00:00.000Z",
+		"endDate": "2044-01-01T08:00:00.000Z",
+		"label": "Bahai Cycle"
+	},
+	{
+		"startDate": "1844-01-01T08:00:00.000Z",
+		"endDate": "2044-01-01T08:00:00.000Z",
+		"label": "Bahai Era"
+	},
+	{
+		"startDate": "1853-01-01T08:00:00.000Z",
+		"endDate": "2044-01-01T08:00:00.000Z",
+		"label": "Dispensation of Bahaullah"
+	},
+	{
+		"startDate": "1844-01-01T08:00:00.000Z",
+		"endDate": "1921-01-01T08:00:00.000Z",
+		"label": "Heroic Age"
+	},
+	{
+		"startDate": "1921-01-01T08:00:00.000Z",
+		"endDate": "2044-01-01T08:00:00.000Z",
+		"label": "Formative Age"
+	},
+	{
+		"startDate": "1844-01-01T08:00:00.000Z",
+		"endDate": "1853-01-01T08:00:00.000Z",
+		"label": "Ministry of the Báb"
+	},
+	{
+		"startDate": "1853-01-01T08:00:00.000Z",
+		"endDate": "1892-01-01T08:00:00.000Z",
+		"label": "Ministry of Bahaullah"
+	},
+	{
+		"startDate": "1892-01-01T08:00:00.000Z",
+		"endDate": "1921-01-01T08:00:00.000Z",
+		"label": "Ministry of Abdul-Baha"
+	},
+	{
+		"startDate": "1921-01-01T08:00:00.000Z",
+		"endDate": "1946-01-01T08:00:00.000Z",
+		"label": "1st Epoch"
+	},
+	{
+		"startDate": "1946-01-01T08:00:00.000Z",
+		"endDate": "1963-01-01T08:00:00.000Z",
+		"label": "2nd Epoch"
+	},
+	{
+		"startDate": "1963-01-01T08:00:00.000Z",
+		"endDate": "1986-01-01T08:00:00.000Z",
+		"label": "3rd Epoch"
+	},
+	{
+		"startDate": "1986-01-01T08:00:00.000Z",
+		"endDate": "2023-01-01T08:00:00.000Z",
+		"label": "5th Epoch"
+	},
+	{
+		"startDate": "1937-01-01T08:00:00.000Z",
+		"endDate": "2044-01-01T08:00:00.000Z",
+		"label": "Tablets of the Divine Plan"
+	},
+	{
+		"startDate": "1937-01-01T08:00:00.000Z",
+		"endDate": "1963-01-01T08:00:00.000Z",
+		"label": "1st Epoch"
+	},
+	{
+		"startDate": "1963-01-01T08:00:00.000Z",
+		"endDate": "2021-01-01T08:00:00.000Z",
+		"label": "2nd Epoch"
+	},
+	{
+		"startDate": "2021-01-01T08:00:00.000Z",
+		"endDate": "2044-01-01T08:00:00.000Z",
+		"label": "3rd Epoch"
+	},
+	{
+		"startDate": "1937-01-01T08:00:00.000Z",
+		"endDate": "1946-01-01T08:00:00.000Z",
+		"label": "7YP"
+	},
+	{
+		"startDate": "1946-01-01T08:00:00.000Z",
+		"endDate": "1953-01-01T08:00:00.000Z",
+		"label": "7YP"
+	},
+	{
+		"startDate": "1953-01-01T08:00:00.000Z",
+		"endDate": "1963-01-01T08:00:00.000Z",
+		"label": "10YC"
+	},
+	{
+		"startDate": "1964-01-01T08:00:00.000Z",
+		"endDate": "1973-01-01T08:00:00.000Z",
+		"label": "9YP"
+	},
+	{
+		"startDate": "1974-01-01T08:00:00.000Z",
+		"endDate": "1979-01-01T08:00:00.000Z",
+		"label": "5YP"
+	},
+	{
+		"startDate": "1979-01-01T08:00:00.000Z",
+		"endDate": "1986-01-01T08:00:00.000Z",
+		"label": "7YP"
+	},
+	{
+		"startDate": "1986-01-01T08:00:00.000Z",
+		"endDate": "1992-01-01T08:00:00.000Z",
+		"label": "6YP"
+	},
+	{
+		"startDate": "1993-01-01T08:00:00.000Z",
+		"endDate": "1996-01-01T08:00:00.000Z",
+		"label": "3YP"
+	},
+	{
+		"startDate": "1996-01-01T08:00:00.000Z",
+		"endDate": "2000-01-01T08:00:00.000Z",
+		"label": "4YP"
+	},
+	{
+		"startDate": "2000-01-01T08:00:00.000Z",
+		"endDate": "2001-01-01T08:00:00.000Z",
+		"label": "12MP"
+	},
+	{
+		"startDate": "2001-01-01T08:00:00.000Z",
+		"endDate": "2006-01-01T08:00:00.000Z",
+		"label": "5YP"
+	},
+	{
+		"startDate": "2006-01-01T08:00:00.000Z",
+		"endDate": "2011-01-01T08:00:00.000Z",
+		"label": "5YP"
+	},
+	{
+		"startDate": "2011-01-01T08:00:00.000Z",
+		"endDate": "2016-01-01T08:00:00.000Z",
+		"label": "5YP"
+	},
+	{
+		"startDate": "2016-01-01T08:00:00.000Z",
+		"endDate": "2021-01-01T08:00:00.000Z",
+		"label": "5YP"
+	},
+	{
+		"startDate": "2021-01-01T08:00:00.000Z",
+		"endDate": "2022-01-01T08:00:00.000Z",
+		"label": "1YP"
+	},
+	{ "startDate": "2022-01-01T08:00:00.000Z", "endDate": "2031-01-01T08:00:00.000Z", "label": "9YP" }
+]
