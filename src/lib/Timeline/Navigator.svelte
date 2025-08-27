@@ -1,221 +1,78 @@
 <script lang="ts">
-	import Event from '$lib/Timeline/Event.svelte';
-
-	let significantDates = [1844, 1853, 1892, 1921, 2016, 2021, 2044];
+	import EventComponent from '$lib/Timeline/Event.svelte';
+	import type { Event as EventData } from '$lib/types';
 
 	export let firstYear: number;
 	export let lastYear: number;
+	export let events: EventData[] = [];
 
+	// Determine the decade labels to render along the timeline
 	function getDecades(firstYear: number, lastYear: number): number[] {
 		if (firstYear > lastYear) {
-			// Ensure start year is before or equal to end year.
 			return [];
 		}
-
 		const decades: number[] = [];
-		let currentDecade: number = Math.floor(firstYear / 10) * 10; // Find the first decade.
-
+		let currentDecade: number = Math.floor(firstYear / 10) * 10;
 		while (currentDecade <= Math.floor(lastYear / 10) * 10 + 10) {
 			decades.push(currentDecade);
-			currentDecade += 10; // Move to the next decade.
+			currentDecade += 10;
 		}
-
 		return decades;
 	}
 
-	let decadesArray: number[] = [];
-	$: {
-		decadesArray = getDecades(firstYear, lastYear);
+	// Helper to extract the UTC year from an ISO date string
+	function yearFrom(date: string): number {
+		return new Date(date).getUTCFullYear();
 	}
 
-	let exampleEvents = [
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Cycle'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Era'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Dispensation of Bahaullah'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Heroic Age'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Formative Age'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1853-01-01T08:00:00.000Z',
-			label: 'Ministry of the Báb'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '1892-01-01T08:00:00.000Z',
-			label: 'Ministry of Bahaullah'
-		},
-		{
-			startDate: '1892-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Ministry of Abdul-Baha'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '2023-01-01T08:00:00.000Z',
-			label: '5th Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Tablets of the Divine Plan'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1953-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1953-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '10YC'
-		},
-		{
-			startDate: '1964-01-01T08:00:00.000Z',
-			endDate: '1973-01-01T08:00:00.000Z',
-			label: '9YP'
-		},
-		{
-			startDate: '1974-01-01T08:00:00.000Z',
-			endDate: '1979-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '1979-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '1992-01-01T08:00:00.000Z',
-			label: '6YP'
-		},
-		{
-			startDate: '1993-01-01T08:00:00.000Z',
-			endDate: '1996-01-01T08:00:00.000Z',
-			label: '3YP'
-		},
-		{
-			startDate: '1996-01-01T08:00:00.000Z',
-			endDate: '2000-01-01T08:00:00.000Z',
-			label: '4YP'
-		},
-		{
-			startDate: '2000-01-01T08:00:00.000Z',
-			endDate: '2001-01-01T08:00:00.000Z',
-			label: '12MP'
-		},
-		{
-			startDate: '2001-01-01T08:00:00.000Z',
-			endDate: '2006-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2006-01-01T08:00:00.000Z',
-			endDate: '2011-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2011-01-01T08:00:00.000Z',
-			endDate: '2016-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2016-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2022-01-01T08:00:00.000Z',
-			label: '1YP'
-		},
-		{
-			startDate: '2022-01-01T08:00:00.000Z',
-			endDate: '2031-01-01T08:00:00.000Z',
-			label: '9YP'
-		}
-	];
+	// Place events onto lanes so overlapping events are stacked
+	interface PositionedEvent {
+		label: string;
+		startYear: number;
+		endYear: number;
+		lane: number;
+	}
+
+	function position(events: EventData[]): PositionedEvent[] {
+		const sorted = events
+			.map((e) => ({
+				label: e.label,
+				startYear: Math.max(yearFrom(e.startDate), firstYear),
+				endYear: Math.min(yearFrom(e.endDate), lastYear)
+			}))
+			.filter((e) => e.endYear >= e.startYear)
+			.sort((a, b) => a.startYear - b.startYear);
+
+		const lanes: number[] = [];
+		return sorted.map((e) => {
+			let lane = 0;
+			while (lane < lanes.length && e.startYear <= lanes[lane]) {
+				lane += 1;
+			}
+			lanes[lane] = e.endYear;
+			return { ...e, lane };
+		});
+	}
+
+	let decadesArray: number[] = [];
+	let positionedEvents: PositionedEvent[] = [];
+	let laneCount = 0;
+
+	$: decadesArray = getDecades(firstYear, lastYear);
+	$: positionedEvents = position(events);
+	$: laneCount = positionedEvents.reduce((max, e) => Math.max(max, e.lane), -1) + 1;
 </script>
 
-<!-- @component
-Provides a navigation bar at the bottom of the page with the timeline.
- -->
-<main
-	style="--first-year:{firstYear};
-	--last-year:{lastYear};
-	--first-decade:{decadesArray[0]};
-	--last-decade:{decadesArray[-1]};
-	--number-of-decades:{decadesArray.length};"
->
-	<!-- TODO: These events will of course need to be derived from the headless CMS, and will need to be restructured at that point -->
-	{#each exampleEvents as { startDate, endDate, label }}
-		<Event {startDate} {endDate} {label} />
+<main style="--first-year:{firstYear}; --last-year:{lastYear}; --lane-count:{laneCount};">
+	{#each positionedEvents as { startYear, endYear, lane, label }}
+		<EventComponent {startYear} {endYear} {lane} {label} {firstYear} />
 	{/each}
 	<nav>
-		<!-- Listing all the decades -->
-		<!-- TODO: When zoomed in to only a couple decades, label all individual years -->
 		{#each decadesArray as year}
 			<time
 				datetime={new Date('1 January ' + year).toISOString()}
-				style="--decade-year:{year};--content:'{year}';"
+				style="--decade-year:{year};--content:'{year}';">&nbsp;</time
 			>
-				&nbsp;
-			</time>
 		{/each}
 	</nav>
 </main>
@@ -223,42 +80,44 @@ Provides a navigation bar at the bottom of the page with the timeline.
 <style>
 	main {
 		--spacing: 2.5em;
-		--inner-height: calc(100vh - var(--spacing) * 2);
-		--inner-width: calc(100vw - var(--spacing) * 2);
-		--number-of-years: calc(var(--last-decade) - var(--first-decade));
-		/* Create one column for each year */
-		--timeline-grid: repeat(
-			var(--number-of-years),
-			calc(var(--inner-width) / var(--number-of-years))
-		);
-		grid-template-columns: var(--timeline-grid);
-		grid-template-rows: auto;
-		row-gap: calc(var(--spacing) / 4);
+		--year-width: 6rem;
+		--row-height: 2.5em;
+		--row-gap: 1em;
+		--number-of-years: calc(var(--last-year) - var(--first-year) + 1);
 		display: grid;
-		align-content: baseline;
+		grid-template-columns: repeat(var(--number-of-years), var(--year-width));
+		grid-auto-rows: var(--row-height);
+		row-gap: var(--row-gap);
+		align-content: start;
 		position: relative;
-		width: 100vw;
-		height: 100vh;
+		width: max(100vw, calc(var(--number-of-years) * var(--year-width)));
+		height: max(
+			100vh,
+			calc(
+				var(--lane-count) * var(--row-height) + (var(--lane-count) - 1) * var(--row-gap) +
+					var(--spacing) * 2
+			)
+		);
 		background-color: var(--bg);
 		padding: var(--spacing);
+		overflow-x: auto;
+		overflow-y: auto;
 		z-index: 1;
-		overflow: hidden;
 	}
+
 	nav {
 		position: absolute;
 		display: grid;
-		/* TODO: In the future when `subgrid` is supported, this can be refactored to avoid multiple grids */
-		grid-template-columns: var(--timeline-grid);
+		grid-template-columns: repeat(var(--number-of-years), var(--year-width));
 		grid-template-rows: 1fr;
-		/* width: calc(100vw - var(--spacing) * 2); */
-		width: 100vw;
+		min-width: calc(var(--number-of-years) * var(--year-width));
+		width: max(100%, calc(var(--number-of-years) * var(--year-width)));
 		height: var(--spacing);
 		left: 0;
-		right: 0;
 		bottom: 0;
 		margin: var(--spacing) 0;
-		/* padding: 0 calc(var(--spacing) / 2); */
 	}
+
 	time {
 		position: relative;
 		width: max-content;
@@ -267,11 +126,12 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		align-self: center;
 		justify-self: center;
 		color: var(--text-light);
-		--year-offset: calc(var(--decade-year) - var(--first-decade) + 1);
+		--year-offset: calc(var(--decade-year) - var(--first-year) + 1);
 		grid-column-start: var(--year-offset);
 		grid-column-end: calc(var(--year-offset) + 10);
 		grid-row: 1 / 1;
 	}
+
 	time::before {
 		content: var(--content);
 		--padding: 0.35em;
@@ -285,18 +145,24 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		box-sizing: unset;
 		z-index: 3;
 	}
+
 	time::after {
 		content: '';
 		position: absolute;
-		/* top: -100vh; */
 		left: 0;
 		right: 0;
 		bottom: calc(-1 * var(--spacing) * 1.5);
 		height: 100vh;
 		width: 1px;
-		z-index: 1; /* Place it behind other content */
-		border-left: 1px solid var(--accent); /* Thin line */
+		z-index: 1;
+		border-left: 1px solid var(--accent);
 		opacity: 0.15;
-		pointer-events: none; /* Allow clicks to go through it */
+		pointer-events: none;
+	}
+
+	@media (max-width: 600px) {
+		main {
+			--year-width: 4rem;
+		}
 	}
 </style>
