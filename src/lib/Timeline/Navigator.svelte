@@ -6,6 +6,33 @@
 	export let lastYear: number;
 	export let events: EventData[] = [];
 
+	type PlacedEvent = EventData & { row: number };
+
+	function getYear(iso: string): number {
+		return new Date(iso).getUTCFullYear();
+	}
+
+	function placeEvents(list: EventData[]): PlacedEvent[] {
+		const rows: number[] = [];
+		return [...list]
+			.sort((a, b) => getYear(a.startDate) - getYear(b.startDate))
+			.map((event) => {
+				const start = getYear(event.startDate);
+				const end = getYear(event.endDate);
+				let rowIndex = rows.findIndex((rEnd) => start > rEnd);
+				if (rowIndex === -1) {
+					rowIndex = rows.length;
+					rows.push(end);
+				} else {
+					rows[rowIndex] = end;
+				}
+				return { ...event, row: rowIndex + 1 };
+			});
+	}
+
+	let placed: PlacedEvent[] = [];
+	$: placed = placeEvents(events);
+
 	function getDecades(firstYear: number, lastYear: number): number[] {
 		if (firstYear > lastYear) {
 			return [];
@@ -24,8 +51,8 @@
 </script>
 
 <main style="--first-year:{firstYear}; --last-year:{lastYear};">
-	{#each events as { startDate, endDate, label }, i}
-		<EventComponent {startDate} {endDate} {label} row={i + 1} />
+	{#each placed as { startDate, endDate, label, row }}
+		<EventComponent {startDate} {endDate} {label} {row} />
 	{/each}
 	<nav>
 		{#each decadesArray as year}
@@ -39,9 +66,9 @@
 
 <style>
 	main {
-		--spacing: 2.5em;
-		--year-width: clamp(4rem, 6vw, 8rem);
-		--row-height: 2.5rem;
+		--spacing: 1rem;
+		--year-width: clamp(3rem, 4vw, 5rem);
+		--row-height: 2rem;
 		--number-of-years: calc(var(--last-year) - var(--first-year) + 1);
 		display: grid;
 		grid-template-columns: repeat(var(--number-of-years), var(--year-width));
@@ -113,7 +140,7 @@
 
 	@media (max-width: 600px) {
 		main {
-			--row-height: 2rem;
+			--row-height: 1.5rem;
 		}
 	}
 </style>
