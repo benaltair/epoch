@@ -1,0 +1,33 @@
+:root {
+	--bg: #fff;
+	--text: #222;
+	--accent: #0d47a1;
+	--accent-bg: #e7f0ff;
+	--grid-year: color-mix(in srgb, var(--accent) 20%, transparent);
+	--grid-decade: color-mix(in srgb, var(--accent) 40%, transparent);
+	--color-epoch: #4c6ef5;
+	--color-plan: #ffa94d;
+	--color-event: #20c997;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #212121;
+		--text: #dcdcdc;
+		--accent: #ffb300;
+		--accent-bg: #2b2b2b;
+		--grid-year: color-mix(in srgb, var(--accent) 20%, transparent);
+		--grid-decade: color-mix(in srgb, var(--accent) 40%, transparent);
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: sans-serif;
+	background-color: var(--bg);
+	color: var(--text);
+}

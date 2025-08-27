@@ -1,0 +1,48 @@
+[
+	{
+		"id": "epoch",
+		"label": "Epoch",
+		"startDate": "1844-01-01T00:00:00.000Z",
+		"endDate": "2044-01-01T00:00:00.000Z",
+		"type": "epoch",
+		"children": [
+			{
+				"id": "plans",
+				"label": "Plans",
+				"startDate": "1937-01-01T00:00:00.000Z",
+				"endDate": "2044-01-01T00:00:00.000Z",
+				"type": "plan",
+				"children": [
+					{
+						"id": "first-seven-year-plan",
+						"label": "First Seven Year Plan",
+						"startDate": "1937-01-01T00:00:00.000Z",
+						"endDate": "1944-01-01T00:00:00.000Z",
+						"type": "plan"
+					},
+					{
+						"id": "second-seven-year-plan",
+						"label": "Second Seven Year Plan",
+						"startDate": "1946-01-01T00:00:00.000Z",
+						"endDate": "1953-01-01T00:00:00.000Z",
+						"type": "plan"
+					},
+					{
+						"id": "ten-year-crusade",
+						"label": "Ten Year Crusade",
+						"startDate": "1953-01-01T00:00:00.000Z",
+						"endDate": "1963-01-01T00:00:00.000Z",
+						"type": "plan"
+					}
+				]
+			},
+			{
+				"id": "universal-house",
+				"label": "Election of Universal House of Justice",
+				"startDate": "1963-04-21T00:00:00.000Z",
+				"endDate": "1963-04-21T00:00:00.000Z",
+				"type": "event"
+			}
+		]
+	}
+]

@@ -1,264 +1,167 @@
 <script lang="ts">
-	import Event from '$lib/Timeline/Event.svelte';
+	import EventComponent from '$lib/Timeline/Event.svelte';
+	import type { Event as EventData } from '$lib/types';
+	import { tick } from 'svelte';
 
-	let significantDates = [1844, 1853, 1892, 1921, 2016, 2021, 2044];
+	export let events: EventData[] = [];
 
-	export let firstYear: number;
-	export let lastYear: number;
+	function getYear(iso: string): number {
+		return new Date(iso).getUTCFullYear();
+	}
 
-	function getDecades(firstYear: number, lastYear: number): number[] {
-		if (firstYear > lastYear) {
-			// Ensure start year is before or equal to end year.
-			return [];
+	interface FlatEvent extends EventData {
+		depth: number;
+	}
+	type PlacedEvent = FlatEvent & { row: number };
+
+	function flatten(list: EventData[], depth = 0, acc: FlatEvent[] = []): FlatEvent[] {
+		for (const event of list) {
+			acc.push({ ...event, depth });
+			if (event.children) flatten(event.children, depth + 1, acc);
 		}
+		return acc;
+	}
 
+	function computeBounds(list: FlatEvent[]): { first: number; last: number } {
+		const years = list.flatMap((e) => [getYear(e.startDate), getYear(e.endDate)]);
+		return { first: Math.min(...years), last: Math.max(...years) };
+	}
+
+	const flat: FlatEvent[] = flatten(events);
+	let { first: firstYear, last: lastYear } = computeBounds(flat);
+	$: totalYears = lastYear - firstYear + 1;
+
+	function placeEvents(list: FlatEvent[]): PlacedEvent[] {
+		const rowsByDepth: Map<number, number[]> = new Map();
+		const placed: PlacedEvent[] = [];
+		const sorted = [...list].sort((a, b) => getYear(a.startDate) - getYear(b.startDate));
+		for (const ev of sorted) {
+			const start = getYear(ev.startDate);
+			const end = getYear(ev.endDate);
+			const rows = rowsByDepth.get(ev.depth) ?? [];
+			let rowIndex = rows.findIndex((rEnd) => start > rEnd);
+			if (rowIndex === -1) {
+				rowIndex = rows.length;
+				rows.push(end);
+			} else {
+				rows[rowIndex] = end;
+			}
+			rowsByDepth.set(ev.depth, rows);
+			const base = ev.depth * 3;
+			placed.push({ ...ev, row: base + rowIndex + 1 });
+		}
+		return placed;
+	}
+
+	let placed: PlacedEvent[] = placeEvents(flat);
+	$: maxRow = placed.reduce((m, e) => Math.max(m, e.row), 1);
+
+	function getDecades(first: number, last: number): number[] {
 		const decades: number[] = [];
-		let currentDecade: number = Math.floor(firstYear / 10) * 10; // Find the first decade.
-
-		while (currentDecade <= Math.floor(lastYear / 10) * 10 + 10) {
-			decades.push(currentDecade);
-			currentDecade += 10; // Move to the next decade.
+		let current = Math.floor(first / 10) * 10;
+		while (current <= Math.floor(last / 10) * 10 + 10) {
+			decades.push(current);
+			current += 10;
 		}
-
 		return decades;
 	}
+	$: decadesArray = getDecades(firstYear, lastYear);
 
-	let decadesArray: number[] = [];
-	$: {
-		decadesArray = getDecades(firstYear, lastYear);
+	let container: HTMLElement;
+	let zoom = 1;
+	const minZoom = 0.2;
+	const maxZoom = 10;
+
+	function handleWheel(e: WheelEvent) {
+		if (!e.ctrlKey) return;
+		e.preventDefault();
+		const rect = container.getBoundingClientRect();
+		const offsetX = e.clientX - rect.left + container.scrollLeft;
+		const factor = Math.exp(-e.deltaY * 0.001);
+		const newZoom = Math.min(maxZoom, Math.max(minZoom, zoom * factor));
+		const scale = newZoom / zoom;
+		zoom = newZoom;
+		tick().then(() => {
+			container.scrollTo({ left: offsetX * scale - (e.clientX - rect.left), behavior: 'auto' });
+		});
 	}
 
-	let exampleEvents = [
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Cycle'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Era'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Dispensation of Bahaullah'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Heroic Age'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Formative Age'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1853-01-01T08:00:00.000Z',
-			label: 'Ministry of the Báb'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '1892-01-01T08:00:00.000Z',
-			label: 'Ministry of Bahaullah'
-		},
-		{
-			startDate: '1892-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Ministry of Abdul-Baha'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '2023-01-01T08:00:00.000Z',
-			label: '5th Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Tablets of the Divine Plan'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1953-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1953-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '10YC'
-		},
-		{
-			startDate: '1964-01-01T08:00:00.000Z',
-			endDate: '1973-01-01T08:00:00.000Z',
-			label: '9YP'
-		},
-		{
-			startDate: '1974-01-01T08:00:00.000Z',
-			endDate: '1979-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '1979-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '1992-01-01T08:00:00.000Z',
-			label: '6YP'
-		},
-		{
-			startDate: '1993-01-01T08:00:00.000Z',
-			endDate: '1996-01-01T08:00:00.000Z',
-			label: '3YP'
-		},
-		{
-			startDate: '1996-01-01T08:00:00.000Z',
-			endDate: '2000-01-01T08:00:00.000Z',
-			label: '4YP'
-		},
-		{
-			startDate: '2000-01-01T08:00:00.000Z',
-			endDate: '2001-01-01T08:00:00.000Z',
-			label: '12MP'
-		},
-		{
-			startDate: '2001-01-01T08:00:00.000Z',
-			endDate: '2006-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2006-01-01T08:00:00.000Z',
-			endDate: '2011-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2011-01-01T08:00:00.000Z',
-			endDate: '2016-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2016-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2022-01-01T08:00:00.000Z',
-			label: '1YP'
-		},
-		{
-			startDate: '2022-01-01T08:00:00.000Z',
-			endDate: '2031-01-01T08:00:00.000Z',
-			label: '9YP'
-		}
-	];
+	function focusEvent({ detail }: CustomEvent<{ startDate: string; endDate: string }>) {
+		const start = getYear(detail.startDate);
+		const end = getYear(detail.endDate);
+		const eventYears = end - start + 1;
+		zoom = Math.min(maxZoom, totalYears / eventYears);
+		tick().then(() => {
+			const center = (start + end) / 2;
+			const target =
+				((center - firstYear + 0.5) / totalYears) * container.scrollWidth -
+				container.clientWidth / 2;
+			container.scrollTo({ left: target, behavior: 'smooth' });
+		});
+	}
 </script>
 
-<!-- @component
-Provides a navigation bar at the bottom of the page with the timeline.
- -->
 <main
-	style="--first-year:{firstYear};
-	--last-year:{lastYear};
-	--first-decade:{decadesArray[0]};
-	--last-decade:{decadesArray[-1]};
-	--number-of-decades:{decadesArray.length};"
+	bind:this={container}
+	on:wheel={handleWheel}
+	style="--first-year:{firstYear}; --last-year:{lastYear}; --zoom:{zoom}"
 >
-	<!-- TODO: These events will of course need to be derived from the headless CMS, and will need to be restructured at that point -->
-	{#each exampleEvents as { startDate, endDate, label }}
-		<Event {startDate} {endDate} {label} />
+	{#each placed as { startDate, endDate, label, row, type }}
+		<EventComponent {startDate} {endDate} {label} {row} {type} on:focus={focusEvent} />
 	{/each}
-	<nav>
-		<!-- Listing all the decades -->
-		<!-- TODO: When zoomed in to only a couple decades, label all individual years -->
+	<nav style="grid-row:{maxRow + 1}">
 		{#each decadesArray as year}
 			<time
 				datetime={new Date('1 January ' + year).toISOString()}
-				style="--decade-year:{year};--content:'{year}';"
+				style="--decade-year:{year};--content:'{year}';">&nbsp;</time
 			>
-				&nbsp;
-			</time>
 		{/each}
 	</nav>
 </main>
 
 <style>
 	main {
-		--spacing: 2.5em;
-		--inner-height: calc(100vh - var(--spacing) * 2);
-		--inner-width: calc(100vw - var(--spacing) * 2);
-		--number-of-years: calc(var(--last-decade) - var(--first-decade));
-		/* Create one column for each year */
-		--timeline-grid: repeat(
-			var(--number-of-years),
-			calc(var(--inner-width) / var(--number-of-years))
-		);
-		grid-template-columns: var(--timeline-grid);
-		grid-template-rows: auto;
-		row-gap: calc(var(--spacing) / 4);
+		--spacing: 1rem;
+		--row-height: 2rem;
+		--number-of-years: calc(var(--last-year) - var(--first-year) + 1);
+		--initial-year-width: calc(100vw / var(--number-of-years));
+		--year-width: calc(var(--initial-year-width) * var(--zoom));
 		display: grid;
-		align-content: baseline;
+		grid-template-columns: repeat(var(--number-of-years), var(--year-width));
+		grid-auto-rows: var(--row-height);
+		row-gap: var(--spacing);
+		align-content: start;
 		position: relative;
-		width: 100vw;
-		height: 100vh;
+		width: calc(var(--number-of-years) * var(--year-width));
+		min-height: 100vh;
 		background-color: var(--bg);
+		background-image: repeating-linear-gradient(
+				to right,
+				var(--grid-decade),
+				var(--grid-decade) 2px,
+				transparent 2px,
+				transparent calc(var(--year-width) * 10)
+			),
+			repeating-linear-gradient(
+				to right,
+				var(--grid-year),
+				var(--grid-year) 1px,
+				transparent 1px,
+				transparent var(--year-width)
+			);
 		padding: var(--spacing);
+		overflow: auto;
 		z-index: 1;
-		overflow: hidden;
 	}
+
 	nav {
-		position: absolute;
+		grid-column: 1 / -1;
 		display: grid;
-		/* TODO: In the future when `subgrid` is supported, this can be refactored to avoid multiple grids */
-		grid-template-columns: var(--timeline-grid);
-		grid-template-rows: 1fr;
-		/* width: calc(100vw - var(--spacing) * 2); */
-		width: 100vw;
-		height: var(--spacing);
-		left: 0;
-		right: 0;
-		bottom: 0;
-		margin: var(--spacing) 0;
-		/* padding: 0 calc(var(--spacing) / 2); */
+		grid-template-columns: repeat(var(--number-of-years), var(--year-width));
+		height: var(--row-height);
+		margin-top: var(--spacing);
 	}
+
 	time {
 		position: relative;
 		width: max-content;
@@ -267,11 +170,11 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		align-self: center;
 		justify-self: center;
 		color: var(--text-light);
-		--year-offset: calc(var(--decade-year) - var(--first-decade) + 1);
+		--year-offset: calc(var(--decade-year) - var(--first-year) + 1);
 		grid-column-start: var(--year-offset);
 		grid-column-end: calc(var(--year-offset) + 10);
-		grid-row: 1 / 1;
 	}
+
 	time::before {
 		content: var(--content);
 		--padding: 0.35em;
@@ -285,18 +188,10 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		box-sizing: unset;
 		z-index: 3;
 	}
-	time::after {
-		content: '';
-		position: absolute;
-		/* top: -100vh; */
-		left: 0;
-		right: 0;
-		bottom: calc(-1 * var(--spacing) * 1.5);
-		height: 100vh;
-		width: 1px;
-		z-index: 1; /* Place it behind other content */
-		border-left: 1px solid var(--accent); /* Thin line */
-		opacity: 0.15;
-		pointer-events: none; /* Allow clicks to go through it */
+
+	@media (max-width: 600px) {
+		main {
+			--row-height: 1.5rem;
+		}
 	}
 </style>
