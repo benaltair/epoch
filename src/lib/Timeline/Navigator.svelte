@@ -24,8 +24,8 @@
 </script>
 
 <main style="--first-year:{firstYear}; --last-year:{lastYear};">
-	{#each events as { startDate, endDate, label }}
-		<EventComponent {startDate} {endDate} {label} />
+	{#each events as { startDate, endDate, label }, i}
+		<EventComponent {startDate} {endDate} {label} row={i + 1} />
 	{/each}
 	<nav>
 		{#each decadesArray as year}
@@ -40,20 +40,34 @@
 <style>
 	main {
 		--spacing: 2.5em;
-		--year-width: 6rem;
+		--year-width: clamp(4rem, 6vw, 8rem);
+		--row-height: 2.5rem;
 		--number-of-years: calc(var(--last-year) - var(--first-year) + 1);
 		display: grid;
 		grid-template-columns: repeat(var(--number-of-years), var(--year-width));
-		grid-template-rows: auto;
-		row-gap: calc(var(--spacing) / 4);
-		align-content: baseline;
+		grid-auto-rows: var(--row-height);
+		row-gap: var(--spacing);
+		align-content: start;
 		position: relative;
 		width: max(100vw, calc(var(--number-of-years) * var(--year-width)));
-		height: 100vh;
+		min-height: 100vh;
 		background-color: var(--bg);
+		background-image: repeating-linear-gradient(
+				to right,
+				var(--grid-decade),
+				var(--grid-decade) 2px,
+				transparent 2px,
+				transparent calc(var(--year-width) * 10)
+			),
+			repeating-linear-gradient(
+				to right,
+				var(--grid-year),
+				var(--grid-year) 1px,
+				transparent 1px,
+				transparent var(--year-width)
+			);
 		padding: var(--spacing);
-		overflow-x: auto;
-		overflow-y: hidden;
+		overflow: auto;
 		z-index: 1;
 	}
 
@@ -61,7 +75,6 @@
 		position: absolute;
 		display: grid;
 		grid-template-columns: repeat(var(--number-of-years), var(--year-width));
-		grid-template-rows: 1fr;
 		min-width: calc(var(--number-of-years) * var(--year-width));
 		width: max(100%, calc(var(--number-of-years) * var(--year-width)));
 		height: var(--spacing);
@@ -98,23 +111,9 @@
 		z-index: 3;
 	}
 
-	time::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: calc(-1 * var(--spacing) * 1.5);
-		height: 100vh;
-		width: 1px;
-		z-index: 1;
-		border-left: 1px solid var(--accent);
-		opacity: 0.15;
-		pointer-events: none;
-	}
-
 	@media (max-width: 600px) {
 		main {
-			--year-width: 4rem;
+			--row-height: 2rem;
 		}
 	}
 </style>

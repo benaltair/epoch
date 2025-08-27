@@ -7,7 +7,7 @@ This is an idea at this early stage; an experiment. A website which shows a chro
 Likely this will be slow moving as an individual initiative, progressing when I have time. Eventually it may pick up steam.
 
 **Update: September 2023**
-Right now it is in its earliest stage. I am prototyping different ways to reliably render an interactive timeline. The features which could be enabled by this scaffold include:
+Right now it is in its earliest stage. I am prototyping different ways to reliably render an interactive timeline. The current prototype uses CSS Grid to draw year and decade lines, providing a solid base for stacking events and future navigation tools. The features which could be enabled by this scaffold include:
 
 - Dynamic zooming and scrolling through the timeline, likely with an overview widget somewhere on screen.
 - Information hierarchy between different types of events. Cycle -> Dispensation -> Age and so on.
