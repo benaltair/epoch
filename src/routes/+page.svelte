@@ -4,4 +4,4 @@
 	export let data: { events: Event[] };
 </script>
 
-<Navigator firstYear={1715} lastYear={1900} events={data.events} />
+<Navigator events={data.events} />
