@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { TimelineEvent } from '$lib/data/events';
 	const dispatch = createEventDispatcher();
 
-	export let startDate: string;
-	export let endDate: string;
-	export let label: string;
+	export let event: TimelineEvent;
 	export let row: number = 1;
+
+	const { startDate, endDate, label } = event;
 
 	interface ToLocaleStringOptions {
 		localeMatcher?: 'best fit' | 'lookup';
@@ -61,7 +62,7 @@
 	}
 
 	function handleClick() {
-		dispatch('select', { label, startDate, endDate });
+		dispatch('select', event);
 	}
 </script>
 

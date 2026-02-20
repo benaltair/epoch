@@ -76,8 +76,8 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		<div class="timeline-grid">
 			{#each groupedEvents as levelEvents, i}
 				<div class="tier tier-{i}">
-					{#each levelEvents as { startDate, endDate, label }}
-						<Event {startDate} {endDate} {label} row={i + 1} on:select={handleSelect} />
+					{#each levelEvents as event}
+						<Event {event} row={i + 1} on:select={handleSelect} />
 					{/each}
 				</div>
 			{/each}
