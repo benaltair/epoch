@@ -71,13 +71,19 @@
 		return gregorianYear - 1844 + 1;
 	}
 
-	let years = [];
-	$: {
-		years = [];
-		for (let y = firstYear; y <= lastYear; y += 10) {
-			years.push(y);
+	$: years = (() => {
+		const result = [];
+		let interval = 10;
+		if (pixelsPerYear < 20) interval = 20;
+		if (pixelsPerYear < 10) interval = 50;
+		if (pixelsPerYear < 5) interval = 100;
+
+		const start = Math.floor(firstYear / interval) * interval;
+		for (let y = start; y <= lastYear; y += interval) {
+			if (y >= firstYear) result.push(y);
 		}
-	}
+		return result;
+	})();
 </script>
 
 <div class="navigator">
