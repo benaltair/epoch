@@ -3,234 +3,195 @@ export interface TimelineEvent {
 	label: string;
 	startDate: string;
 	endDate: string;
-	level: number; // 0 for Cycle, 1 for Era, 2 for Age, 3 for Epoch, 4 for Plan
+	level: 'cycle' | 'era' | 'age' | 'epoch' | 'plan' | 'event';
 	description?: string;
-	link?: string;
+	color?: string;
 }
 
 export const events: TimelineEvent[] = [
 	{
 		id: 'bahai-cycle',
-		startDate: '1844-01-01T08:00:00.000Z',
-		endDate: '2044-01-01T08:00:00.000Z',
-		label: 'Bahai Cycle',
-		level: 0
+		startDate: '1844-05-23T00:00:00.000Z',
+		endDate: '2344-05-23T00:00:00.000Z',
+		label: 'Bahá\'í Cycle',
+		level: 'cycle',
+		description: 'A period destined to last no less than five hundred thousand years.',
+		color: '#1e3a8a'
 	},
 	{
 		id: 'bahai-era',
-		startDate: '1844-01-01T08:00:00.000Z',
-		endDate: '2044-01-01T08:00:00.000Z',
-		label: 'Bahai Era',
-		level: 1
+		startDate: '1844-05-23T00:00:00.000Z',
+		endDate: '2044-05-23T00:00:00.000Z',
+		label: 'Bahá\'í Era',
+		level: 'era',
+		description: 'The era beginning with the Declaration of the Báb.',
+		color: '#1d4ed8'
+	},
+	{
+		id: 'dispensation-bab',
+		startDate: '1844-05-23T00:00:00.000Z',
+		endDate: '1853-10-15T00:00:00.000Z',
+		label: 'Dispensation of the Báb',
+		level: 'era',
+		description: 'The ministry of the Báb, the Herald of the Bahá\'í Faith.',
+		color: '#3b82f6'
 	},
 	{
 		id: 'dispensation-bahaullah',
-		startDate: '1853-01-01T08:00:00.000Z',
-		endDate: '2044-01-01T08:00:00.000Z',
-		label: 'Dispensation of Bahaullah',
-		level: 2
+		startDate: '1853-10-15T00:00:00.000Z',
+		endDate: '2044-05-23T00:00:00.000Z',
+		label: 'Dispensation of Bahá\'u\'lláh',
+		level: 'era',
+		description: 'The ministry of Bahá\'u\'lláh and the period of His Revelation.',
+		color: '#2563eb'
 	},
 	{
 		id: 'heroic-age',
-		startDate: '1844-01-01T08:00:00.000Z',
-		endDate: '1921-01-01T08:00:00.000Z',
+		startDate: '1844-05-23T00:00:00.000Z',
+		endDate: '1921-11-28T00:00:00.000Z',
 		label: 'Heroic Age',
-		level: 3
+		level: 'age',
+		description: 'The Apostolic or Primitive Age of the Faith.',
+		color: '#7c3aed'
 	},
 	{
 		id: 'formative-age',
-		startDate: '1921-01-01T08:00:00.000Z',
-		endDate: '2044-01-01T08:00:00.000Z',
+		startDate: '1921-11-28T00:00:00.000Z',
+		endDate: '2044-05-23T00:00:00.000Z',
 		label: 'Formative Age',
-		level: 3
+		level: 'age',
+		description: 'The Transitional or Iron Age of the Faith, dedicated to the construction of the Administrative Order.',
+		color: '#8b5cf6'
 	},
 	{
 		id: 'ministry-bab',
-		startDate: '1844-01-01T08:00:00.000Z',
-		endDate: '1853-01-01T08:00:00.000Z',
+		startDate: '1844-05-23T00:00:00.000Z',
+		endDate: '1850-07-09T00:00:00.000Z',
 		label: 'Ministry of the Báb',
-		level: 4
+		level: 'epoch',
+		description: 'From the Declaration of the Báb to His Martyrdom.'
 	},
 	{
 		id: 'ministry-bahaullah',
-		startDate: '1853-01-01T08:00:00.000Z',
-		endDate: '1892-01-01T08:00:00.000Z',
-		label: 'Ministry of Bahaullah',
-		level: 4
+		startDate: '1853-10-15T00:00:00.000Z',
+		endDate: '1892-05-29T00:00:00.000Z',
+		label: 'Ministry of Bahá\'u\'lláh',
+		level: 'epoch',
+		description: 'From His intimation in the Siyah-Chal to His Ascension.'
 	},
 	{
 		id: 'ministry-abdul-baha',
-		startDate: '1892-01-01T08:00:00.000Z',
-		endDate: '1921-01-01T08:00:00.000Z',
-		label: 'Ministry of Abdul-Baha',
-		level: 4
+		startDate: '1892-05-29T00:00:00.000Z',
+		endDate: '1921-11-28T00:00:00.000Z',
+		label: 'Ministry of \'Abdu\'l-Bahá',
+		level: 'epoch',
+		description: 'The period of His leadership as the Center of the Covenant.'
 	},
 	{
-		id: '1st-epoch',
-		startDate: '1921-01-01T08:00:00.000Z',
-		endDate: '1946-01-01T08:00:00.000Z',
-		label: '1st Epoch',
-		level: 4
+		id: 'formative-1st-epoch',
+		startDate: '1921-11-28T00:00:00.000Z',
+		endDate: '1944-05-23T00:00:00.000Z',
+		label: '1st Epoch (Formative Age)',
+		level: 'epoch',
+		description: 'The early years of the Guardianship.'
 	},
 	{
-		id: '2nd-epoch',
-		startDate: '1946-01-01T08:00:00.000Z',
-		endDate: '1963-01-01T08:00:00.000Z',
-		label: '2nd Epoch',
-		level: 4
+		id: 'formative-2nd-epoch',
+		startDate: '1946-04-21T00:00:00.000Z',
+		endDate: '1963-04-21T00:00:00.000Z',
+		label: '2nd Epoch (Formative Age)',
+		level: 'epoch',
+		description: 'The global spread of the Faith through the Ten Year Crusade.'
 	},
 	{
-		id: '3rd-epoch',
-		startDate: '1963-01-01T08:00:00.000Z',
-		endDate: '1986-01-01T08:00:00.000Z',
-		label: '3rd Epoch',
-		level: 4
+		id: 'formative-3rd-epoch',
+		startDate: '1963-04-21T00:00:00.000Z',
+		endDate: '1986-04-21T00:00:00.000Z',
+		label: '3rd Epoch (Formative Age)',
+		level: 'epoch'
 	},
 	{
-		id: '5th-epoch',
-		startDate: '1986-01-01T08:00:00.000Z',
-		endDate: '2023-01-01T08:00:00.000Z',
-		label: '5th Epoch',
-		level: 4
+		id: 'formative-4th-epoch',
+		startDate: '1986-04-21T00:00:00.000Z',
+		endDate: '2001-04-21T00:00:00.000Z',
+		label: '4th Epoch (Formative Age)',
+		level: 'epoch'
 	},
 	{
-		id: 'tablets-divine-plan',
-		startDate: '1937-01-01T08:00:00.000Z',
-		endDate: '2044-01-01T08:00:00.000Z',
-		label: 'Tablets of the Divine Plan',
-		level: 2
+		id: 'formative-5th-epoch',
+		startDate: '2001-04-21T00:00:00.000Z',
+		endDate: '2021-04-21T00:00:00.000Z',
+		label: '5th Epoch (Formative Age)',
+		level: 'epoch'
 	},
 	{
-		id: '1st-epoch-plans',
-		startDate: '1937-01-01T08:00:00.000Z',
-		endDate: '1963-01-01T08:00:00.000Z',
-		label: '1st Epoch (Plans)',
-		level: 3
+		id: 'formative-6th-epoch',
+		startDate: '2021-04-21T00:00:00.000Z',
+		endDate: '2031-04-21T00:00:00.000Z',
+		label: '6th Epoch (Formative Age)',
+		level: 'epoch'
 	},
 	{
-		id: '2nd-epoch-plans',
-		startDate: '1963-01-01T08:00:00.000Z',
-		endDate: '2021-01-01T08:00:00.000Z',
-		label: '2nd Epoch (Plans)',
-		level: 3
+		id: 'declaration-bab',
+		startDate: '1844-05-23T00:00:00.000Z',
+		endDate: '1844-05-24T00:00:00.000Z',
+		label: 'Declaration of the Báb',
+		level: 'event',
+		color: '#f59e0b'
 	},
 	{
-		id: '3rd-epoch-plans',
-		startDate: '2021-01-01T08:00:00.000Z',
-		endDate: '2044-01-01T08:00:00.000Z',
-		label: '3rd Epoch (Plans)',
-		level: 3
+		id: 'martyrdom-bab',
+		startDate: '1850-07-09T00:00:00.000Z',
+		endDate: '1850-07-10T00:00:00.000Z',
+		label: 'Martyrdom of the Báb',
+		level: 'event',
+		color: '#f59e0b'
 	},
 	{
-		id: '7yp-1',
-		startDate: '1937-01-01T08:00:00.000Z',
-		endDate: '1946-01-01T08:00:00.000Z',
-		label: '7YP',
-		level: 5
+		id: 'declaration-bahaullah',
+		startDate: '1863-04-21T00:00:00.000Z',
+		endDate: '1863-05-02T00:00:00.000Z',
+		label: 'Declaration of Bahá\'u\'lláh',
+		level: 'event',
+		color: '#f59e0b'
 	},
 	{
-		id: '7yp-2',
-		startDate: '1946-01-01T08:00:00.000Z',
-		endDate: '1953-01-01T08:00:00.000Z',
-		label: '7YP',
-		level: 4
+		id: 'ascension-bahaullah',
+		startDate: '1892-05-29T00:00:00.000Z',
+		endDate: '1892-05-30T00:00:00.000Z',
+		label: 'Ascension of Bahá\'u\'lláh',
+		level: 'event',
+		color: '#f59e0b'
 	},
 	{
-		id: '10yc',
-		startDate: '1953-01-01T08:00:00.000Z',
-		endDate: '1963-01-01T08:00:00.000Z',
-		label: '10YC',
-		level: 4
+		id: 'passing-abdulbaha',
+		startDate: '1921-11-28T00:00:00.000Z',
+		endDate: '1921-11-29T00:00:00.000Z',
+		label: 'Passing of \'Abdu\'l-Bahá',
+		level: 'event',
+		color: '#f59e0b'
 	},
 	{
-		id: '9yp-1',
-		startDate: '1964-01-01T08:00:00.000Z',
-		endDate: '1973-01-01T08:00:00.000Z',
-		label: '9YP',
-		level: 4
+		id: 'election-uhj',
+		startDate: '1963-04-21T00:00:00.000Z',
+		endDate: '1963-04-22T00:00:00.000Z',
+		label: 'First Election of the Universal House of Justice',
+		level: 'event',
+		color: '#f59e0b'
 	},
 	{
-		id: '5yp-1',
-		startDate: '1974-01-01T08:00:00.000Z',
-		endDate: '1979-01-01T08:00:00.000Z',
-		label: '5YP',
-		level: 4
+		id: 'ten-year-crusade',
+		startDate: '1953-04-21T00:00:00.000Z',
+		endDate: '1963-04-21T00:00:00.000Z',
+		label: 'Ten Year Crusade',
+		level: 'plan',
+		description: 'The first global teaching plan.'
 	},
 	{
-		id: '7yp-3',
-		startDate: '1979-01-01T08:00:00.000Z',
-		endDate: '1986-01-01T08:00:00.000Z',
-		label: '7YP',
-		level: 4
-	},
-	{
-		id: '6yp',
-		startDate: '1986-01-01T08:00:00.000Z',
-		endDate: '1992-01-01T08:00:00.000Z',
-		label: '6YP',
-		level: 4
-	},
-	{
-		id: '3yp',
-		startDate: '1993-01-01T08:00:00.000Z',
-		endDate: '1996-01-01T08:00:00.000Z',
-		label: '3YP',
-		level: 4
-	},
-	{
-		id: '4yp',
-		startDate: '1996-01-01T08:00:00.000Z',
-		endDate: '2000-01-01T08:00:00.000Z',
-		label: '4YP',
-		level: 4
-	},
-	{
-		id: '12mp',
-		startDate: '2000-01-01T08:00:00.000Z',
-		endDate: '2001-01-01T08:00:00.000Z',
-		label: '12MP',
-		level: 4
-	},
-	{
-		id: '5yp-2',
-		startDate: '2001-01-01T08:00:00.000Z',
-		endDate: '2006-01-01T08:00:00.000Z',
-		label: '5YP',
-		level: 4
-	},
-	{
-		id: '5yp-3',
-		startDate: '2006-01-01T08:00:00.000Z',
-		endDate: '2011-01-01T08:00:00.000Z',
-		label: '5YP',
-		level: 4
-	},
-	{
-		id: '5yp-4',
-		startDate: '2011-01-01T08:00:00.000Z',
-		endDate: '2016-01-01T08:00:00.000Z',
-		label: '5YP',
-		level: 4
-	},
-	{
-		id: '5yp-5',
-		startDate: '2016-01-01T08:00:00.000Z',
-		endDate: '2021-01-01T08:00:00.000Z',
-		label: '5YP',
-		level: 4
-	},
-	{
-		id: '1yp',
-		startDate: '2021-01-01T08:00:00.000Z',
-		endDate: '2022-01-01T08:00:00.000Z',
-		label: '1YP',
-		level: 4
-	},
-	{
-		id: '9yp-2',
-		startDate: '2022-01-01T08:00:00.000Z',
-		endDate: '2031-01-01T08:00:00.000Z',
-		label: '9YP',
-		level: 5
+		id: 'nine-year-plan-1',
+		startDate: '1964-04-21T00:00:00.000Z',
+		endDate: '1973-04-21T00:00:00.000Z',
+		label: 'Nine Year Plan',
+		level: 'plan'
 	}
 ];

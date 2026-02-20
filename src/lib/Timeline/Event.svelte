@@ -5,112 +5,93 @@
 
 	export let event: TimelineEvent;
 	export let row: number = 1;
+	export let startYear: number;
+	export let pixelsPerYear: number;
 
-	const { startDate, endDate, label } = event;
+	const { startDate, endDate, label, level, color } = event;
 
-	interface ToLocaleStringOptions {
-		localeMatcher?: 'best fit' | 'lookup';
-		style?: 'decimal' | 'currency' | 'percent' | 'unit';
-		currency?: string;
-		currencyDisplay?: 'symbol' | 'narrowSymbol' | 'code' | 'name';
-		useGrouping?: boolean;
-		minimumIntegerDigits?: number;
-		minimumFractionDigits?: number;
-		maximumFractionDigits?: number;
-		minimumSignificantDigits?: number;
-		maximumSignificantDigits?: number;
-		notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
-		compactDisplay?: 'short' | 'long';
-		timeZone?: string;
-		hour12?: boolean;
-		hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
-		formatMatcher?: 'basic' | 'best fit';
-		weekday?: 'narrow' | 'short' | 'long';
-		era?: 'narrow' | 'short' | 'long';
-		year?: 'numeric' | '2-digit';
-		month?: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long';
-		day?: 'numeric' | '2-digit';
-		hour?: 'numeric' | '2-digit';
-		minute?: 'numeric' | '2-digit';
-		second?: 'numeric' | '2-digit';
-		fractionalSecondDigits?: 2 | 1 | 3 | undefined;
-		weekdayFallback?: boolean;
-		numberingSystem?: string;
-		calendar?: string;
-		timeZoneName?: 'short' | 'long';
+	function extractYear(isoDate: string): number {
+		const date = new Date(isoDate);
+		return date.getUTCFullYear() + date.getUTCMonth() / 12 + date.getUTCDate() / 365;
 	}
 
-	function extractYearFromDate(isoDateString: string): number {
-		// Create a Date object from the ISO date string
-		const date = new Date(isoDateString);
+	const start = extractYear(startDate);
+	const end = extractYear(endDate);
 
-		// Use the getUTCFullYear method to get the year
-		const year = date.getUTCFullYear();
-
-		return year;
-	}
-
-	function formatDateLocaleFriendly(isoDateString: string): string {
-		const options: ToLocaleStringOptions = {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-			timeZone: 'UTC'
-		};
-		const date = new Date(isoDateString);
-		return date.toLocaleDateString(undefined, options);
-	}
+	const left = (start - startYear) * pixelsPerYear;
+	let width = (end - start) * pixelsPerYear;
+	if (width < 2 && level === 'event') width = 10; // Minimum width for single day events
+	if (width < 2) width = 2;
 
 	function handleClick() {
 		dispatch('select', event);
 	}
+
+	const levelStyles = {
+		cycle: 'h-10 font-bold text-lg',
+		era: 'h-8 font-semibold text-md',
+		age: 'h-7 text-sm',
+		epoch: 'h-6 text-xs',
+		plan: 'h-5 text-[10px]',
+		event: 'h-4 text-[10px]'
+	};
 </script>
 
 <div
 	role="button"
 	tabindex="0"
-	style="--event-start-year:{extractYearFromDate(startDate)};
-    --event-end-year:{extractYearFromDate(endDate)};
-	--row:{row};"
-	title="{label} ({extractYearFromDate(startDate)} - {extractYearFromDate(endDate)})"
+	class="event-bar level-{level}"
+	style="
+		--left: {left}px;
+		--width: {width}px;
+		--top: {(row - 1) * 45}px;
+		--bg-color: {color || 'var(--primary-light)'};
+	"
+	title="{label} ({new Date(startDate).getUTCFullYear()} - {new Date(endDate).getUTCFullYear()})"
 	on:click={handleClick}
 	on:keydown={(e) => e.key === 'Enter' && handleClick()}
 >
-	<span>{label}</span>
+	<span class="label">{label}</span>
 </div>
 
 <style>
-	div {
-		grid-column-start: calc((var(--event-start-year) - var(--first-decade)) + 1);
-		grid-column-end: calc((var(--event-end-year) - var(--first-decade)) + 1);
-		grid-row: var(--row);
-		background-color: var(--accent-bg);
-		padding: 0.2em 0.5em;
-		border-radius: 4px;
-		width: 100%;
-		z-index: 3;
-		opacity: 0.85;
-		text-align: center;
-		border: 1px solid var(--accent);
-		cursor: pointer;
-		transition: all 0.2s;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		font-size: 0.8rem;
+	.event-bar {
+		position: absolute;
+		left: var(--left);
+		width: var(--width);
+		min-width: 4px;
+		top: var(--top);
+		background-color: var(--bg-color);
+		color: white;
+		border-radius: 6px;
+		padding: 0 8px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		min-height: 1.5em;
-	}
-	div:hover {
-		opacity: 1;
-		background-color: var(--accent);
-		color: white;
+		cursor: pointer;
+		transition: transform 0.1s, filter 0.1s;
+		white-space: nowrap;
+		overflow: hidden;
+		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.2);
 		z-index: 10;
 	}
-	span {
-		overflow: hidden;
+
+	.event-bar:hover {
+		filter: brightness(1.1);
+		transform: translateY(-1px);
+		z-index: 20;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+	}
+
+	.level-cycle { height: 40px; font-weight: 700; font-size: 1.1rem; opacity: 0.9; }
+	.level-era { height: 36px; font-weight: 600; font-size: 1rem; opacity: 0.85; }
+	.level-age { height: 32px; font-weight: 500; font-size: 0.9rem; opacity: 0.8; }
+	.level-epoch { height: 28px; font-size: 0.8rem; opacity: 0.75; }
+	.level-plan { height: 24px; font-size: 0.75rem; opacity: 0.7; }
+
+	.label {
 		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 </style>
