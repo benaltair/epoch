@@ -1,23 +1,32 @@
 <script lang="ts">
 	import Event from '$lib/Timeline/Event.svelte';
 
-	let significantDates = [1844, 1853, 1892, 1921, 2016, 2021, 2044];
+	import { events, type TimelineEvent } from '$lib/data/events';
 
 	export let firstYear: number;
 	export let lastYear: number;
 
-	function getDecades(firstYear: number, lastYear: number): number[] {
-		if (firstYear > lastYear) {
-			// Ensure start year is before or equal to end year.
+	let currentFirstYear = firstYear;
+	let currentLastYear = lastYear;
+	let pixelsPerYear = 20;
+
+	// Update current range if props change
+	$: {
+		currentFirstYear = firstYear;
+		currentLastYear = lastYear;
+	}
+
+	function getDecades(start: number, end: number): number[] {
+		if (start > end) {
 			return [];
 		}
 
 		const decades: number[] = [];
-		let currentDecade: number = Math.floor(firstYear / 10) * 10; // Find the first decade.
+		let currentDecade: number = Math.floor(start / 10) * 10;
 
-		while (currentDecade <= Math.floor(lastYear / 10) * 10 + 10) {
+		while (currentDecade <= Math.floor(end / 10) * 10 + 10) {
 			decades.push(currentDecade);
-			currentDecade += 10; // Move to the next decade.
+			currentDecade += 10;
 		}
 
 		return decades;
@@ -25,187 +34,55 @@
 
 	let decadesArray: number[] = [];
 	$: {
-		decadesArray = getDecades(firstYear, lastYear);
+		decadesArray = getDecades(currentFirstYear, currentLastYear);
 	}
 
-	let exampleEvents = [
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Cycle'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Era'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Dispensation of Bahaullah'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Heroic Age'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Formative Age'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1853-01-01T08:00:00.000Z',
-			label: 'Ministry of the Báb'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '1892-01-01T08:00:00.000Z',
-			label: 'Ministry of Bahaullah'
-		},
-		{
-			startDate: '1892-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Ministry of Abdul-Baha'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '2023-01-01T08:00:00.000Z',
-			label: '5th Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Tablets of the Divine Plan'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1953-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1953-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '10YC'
-		},
-		{
-			startDate: '1964-01-01T08:00:00.000Z',
-			endDate: '1973-01-01T08:00:00.000Z',
-			label: '9YP'
-		},
-		{
-			startDate: '1974-01-01T08:00:00.000Z',
-			endDate: '1979-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '1979-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '1992-01-01T08:00:00.000Z',
-			label: '6YP'
-		},
-		{
-			startDate: '1993-01-01T08:00:00.000Z',
-			endDate: '1996-01-01T08:00:00.000Z',
-			label: '3YP'
-		},
-		{
-			startDate: '1996-01-01T08:00:00.000Z',
-			endDate: '2000-01-01T08:00:00.000Z',
-			label: '4YP'
-		},
-		{
-			startDate: '2000-01-01T08:00:00.000Z',
-			endDate: '2001-01-01T08:00:00.000Z',
-			label: '12MP'
-		},
-		{
-			startDate: '2001-01-01T08:00:00.000Z',
-			endDate: '2006-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2006-01-01T08:00:00.000Z',
-			endDate: '2011-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2011-01-01T08:00:00.000Z',
-			endDate: '2016-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2016-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2022-01-01T08:00:00.000Z',
-			label: '1YP'
-		},
-		{
-			startDate: '2022-01-01T08:00:00.000Z',
-			endDate: '2031-01-01T08:00:00.000Z',
-			label: '9YP'
-		}
-	];
+	const levels = [0, 1, 2, 3, 4, 5];
+	$: groupedEvents = levels.map((level) => events.filter((e) => e.level === level));
+
+	function zoomIn() {
+		pixelsPerYear = Math.min(pixelsPerYear * 1.5, 500);
+	}
+
+	function zoomOut() {
+		pixelsPerYear = Math.max(pixelsPerYear / 1.5, 1);
+	}
+
+	let selectedEvent: TimelineEvent | null = null;
+
+	function handleSelect(event: CustomEvent<TimelineEvent>) {
+		selectedEvent = event.detail;
+	}
 </script>
 
 <!-- @component
 Provides a navigation bar at the bottom of the page with the timeline.
  -->
 <main
-	style="--first-year:{firstYear};
-	--last-year:{lastYear};
+	style="--first-year:{currentFirstYear};
+	--last-year:{currentLastYear};
 	--first-decade:{decadesArray[0]};
-	--last-decade:{decadesArray[-1]};
-	--number-of-decades:{decadesArray.length};"
+	--last-decade:{decadesArray[decadesArray.length - 1]};
+	--number-of-decades:{decadesArray.length};
+	--pixels-per-year:{pixelsPerYear};"
 >
-	<!-- TODO: These events will of course need to be derived from the headless CMS, and will need to be restructured at that point -->
-	{#each exampleEvents as { startDate, endDate, label }}
-		<Event {startDate} {endDate} {label} />
-	{/each}
+	<div class="controls">
+		<button on:click={zoomOut} title="Zoom Out">Zoom Out</button>
+		<span>{pixelsPerYear.toFixed(1)} px/year</span>
+		<button on:click={zoomIn} title="Zoom In">Zoom In</button>
+	</div>
+
+	<div class="timeline-scroll">
+		<div class="timeline-grid">
+			{#each groupedEvents as levelEvents, i}
+				<div class="tier tier-{i}">
+					{#each levelEvents as { startDate, endDate, label }}
+						<Event {startDate} {endDate} {label} row={i + 1} on:select={handleSelect} />
+					{/each}
+				</div>
+			{/each}
+		</div>
+	</div>
 	<nav>
 		<!-- Listing all the decades -->
 		<!-- TODO: When zoomed in to only a couple decades, label all individual years -->
@@ -218,24 +95,105 @@ Provides a navigation bar at the bottom of the page with the timeline.
 			</time>
 		{/each}
 	</nav>
+
+	{#if selectedEvent}
+		<aside class="detail-panel">
+			<header>
+				<h3>{selectedEvent.label}</h3>
+				<button on:click={() => (selectedEvent = null)}>×</button>
+			</header>
+			<div class="detail-content">
+				<p>
+					<strong>From:</strong>
+					{new Date(selectedEvent.startDate).toLocaleDateString()}
+				</p>
+				<p>
+					<strong>To:</strong>
+					{new Date(selectedEvent.endDate).toLocaleDateString()}
+				</p>
+				<p>
+					Hierarchical event from the history of the Baha'i Faith.
+				</p>
+			</div>
+		</aside>
+	{/if}
 </main>
 
 <style>
+	.detail-panel {
+		position: fixed;
+		top: 5rem;
+		right: 2rem;
+		width: 300px;
+		background: var(--bg);
+		border: 1px solid var(--accent);
+		border-radius: 8px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		z-index: 100;
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		margin: 0;
+	}
+
+	.detail-panel header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem 1rem;
+		background: var(--accent-bg);
+		border-bottom: 1px solid var(--accent);
+		border-radius: 8px 8px 0 0;
+	}
+
+	.detail-panel header h3 {
+		margin: 0;
+		font-size: 1.1rem;
+	}
+
+	.detail-panel header button {
+		background: none;
+		border: none;
+		color: var(--text);
+		font-size: 1.5rem;
+		cursor: pointer;
+		padding: 0;
+		margin: 0;
+		line-height: 1;
+	}
+
+	.detail-content {
+		padding: 1rem;
+	}
+
+	.detail-content p {
+		margin: 0.5rem 0;
+		font-size: 0.9rem;
+	}
+
+	.controls {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		padding-bottom: 1rem;
+		position: sticky;
+		left: 0;
+		z-index: 20;
+		background: var(--bg);
+	}
+
+	.controls button {
+		padding: 0.3rem 0.6rem;
+		margin: 0;
+	}
+
 	main {
 		--spacing: 2.5em;
-		--inner-height: calc(100vh - var(--spacing) * 2);
-		--inner-width: calc(100vw - var(--spacing) * 2);
 		--number-of-years: calc(var(--last-decade) - var(--first-decade));
-		/* Create one column for each year */
-		--timeline-grid: repeat(
-			var(--number-of-years),
-			calc(var(--inner-width) / var(--number-of-years))
-		);
-		grid-template-columns: var(--timeline-grid);
-		grid-template-rows: auto;
-		row-gap: calc(var(--spacing) / 4);
-		display: grid;
-		align-content: baseline;
+		--timeline-grid: repeat(var(--number-of-years), calc(var(--pixels-per-year) * 1px));
+
+		display: flex;
+		flex-direction: column;
 		position: relative;
 		width: 100vw;
 		height: 100vh;
@@ -244,20 +202,41 @@ Provides a navigation bar at the bottom of the page with the timeline.
 		z-index: 1;
 		overflow: hidden;
 	}
-	nav {
-		position: absolute;
+
+	.timeline-scroll {
+		overflow-x: auto;
+		overflow-y: auto;
+		flex: 1;
+		padding-bottom: var(--spacing);
+	}
+
+	.timeline-grid {
 		display: grid;
-		/* TODO: In the future when `subgrid` is supported, this can be refactored to avoid multiple grids */
+		grid-template-columns: var(--timeline-grid);
+		grid-template-rows: auto;
+		row-gap: calc(var(--spacing) / 4);
+		align-content: baseline;
+		width: max-content;
+		min-width: 100%;
+		position: relative;
+	}
+
+	.tier {
+		display: contents;
+	}
+
+	nav {
+		position: sticky;
+		bottom: 0;
+		display: grid;
 		grid-template-columns: var(--timeline-grid);
 		grid-template-rows: 1fr;
-		/* width: calc(100vw - var(--spacing) * 2); */
-		width: 100vw;
+		width: max-content;
+		min-width: 100%;
 		height: var(--spacing);
-		left: 0;
-		right: 0;
-		bottom: 0;
-		margin: var(--spacing) 0;
-		/* padding: 0 calc(var(--spacing) / 2); */
+		margin-top: auto;
+		background: var(--bg);
+		z-index: 10;
 	}
 	time {
 		position: relative;

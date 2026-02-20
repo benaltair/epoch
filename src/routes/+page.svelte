@@ -2,4 +2,8 @@
 	import Navigator from '$lib/Timeline/Navigator.svelte';
 </script>
 
-<Navigator firstYear={1715} lastYear={1900} />
+<header>
+	<h1>Epoch</h1>
+</header>
+
+<Navigator firstYear={1844} lastYear={2044} />
