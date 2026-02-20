@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import type { TimelineEvent } from '$lib/data/events';
+	import { extractYear } from '$lib/utils/date';
 	const dispatch = createEventDispatcher();
 
 	export let event: TimelineEvent;
@@ -8,50 +9,35 @@
 	export let startYear: number;
 	export let pixelsPerYear: number;
 
-	const { startDate, endDate, label, level, color } = event;
+	$: start = extractYear(event.startDate);
+	$: end = extractYear(event.endDate);
 
-	function extractYear(isoDate: string): number {
-		const date = new Date(isoDate);
-		return date.getUTCFullYear() + date.getUTCMonth() / 12 + date.getUTCDate() / 365;
-	}
-
-	const start = extractYear(startDate);
-	const end = extractYear(endDate);
-
-	const left = (start - startYear) * pixelsPerYear;
-	let width = (end - start) * pixelsPerYear;
-	if (width < 2 && level === 'event') width = 10; // Minimum width for single day events
-	if (width < 2) width = 2;
+	$: left = (start - startYear) * pixelsPerYear;
+	$: rawWidth = (end - start) * pixelsPerYear;
+	$: width = (rawWidth < 2 && event.level === 'event') ? 10 : Math.max(2, rawWidth);
 
 	function handleClick() {
 		dispatch('select', event);
 	}
-
-	const levelStyles = {
-		cycle: 'h-10 font-bold text-lg',
-		era: 'h-8 font-semibold text-md',
-		age: 'h-7 text-sm',
-		epoch: 'h-6 text-xs',
-		plan: 'h-5 text-[10px]',
-		event: 'h-4 text-[10px]'
-	};
 </script>
 
 <div
 	role="button"
 	tabindex="0"
-	class="event-bar level-{level}"
+	class="event-bar level-{event.level}"
 	style="
 		--left: {left}px;
 		--width: {width}px;
 		--top: {(row - 1) * 45}px;
-		--bg-color: {color || 'var(--primary-light)'};
+		--bg-color: {event.color || 'var(--primary-light)'};
 	"
-	title="{label} ({new Date(startDate).getUTCFullYear()} - {new Date(endDate).getUTCFullYear()})"
+	title="{event.label} ({new Date(event.startDate).getUTCFullYear()} - {new Date(event.endDate).getUTCFullYear()})"
 	on:click={handleClick}
 	on:keydown={(e) => e.key === 'Enter' && handleClick()}
 >
-	<span class="label">{label}</span>
+	<span class="label-wrapper">
+		<span class="label">{event.label}</span>
+	</span>
 </div>
 
 <style>
@@ -64,10 +50,6 @@
 		background-color: var(--bg-color);
 		color: white;
 		border-radius: 6px;
-		padding: 0 8px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 		cursor: pointer;
 		transition: transform 0.1s, filter 0.1s;
 		white-space: nowrap;
@@ -75,6 +57,18 @@
 		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		z-index: 10;
+		display: flex;
+		align-items: center;
+	}
+
+	.label-wrapper {
+		position: sticky;
+		left: 0;
+		padding: 0 12px;
+		max-width: 100%;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
 	}
 
 	.event-bar:hover {

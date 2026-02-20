@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Event from '$lib/Timeline/Event.svelte';
 	import { events, type TimelineEvent } from '$lib/data/events';
+	import { extractYear } from '$lib/utils/date';
 
 	export let firstYear: number = 1844;
 	export let lastYear: number = 2044;
@@ -9,11 +10,6 @@
 	let selectedEvent: TimelineEvent | null = null;
 
 	const levelOrder = ['cycle', 'era', 'age', 'epoch', 'plan', 'event'];
-
-	function extractYear(isoDate: string): number {
-		const date = new Date(isoDate);
-		return date.getUTCFullYear() + date.getUTCMonth() / 12 + date.getUTCDate() / 365;
-	}
 
 	function packEvents(levelEvents: TimelineEvent[]) {
 		const rows: TimelineEvent[][] = [];
