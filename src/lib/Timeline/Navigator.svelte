@@ -1,302 +1,335 @@
 <script lang="ts">
 	import Event from '$lib/Timeline/Event.svelte';
+	import { events, type TimelineEvent } from '$lib/data/events';
+	import { extractYear } from '$lib/utils/date';
 
-	let significantDates = [1844, 1853, 1892, 1921, 2016, 2021, 2044];
+	export let firstYear: number = 1844;
+	export let lastYear: number = 2044;
 
-	export let firstYear: number;
-	export let lastYear: number;
+	let pixelsPerYear = 40;
+	let selectedEvent: TimelineEvent | null = null;
 
-	function getDecades(firstYear: number, lastYear: number): number[] {
-		if (firstYear > lastYear) {
-			// Ensure start year is before or equal to end year.
-			return [];
-		}
+	const levelOrder = ['cycle', 'era', 'age', 'epoch', 'plan', 'event'];
 
-		const decades: number[] = [];
-		let currentDecade: number = Math.floor(firstYear / 10) * 10; // Find the first decade.
+	function packEvents(levelEvents: TimelineEvent[]) {
+		const rows: TimelineEvent[][] = [];
+		const sorted = [...levelEvents].sort((a, b) => extractYear(a.startDate) - extractYear(b.startDate));
 
-		while (currentDecade <= Math.floor(lastYear / 10) * 10 + 10) {
-			decades.push(currentDecade);
-			currentDecade += 10; // Move to the next decade.
-		}
-
-		return decades;
+		sorted.forEach(event => {
+			let placed = false;
+			for (let i = 0; i < rows.length; i++) {
+				const lastEvent = rows[i][rows[i].length - 1];
+				if (extractYear(event.startDate) >= extractYear(lastEvent.endDate)) {
+					rows[i].push(event);
+					placed = true;
+					break;
+				}
+			}
+			if (!placed) {
+				rows.push([event]);
+			}
+		});
+		return rows;
 	}
 
-	let decadesArray: number[] = [];
-	$: {
-		decadesArray = getDecades(firstYear, lastYear);
+	$: groupedEvents = levelOrder.map(level => {
+		const levelEvents = events.filter(e => e.level === level);
+		return packEvents(levelEvents);
+	});
+
+	$: levelGroupOffsets = (() => {
+		let currentTop = 0;
+		return groupedEvents.map(rows => {
+			const top = currentTop;
+			if (rows.length > 0) {
+				currentTop += rows.length * 40 + 20;
+			}
+			return top;
+		});
+	})();
+
+	function handleSelect(event: CustomEvent<TimelineEvent>) {
+		selectedEvent = event.detail;
 	}
 
-	let exampleEvents = [
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Cycle'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Bahai Era'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Dispensation of Bahaullah'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Heroic Age'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Formative Age'
-		},
-		{
-			startDate: '1844-01-01T08:00:00.000Z',
-			endDate: '1853-01-01T08:00:00.000Z',
-			label: 'Ministry of the Báb'
-		},
-		{
-			startDate: '1853-01-01T08:00:00.000Z',
-			endDate: '1892-01-01T08:00:00.000Z',
-			label: 'Ministry of Bahaullah'
-		},
-		{
-			startDate: '1892-01-01T08:00:00.000Z',
-			endDate: '1921-01-01T08:00:00.000Z',
-			label: 'Ministry of Abdul-Baha'
-		},
-		{
-			startDate: '1921-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '2023-01-01T08:00:00.000Z',
-			label: '5th Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: 'Tablets of the Divine Plan'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '1st Epoch'
-		},
-		{
-			startDate: '1963-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '2nd Epoch'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2044-01-01T08:00:00.000Z',
-			label: '3rd Epoch'
-		},
-		{
-			startDate: '1937-01-01T08:00:00.000Z',
-			endDate: '1946-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1946-01-01T08:00:00.000Z',
-			endDate: '1953-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1953-01-01T08:00:00.000Z',
-			endDate: '1963-01-01T08:00:00.000Z',
-			label: '10YC'
-		},
-		{
-			startDate: '1964-01-01T08:00:00.000Z',
-			endDate: '1973-01-01T08:00:00.000Z',
-			label: '9YP'
-		},
-		{
-			startDate: '1974-01-01T08:00:00.000Z',
-			endDate: '1979-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '1979-01-01T08:00:00.000Z',
-			endDate: '1986-01-01T08:00:00.000Z',
-			label: '7YP'
-		},
-		{
-			startDate: '1986-01-01T08:00:00.000Z',
-			endDate: '1992-01-01T08:00:00.000Z',
-			label: '6YP'
-		},
-		{
-			startDate: '1993-01-01T08:00:00.000Z',
-			endDate: '1996-01-01T08:00:00.000Z',
-			label: '3YP'
-		},
-		{
-			startDate: '1996-01-01T08:00:00.000Z',
-			endDate: '2000-01-01T08:00:00.000Z',
-			label: '4YP'
-		},
-		{
-			startDate: '2000-01-01T08:00:00.000Z',
-			endDate: '2001-01-01T08:00:00.000Z',
-			label: '12MP'
-		},
-		{
-			startDate: '2001-01-01T08:00:00.000Z',
-			endDate: '2006-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2006-01-01T08:00:00.000Z',
-			endDate: '2011-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2011-01-01T08:00:00.000Z',
-			endDate: '2016-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2016-01-01T08:00:00.000Z',
-			endDate: '2021-01-01T08:00:00.000Z',
-			label: '5YP'
-		},
-		{
-			startDate: '2021-01-01T08:00:00.000Z',
-			endDate: '2022-01-01T08:00:00.000Z',
-			label: '1YP'
-		},
-		{
-			startDate: '2022-01-01T08:00:00.000Z',
-			endDate: '2031-01-01T08:00:00.000Z',
-			label: '9YP'
+	function zoom(delta: number) {
+		pixelsPerYear = Math.max(10, Math.min(500, pixelsPerYear + delta));
+	}
+
+	function jumpTo(year: number) {
+		const container = document.querySelector('.timeline-scroll');
+		if (container) {
+			container.scrollLeft = (year - firstYear) * pixelsPerYear;
 		}
-	];
+	}
+
+	function getBeYear(gregorianYear: number): number {
+		return gregorianYear - 1844 + 1;
+	}
+
+	$: years = (() => {
+		const result = [];
+		let interval = 10;
+		if (pixelsPerYear < 20) interval = 20;
+		if (pixelsPerYear < 10) interval = 50;
+		if (pixelsPerYear < 5) interval = 100;
+
+		const start = Math.floor(firstYear / interval) * interval;
+		for (let y = start; y <= lastYear; y += interval) {
+			if (y >= firstYear) result.push(y);
+		}
+		return result;
+	})();
 </script>
 
-<!-- @component
-Provides a navigation bar at the bottom of the page with the timeline.
- -->
-<main
-	style="--first-year:{firstYear};
-	--last-year:{lastYear};
-	--first-decade:{decadesArray[0]};
-	--last-decade:{decadesArray[-1]};
-	--number-of-decades:{decadesArray.length};"
->
-	<!-- TODO: These events will of course need to be derived from the headless CMS, and will need to be restructured at that point -->
-	{#each exampleEvents as { startDate, endDate, label }}
-		<Event {startDate} {endDate} {label} />
-	{/each}
-	<nav>
-		<!-- Listing all the decades -->
-		<!-- TODO: When zoomed in to only a couple decades, label all individual years -->
-		{#each decadesArray as year}
-			<time
-				datetime={new Date('1 January ' + year).toISOString()}
-				style="--decade-year:{year};--content:'{year}';"
-			>
-				&nbsp;
-			</time>
-		{/each}
-	</nav>
-</main>
+<div class="navigator">
+	<div class="toolbar">
+		<div class="zoom-controls">
+			<button on:click={() => zoom(-10)}>Zoom Out</button>
+			<span class="zoom-label">{pixelsPerYear} px/yr</span>
+			<button on:click={() => zoom(10)}>Zoom In</button>
+		</div>
+		<div class="jump-controls">
+			<button class="secondary" on:click={() => jumpTo(1844)}>1844</button>
+			<button class="secondary" on:click={() => jumpTo(1921)}>1921</button>
+			<button class="secondary" on:click={() => jumpTo(1963)}>1963</button>
+			<button class="secondary" on:click={() => jumpTo(2021)}>2021</button>
+		</div>
+		{#if selectedEvent}
+			<div class="selection-info">
+				<strong>{selectedEvent.label}</strong>: {new Date(selectedEvent.startDate).getUTCFullYear()} - {new Date(selectedEvent.endDate).getUTCFullYear()}
+				<button class="close-btn" on:click={() => selectedEvent = null}>&times;</button>
+			</div>
+		{/if}
+	</div>
+
+	<div class="timeline-container">
+		<div class="timeline-scroll" style="--total-width: {(lastYear - firstYear + 1) * pixelsPerYear}px">
+			<div class="grid-overlay">
+				{#each years as year}
+					<div class="grid-line" style="left: {(year - firstYear) * pixelsPerYear}px">
+						<span class="year-label">{year} <br/> <small>{getBeYear(year)} BE</small></span>
+					</div>
+				{/each}
+			</div>
+
+			<div class="events-layer">
+				{#each groupedEvents as rows, i}
+					{#if rows.length > 0}
+						<div class="level-group" style="top: {levelGroupOffsets[i]}px">
+							<div class="tier-label">{levelOrder[i].toUpperCase()}S</div>
+							{#each rows as rowEvents, rowIndex}
+								<div class="tier" style="top: {rowIndex * 40}px">
+									{#each rowEvents as event}
+										<Event {event} row={1} startYear={firstYear} {pixelsPerYear} on:select={handleSelect} />
+									{/each}
+								</div>
+							{/each}
+						</div>
+					{/if}
+				{/each}
+			</div>
+		</div>
+	</div>
+
+	{#if selectedEvent}
+		<div class="details-pane">
+			<h3>{selectedEvent.label}</h3>
+			<p class="dates">
+				{new Date(selectedEvent.startDate).toLocaleDateString()} –
+				{new Date(selectedEvent.endDate).toLocaleDateString()}
+			</p>
+			<p class="be-dates">
+				{getBeYear(new Date(selectedEvent.startDate).getUTCFullYear())} BE –
+				{getBeYear(new Date(selectedEvent.endDate).getUTCFullYear())} BE
+			</p>
+			{#if selectedEvent.description}
+				<p class="description">{selectedEvent.description}</p>
+			{/if}
+		</div>
+	{/if}
+</div>
 
 <style>
-	main {
-		--spacing: 2.5em;
-		--inner-height: calc(100vh - var(--spacing) * 2);
-		--inner-width: calc(100vw - var(--spacing) * 2);
-		--number-of-years: calc(var(--last-decade) - var(--first-decade));
-		/* Create one column for each year */
-		--timeline-grid: repeat(
-			var(--number-of-years),
-			calc(var(--inner-width) / var(--number-of-years))
-		);
-		grid-template-columns: var(--timeline-grid);
-		grid-template-rows: auto;
-		row-gap: calc(var(--spacing) / 4);
-		display: grid;
-		align-content: baseline;
-		position: relative;
-		width: 100vw;
-		height: 100vh;
-		background-color: var(--bg);
-		padding: var(--spacing);
-		z-index: 1;
+	.navigator {
+		display: flex;
+		flex-direction: column;
+		height: calc(100vh - 150px);
+		gap: 1rem;
+	}
+
+	.toolbar {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem;
+		background: white;
+		border-radius: 0.5rem;
+		border: 1px solid var(--border);
+	}
+
+	.zoom-controls {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.zoom-label {
+		font-size: 0.875rem;
+		color: var(--text-muted);
+		min-width: 80px;
+		text-align: center;
+	}
+
+	button {
+		padding: 0.4rem 0.8rem;
+		background: var(--primary);
+		color: white;
+		border: none;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+	}
+
+	button:hover {
+		background: var(--primary-light);
+	}
+
+	button.secondary {
+		background: var(--bg-main);
+		color: var(--primary);
+		border: 1px solid var(--primary);
+	}
+
+	button.secondary:hover {
+		background: var(--primary-light);
+		color: white;
+	}
+
+	.jump-controls {
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.selection-info {
+		font-size: 0.875rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.close-btn {
+		background: none;
+		color: var(--text-muted);
+		font-size: 1.2rem;
+		padding: 0;
+	}
+
+	.timeline-container {
+		flex: 1;
 		overflow: hidden;
-	}
-	nav {
-		position: absolute;
-		display: grid;
-		/* TODO: In the future when `subgrid` is supported, this can be refactored to avoid multiple grids */
-		grid-template-columns: var(--timeline-grid);
-		grid-template-rows: 1fr;
-		/* width: calc(100vw - var(--spacing) * 2); */
-		width: 100vw;
-		height: var(--spacing);
-		left: 0;
-		right: 0;
-		bottom: 0;
-		margin: var(--spacing) 0;
-		/* padding: 0 calc(var(--spacing) / 2); */
-	}
-	time {
+		background: white;
+		border-radius: 0.5rem;
+		border: 1px solid var(--border);
 		position: relative;
-		width: max-content;
-		height: 1em;
-		text-align: left;
-		align-self: center;
-		justify-self: center;
-		color: var(--text-light);
-		--year-offset: calc(var(--decade-year) - var(--first-decade) + 1);
-		grid-column-start: var(--year-offset);
-		grid-column-end: calc(var(--year-offset) + 10);
-		grid-row: 1 / 1;
 	}
-	time::before {
-		content: var(--content);
-		--padding: 0.35em;
-		border-radius: calc(var(--padding));
-		display: inline;
-		position: absolute;
-		left: calc(var(--padding) * -1 - 1em);
-		color: var(--text);
-		background-color: var(--accent-bg);
-		padding: calc(var(--padding) * 0.6) var(--padding);
-		box-sizing: unset;
-		z-index: 3;
+
+	.timeline-scroll {
+		height: 100%;
+		overflow-x: auto;
+		overflow-y: auto;
+		width: 100%;
+		position: relative;
 	}
-	time::after {
-		content: '';
+
+	.grid-overlay {
 		position: absolute;
-		/* top: -100vh; */
+		top: 0;
 		left: 0;
-		right: 0;
-		bottom: calc(-1 * var(--spacing) * 1.5);
-		height: 100vh;
+		height: 100%;
+		width: var(--total-width);
+		pointer-events: none;
+	}
+
+	.grid-line {
+		position: absolute;
+		top: 0;
+		bottom: 0;
 		width: 1px;
-		z-index: 1; /* Place it behind other content */
-		border-left: 1px solid var(--accent); /* Thin line */
-		opacity: 0.15;
-		pointer-events: none; /* Allow clicks to go through it */
+		background: var(--border);
+		opacity: 0.8;
+	}
+
+	.year-label {
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--text-muted);
+		white-space: nowrap;
+		background: rgba(255, 255, 255, 0.8);
+		padding: 2px 4px;
+		border-radius: 4px;
+	}
+
+	.events-layer {
+		position: relative;
+		padding-top: 60px;
+		width: var(--total-width);
+		height: 600px;
+	}
+
+	.level-group {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		border-bottom: 1px dashed var(--border);
+	}
+
+	.tier-label {
+		position: sticky;
+		left: 0;
+		font-size: 0.65rem;
+		font-weight: 800;
+		color: var(--text-muted);
+		padding: 2px 8px;
+		background: var(--bg-main);
+		z-index: 30;
+		width: fit-content;
+		border-radius: 0 4px 4px 0;
+	}
+
+	.tier {
+		position: relative;
+		height: 100%;
+	}
+
+	.details-pane {
+		background: white;
+		padding: 1.5rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--border);
+		box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.05);
+	}
+
+	.details-pane h3 {
+		color: var(--primary);
+		margin-bottom: 0.5rem;
+	}
+
+	.dates, .be-dates {
+		font-weight: 600;
+		font-size: 0.9rem;
+		margin: 0;
+	}
+
+	.be-dates {
+		color: var(--secondary);
+		margin-bottom: 1rem;
+	}
+
+	.description {
+		font-size: 1rem;
+		color: var(--text-main);
 	}
 </style>
