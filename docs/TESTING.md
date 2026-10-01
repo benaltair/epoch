@@ -30,7 +30,7 @@ Do not mark the physical-device checklist as passed from emulator results. Recor
 
 - Content: 48 published entries, 9 optional extended stories, 14 citations; schemas and cross-references valid.
 - Svelte/TypeScript: zero errors and zero warnings.
-- Unit suite: 22 passing tests. Includes calendar/viewport invariants, collision grouping, 10,000 point events and 10,000 overlapping periods; all records remain accessible in bounded marks/lanes.
+- Unit suite: 23 passing tests. Includes calendar/viewport invariants, collision grouping, 10,000 point events and 10,000 overlapping periods; all records remain accessible in bounded marks/lanes.
 - Editorial workflow: add draft → publish → correct → reject invalid source reference without replacing the last valid catalogue, passed in an isolated dataset.
 - Production static build, formatting and `wrangler deploy --dry-run`: passed. The dry run uploaded nothing.
 - Cloudflare Workers local runtime: 71 browser checks passed across desktop Chromium/WebKit, iPhone, Pixel/Android and iPad profiles. Four deliberate skips cover the Chromium-CDP-only native pinch check on other projects; the Android CDP pinch test passed.
@@ -47,3 +47,7 @@ Reads under the local Documents checkout intermittently stalled. Validation ran 
 The dependency audit reports three low-severity findings in one transitive `cookie <0.7.0` chain through SvelteKit/adapter-static. The reported automatic “fix” would downgrade to obsolete incompatible packages. This deployment serves static assets and has no server-side cookie processing; the dependency should still be revisited with a compatible upstream release. No forced downgrade was applied.
 
 Physical-device tests remain unperformed. No claim is made about physical touch ergonomics, assistive-technology certification, battery use or sustained frame rate on actual phones.
+
+## Ubuntu CI verification
+
+The initial implementation passed all 85 applicable browser checks in GitHub Actions, including Firefox, against the local Cloudflare runtime: [successful run](https://github.com/benaltair/epoch/actions/runs/36896803124). Five intentional skips are the Chromium-CDP-only pinch test on other projects. This closes the local Firefox coverage gap; physical-device testing remains separate. The final interval-boundary regression and this report update are rechecked on the PR head.

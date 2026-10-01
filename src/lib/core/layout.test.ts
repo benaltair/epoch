@@ -17,7 +17,7 @@ it('finds continuing periods and events inside arbitrary windows', () => {
 		entries
 			.filter((e) => {
 				const [s, t] = extent(e);
-				return s <= b && t >= a;
+				return s < b && t > a;
 			})
 			.map((e) => e.id)
 			.sort()
@@ -79,4 +79,13 @@ it('keeps 10,000 overlapping long periods in bounded lanes without discarding re
 	expect(tracks[0].lanes).toBeLessThanOrEqual(9);
 	expect(tracks[0].marks.length).toBeLessThan(20);
 	expect(tracks[0].marks.reduce((sum, m) => sum + m.entries.length, 0)).toBe(10000);
+});
+
+it('does not include a day-precision event in the immediately neighbouring days', () => {
+	const event = byId.get('declaration-bab')!,
+		index = new TimelineIndex([event]),
+		day = extent(event)[0];
+	expect(index.query(day, day + 1)).toEqual([event]);
+	expect(index.query(day + 1, day + 2)).toEqual([]);
+	expect(index.query(day - 1, day)).toEqual([]);
 });

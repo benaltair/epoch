@@ -46,10 +46,10 @@ export class TimelineIndex {
 	query(start: number, end: number): Entry[] {
 		const found: Entry[] = [];
 		const visit = (node?: Indexed) => {
-			if (!node || node.maxEnd < start) return;
+			if (!node || node.maxEnd <= start) return;
 			visit(node.left);
-			if (node.start <= end && node.end >= start) found.push(node.entry);
-			if (node.start <= end) visit(node.right);
+			if (node.start < end && node.end > start) found.push(node.entry);
+			if (node.start < end) visit(node.right);
 		};
 		visit(this.root);
 		return found;
