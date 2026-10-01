@@ -1,0 +1,23 @@
+{
+	"id": "five-year-plan-2011",
+	"title": "Five Year Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-2",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 2011,
+			"precision": "year"
+		},
+		"end": {
+			"year": 2016,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["fifth"],
+	"summary": "A worldwide plan of community development.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published"
+}

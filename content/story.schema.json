@@ -1,0 +1,58 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"type": "object",
+	"properties": {
+		"paragraphs": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"minLength": 1,
+				"maxLength": 10000
+			}
+		},
+		"quote": {
+			"type": "object",
+			"properties": {
+				"text": {
+					"type": "string",
+					"minLength": 1
+				},
+				"sourceId": {
+					"type": "string",
+					"pattern": "^[a-z0-9-]+$"
+				}
+			},
+			"required": ["text", "sourceId"],
+			"additionalProperties": false
+		},
+		"image": {
+			"type": "object",
+			"properties": {
+				"src": {
+					"type": "string",
+					"format": "uri"
+				},
+				"alt": {
+					"type": "string",
+					"minLength": 1
+				},
+				"caption": {
+					"type": "string",
+					"minLength": 1
+				},
+				"credit": {
+					"type": "string",
+					"minLength": 1
+				},
+				"sourceUrl": {
+					"type": "string",
+					"format": "uri"
+				}
+			},
+			"required": ["src", "alt", "caption", "credit", "sourceUrl"],
+			"additionalProperties": false
+		}
+	},
+	"required": ["paragraphs"],
+	"additionalProperties": false
+}

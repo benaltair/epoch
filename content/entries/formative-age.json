@@ -1,0 +1,23 @@
+{
+	"id": "formative-age",
+	"title": "The Formative Age",
+	"kind": "age",
+	"scheme": "ages",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1921,
+			"month": 11,
+			"day": 28,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "The development of the institutions and community life of the Faith.",
+	"importance": 5,
+	"shortTitle": "Formative Age",
+	"relatedIds": ["bahai-dispensation"],
+	"laneId": "age",
+	"status": "published"
+}

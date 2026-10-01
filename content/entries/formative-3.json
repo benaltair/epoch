@@ -1,0 +1,24 @@
+{
+	"id": "formative-3",
+	"title": "Third epoch · Formative Age",
+	"kind": "epoch",
+	"scheme": "formative",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1963,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1986,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "Worldwide plans directed by the Universal House of Justice.",
+	"importance": 2,
+	"shortTitle": "3rd epoch",
+	"laneId": "formative",
+	"status": "published"
+}

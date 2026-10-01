@@ -1,0 +1,22 @@
+{
+	"id": "divine-plan",
+	"title": "The unfolding of the Divine Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1937,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages", "divine"],
+	"summary": "A distinct framework for successive teaching plans.",
+	"importance": 4,
+	"shortTitle": "Divine Plan",
+	"relatedIds": ["tablets-divine-plan"],
+	"laneId": "plan",
+	"status": "published",
+	"display": "navigation"
+}

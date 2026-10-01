@@ -1,0 +1,25 @@
+{
+	"id": "bahai-dispensation",
+	"title": "The Dispensation of Bahá’u’lláh",
+	"kind": "dispensation",
+	"scheme": "context",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1852,
+			"month": 10,
+			"precision": "month"
+		},
+		"minimumYears": 1000,
+		"endNote": "Note 62 of the Kitáb-i-Aqdas dates the beginning of the thousand-year minimum to October 1852. The minimum is not a forecast of an endpoint."
+	},
+	"sourceIds": ["aqdas-note-62"],
+	"summary": "A continuing dispensation with a stated minimum duration, not a predicted end.",
+	"importance": 4,
+	"shortTitle": "Dispensation of Bahá’u’lláh",
+	"laneId": "dispensation",
+	"status": "published",
+	"relatedIds": ["heroic-age", "formative-age", "golden-age", "siyah-chal"],
+	"editorialNote": "The 1853 boundary in God Passes By is a historical chapter period, not the boundary used here for the dispensation."
+}

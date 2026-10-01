@@ -1,0 +1,29 @@
+{
+	"id": "formative-1",
+	"title": "First epoch · Formative Age",
+	"kind": "epoch",
+	"scheme": "formative",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1921,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1944,
+			"precision": "year"
+		},
+		"endLatest": {
+			"year": 1946,
+			"precision": "year"
+		},
+		"endNote": "The source places the transition between 1944 and 1946."
+	},
+	"sourceIds": ["ages"],
+	"summary": "The early establishment of the Administrative Order.",
+	"importance": 2,
+	"shortTitle": "1st epoch",
+	"laneId": "formative",
+	"status": "published"
+}

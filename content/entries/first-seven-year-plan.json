@@ -1,0 +1,23 @@
+{
+	"id": "first-seven-year-plan",
+	"title": "First Seven Year Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-1",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1937,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1944,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "The first systematic teaching campaign of the North American community.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published"
+}

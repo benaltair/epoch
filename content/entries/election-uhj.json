@@ -1,0 +1,20 @@
+{
+	"id": "election-uhj",
+	"title": "First election of the Universal House of Justice",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1963,
+			"month": 4,
+			"precision": "month"
+		}
+	},
+	"sourceIds": ["community"],
+	"summary": "The international governing institution of the Bahá’í Faith was first elected in Haifa.",
+	"importance": 5,
+	"laneId": "event",
+	"status": "published"
+}

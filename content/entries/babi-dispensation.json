@@ -1,0 +1,27 @@
+{
+	"id": "babi-dispensation",
+	"title": "The Bábí Dispensation",
+	"kind": "dispensation",
+	"scheme": "context",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1844,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1852,
+			"month": 10,
+			"precision": "month"
+		},
+		"endNote": "The Bábí Dispensation ends with the intimation of Bahá’u’lláh’s mission in 1852; this differs from the Báb’s earthly ministry, which ended in 1850."
+	},
+	"sourceIds": ["dispensation-glossary", "aqdas-note-62"],
+	"summary": "The opening dispensation, associated with the Báb.",
+	"importance": 4,
+	"shortTitle": "Bábí Dispensation",
+	"laneId": "dispensation",
+	"status": "published",
+	"relatedIds": ["ministry-bab", "bahai-dispensation"]
+}

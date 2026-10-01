@@ -1,0 +1,23 @@
+{
+	"id": "six-year-plan",
+	"title": "Six Year Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-2",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1986,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1992,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["community"],
+	"summary": "A period of expansion and growing engagement with society.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published"
+}

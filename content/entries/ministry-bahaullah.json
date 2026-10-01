@@ -1,0 +1,29 @@
+{
+	"id": "ministry-bahaullah",
+	"title": "The Ministry of Bahá’u’lláh",
+	"kind": "ministry",
+	"scheme": "ministries",
+	"parentId": "heroic-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1852,
+			"month": 10,
+			"precision": "month"
+		},
+		"end": {
+			"year": 1892,
+			"month": 5,
+			"day": 29,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["aqdas-note-62", "bahaullah"],
+	"summary": "The second historical period in God Passes By.",
+	"importance": 2,
+	"shortTitle": "Bahá’u’lláh",
+	"relatedIds": ["declaration-bahaullah", "ascension-bahaullah"],
+	"laneId": "ministry",
+	"status": "published",
+	"editorialNote": "Starts with the birth of the Prophetic Mission identified in Aqdas note 62. God Passes By labels its second historical period 1853–1892."
+}

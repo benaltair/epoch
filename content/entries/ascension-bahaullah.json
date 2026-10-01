@@ -1,0 +1,21 @@
+{
+	"id": "ascension-bahaullah",
+	"title": "The Ascension of Bahá’u’lláh",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-bahaullah",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1892,
+			"month": 5,
+			"day": 29,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["bahaullah"],
+	"summary": "Bahá’u’lláh passed away at Bahjí, near ‘Akká.",
+	"importance": 5,
+	"laneId": "event",
+	"status": "published"
+}

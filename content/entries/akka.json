@@ -1,0 +1,19 @@
+{
+	"id": "akka",
+	"title": "Arrival in ‘Akká",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-bahaullah",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1868,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["bahaullah"],
+	"summary": "A further exile brought Bahá’u’lláh and His companions to the prison city.",
+	"importance": 3,
+	"laneId": "event",
+	"status": "published"
+}

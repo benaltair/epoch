@@ -1,0 +1,24 @@
+{
+	"id": "formative-4",
+	"title": "Fourth epoch · Formative Age",
+	"kind": "epoch",
+	"scheme": "formative",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1986,
+			"precision": "year"
+		},
+		"end": {
+			"year": 2001,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages", "fifth"],
+	"summary": "An evolving pattern of consultation and planning.",
+	"importance": 2,
+	"shortTitle": "4th epoch",
+	"laneId": "formative",
+	"status": "published"
+}

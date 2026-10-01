@@ -1,0 +1,27 @@
+{
+	"id": "heroic-age",
+	"title": "The Heroic Age",
+	"kind": "age",
+	"scheme": "ages",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1844,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1921,
+			"month": 11,
+			"day": 28,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "The age associated with the Central Figures of the Faith.",
+	"importance": 5,
+	"shortTitle": "Heroic Age",
+	"relatedIds": ["babi-dispensation", "bahai-dispensation"],
+	"laneId": "age",
+	"status": "published"
+}

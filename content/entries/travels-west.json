@@ -1,0 +1,23 @@
+{
+	"id": "travels-west",
+	"title": "‘Abdu’l-Bahá’s journeys to the West",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-abdulbaha",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1911,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1913,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["abdulbaha"],
+	"summary": "Journeys during 1911–1913 brought the teachings to audiences in Europe and North America.",
+	"importance": 3,
+	"laneId": "event",
+	"status": "published"
+}

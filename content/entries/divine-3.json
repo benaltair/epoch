@@ -1,0 +1,20 @@
+{
+	"id": "divine-3",
+	"title": "Third epoch · Divine Plan",
+	"kind": "epoch",
+	"scheme": "divine-plan",
+	"parentId": "divine-plan",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 2021,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["divine"],
+	"summary": "Announced at Riḍván 2021.",
+	"importance": 2,
+	"shortTitle": "3rd epoch",
+	"laneId": "divine",
+	"status": "published"
+}

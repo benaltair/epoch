@@ -1,0 +1,20 @@
+{
+	"id": "siyah-chal",
+	"title": "Revelation in the Síyáh-Chál",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "heroic-age",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1852,
+			"month": 10,
+			"precision": "month"
+		}
+	},
+	"sourceIds": ["aqdas-note-62", "bahaullah"],
+	"summary": "During imprisonment in Ṭihrán, Bahá’u’lláh received the first intimations of His mission.",
+	"importance": 4,
+	"laneId": "event",
+	"status": "published"
+}

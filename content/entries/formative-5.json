@@ -1,0 +1,24 @@
+{
+	"id": "formative-5",
+	"title": "Fifth epoch · Formative Age",
+	"kind": "epoch",
+	"scheme": "formative",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 2001,
+			"precision": "year"
+		},
+		"end": {
+			"year": 2022,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["fifth"],
+	"summary": "Growth in the capacity of communities around the world.",
+	"importance": 2,
+	"shortTitle": "5th epoch",
+	"laneId": "formative",
+	"status": "published"
+}

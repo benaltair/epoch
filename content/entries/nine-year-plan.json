@@ -1,0 +1,23 @@
+{
+	"id": "nine-year-plan",
+	"title": "Nine Year Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-3",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 2022,
+			"precision": "year"
+		},
+		"end": {
+			"year": 2031,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["nine"],
+	"summary": "A continuing plan centred on the society-building power of the Faith.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published"
+}

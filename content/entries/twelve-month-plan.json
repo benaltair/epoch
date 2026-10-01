@@ -1,0 +1,23 @@
+{
+	"id": "twelve-month-plan",
+	"title": "Twelve Month Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-2",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 2000,
+			"precision": "year"
+		},
+		"end": {
+			"year": 2001,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["fifth"],
+	"summary": "A short plan connecting successive stages of development.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published"
+}

@@ -1,0 +1,30 @@
+{
+	"id": "ministry-bab",
+	"title": "The Ministry of the Báb",
+	"kind": "ministry",
+	"scheme": "ministries",
+	"parentId": "heroic-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1844,
+			"month": 5,
+			"day": 23,
+			"precision": "day"
+		},
+		"end": {
+			"year": 1850,
+			"month": 7,
+			"day": 9,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["bab"],
+	"summary": "From the Declaration of the Báb to His martyrdom in Tabríz.",
+	"importance": 2,
+	"shortTitle": "The Báb",
+	"relatedIds": ["declaration-bab", "martyrdom-bab"],
+	"laneId": "ministry",
+	"status": "published",
+	"editorialNote": "This record describes the earthly ministry. God Passes By groups the broader historical first period as 1844–1853."
+}
