@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head
-	><title>Epoch · A Bahá’í chronology</title><meta
+	><title>Bahá’í Timeline</title><meta
 		name="description"
 		content="Explore the relationships between cycles, dispensations, ages, epochs, and events in Bahá’í history. An interactive, sourced chronology."
 	/></svelte:head

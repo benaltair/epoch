@@ -9,7 +9,8 @@
 		"start": {
 			"year": 2022,
 			"precision": "year"
-		}
+		},
+		"endNote": "No end date has been specified."
 	},
 	"sourceIds": ["fifth"],
 	"summary": "A continuing epoch; no end date is assigned.",

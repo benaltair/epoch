@@ -36,13 +36,13 @@
 	},
 	{
 		"id": "ministry",
-		"label": "MINISTRIES",
+		"label": "MINISTRIES & LEADERSHIP",
 		"tone": "ministry",
 		"maxSpanYears": 5000,
 		"sequential": true,
-		"row": 4.8,
+		"row": 4.65,
 		"shape": "column",
-		"spanRows": 3.7
+		"spanRows": 4.15
 	},
 	{
 		"id": "formative",

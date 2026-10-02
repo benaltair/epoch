@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { dateLabel, type Entry, type Story } from '$lib/core/model';
+	import { dateLabel, kindLabel, type Entry, type Story } from '$lib/core/model';
 	import { sources, byId, schemeLabels } from '$lib/data/catalog';
 	let {
 		entry,
@@ -18,7 +18,10 @@
 </script>
 
 <div class="entry-content">
-	<p class="eyebrow">{entry.kind} <span aria-hidden="true">/</span> {schemeLabels[entry.scheme]}</p>
+	<p class="eyebrow">
+		{kindLabel(entry.kind)} <span aria-hidden="true">/</span>
+		{schemeLabels[entry.scheme]}
+	</p>
 	<svelte:element this={headingLevel === 1 ? 'h1' : 'h2'}>{entry.title}</svelte:element>
 	<p class="entry-date">{dateLabel(entry)}</p>
 	<p class="entry-summary">{entry.summary}</p>

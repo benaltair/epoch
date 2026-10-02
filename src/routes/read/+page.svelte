@@ -4,13 +4,13 @@
 </script>
 
 <svelte:head
-	><title>Reading index · Epoch</title><meta
+	><title>Reading index · Bahá’í Timeline</title><meta
 		name="description"
 		content="Browse the sourced periods and events of the Bahá’í chronology."
 	/></svelte:head
 >
 <header class="reading-header">
-	<a class="brand" href="/">epoch</a><a href="/">Timeline ↗</a>
+	<a class="brand" href="/">Bahá’í Timeline</a><a href="/">Timeline ↗</a>
 </header>
 <main class="reading-page">
 	<h1>Reading index</h1>

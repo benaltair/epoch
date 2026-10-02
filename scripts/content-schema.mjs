@@ -25,7 +25,17 @@ export const entrySchema = z.strictObject({
 	title: z.string().min(1).max(300),
 	shortTitle: z.string().min(1).max(100).optional(),
 	abbreviation: z.string().min(1).max(24).optional(),
-	kind: z.enum(['cycle', 'era', 'dispensation', 'age', 'ministry', 'epoch', 'plan', 'event']),
+	kind: z.enum([
+		'cycle',
+		'era',
+		'dispensation',
+		'age',
+		'ministry',
+		'institution',
+		'epoch',
+		'plan',
+		'event'
+	]),
 	scheme: id,
 	laneId: id,
 	parentId: id.optional(),
@@ -36,6 +46,7 @@ export const entrySchema = z.strictObject({
 	importance: z.number().int().min(0).max(5),
 	focusRange: z.strictObject({ start: z.number(), end: z.number() }).optional(),
 	display: z.enum(['timeline', 'navigation']).optional(),
+	displayHorizon: z.strictObject({ minimumOf: id }).optional(),
 	status: z.enum(['draft', 'published']),
 	editorialNote: z.string().optional()
 });
@@ -75,7 +86,9 @@ export const siteSchema = z.strictObject({
 	featuredEntryIds: z.array(id),
 	cycleEntryId: id,
 	historyStartYear: z.number().int(),
-	historyEndYear: z.number().int()
+	historyEndYear: z.number().int(),
+	historyLimitYear: z.number().int(),
+	reviewedThrough: dateSchema
 });
 export function checkDate(d, label, errors) {
 	const leap = d.year % 4 === 0 && (d.year % 100 !== 0 || d.year % 400 === 0);
@@ -96,7 +109,18 @@ export function validateContent({ entries, sources, stories, lanes, schemes, sit
 		byId = new Map(entries.map((e) => [e.id, e]));
 	if (ids.size !== entries.length) errors.push('Duplicate entry IDs');
 	if (new Set(lanes.map((l) => l.id)).size !== lanes.length) errors.push('Duplicate lane IDs');
+	checkDate(site.reviewedThrough, 'reviewedThrough', errors);
+	if (
+		site.historyLimitYear <= site.historyEndYear ||
+		site.reviewedThrough.year >= site.historyLimitYear
+	)
+		errors.push('History limit must follow the initial view and reviewed-through date');
 	for (const e of entries) {
+		if (e.displayHorizon) {
+			const ref = byId.get(e.displayHorizon.minimumOf);
+			if (ref?.temporal.type !== 'period' || !ref.temporal.minimumYears || ref.status === 'draft')
+				errors.push(`${e.id}: display horizon requires a published minimum-duration period`);
+		}
 		if (!lanes.some((l) => l.id === e.laneId)) errors.push(`${e.id}: missing lane ${e.laneId}`);
 		if (!schemes[e.scheme]) errors.push(`${e.id}: missing scheme ${e.scheme}`);
 		if (e.sourceIds.some((id) => !sources[id])) errors.push(`${e.id}: missing source`);

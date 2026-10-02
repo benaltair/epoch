@@ -92,3 +92,13 @@ A year- or month-precision boundary is rendered as a possible interval, with a p
 `content/lanes.json` defines stable diagram coordinates: `row`, `spanRows`, and `shape` (`band` or `column`). Ministries use columns; the Divine Plan, its epochs and teaching plans occupy separate bands beside them. `guides` adds date leaders to a band. Positions do not reflow when another period leaves the viewport. Arrange new lanes by editing this data, not the component.
 
 Colours use `--color-<tone>` CSS variables. The original dates stay linear; a minimum duration or undated future age never gets an invented endpoint to match an illustration. The Golden Age remains outside the dated diagram. On narrow screens, pinching reveals short plan labels that cannot fit at the overview scale. Browse and the reading list provide all entries at any scale.
+
+## Open periods and display horizons
+
+`temporal.end` is supplied only for a sourced historical or planned boundary. It stays absent for open ages, epochs, eras and dispensations. `site.reviewedThrough` records the editorial review date: an undated continuing period is drawn through that date with a short arrow, rather than projected indefinitely. Update it when reviewing the chronology; it does not set an end date.
+
+Periods with `minimumYears` use the sourced minimum as a display horizon, retaining an arrow and the original open temporal extent. The era’s `displayHorizon.minimumOf` refers to the dispensation’s minimum for composition only. It makes no separate historical claim about an era end. The cycle remains open across the full view. Ordinary history navigation is capped before `historyLimitYear` (2101, so through 2100); explicit cycle/dispensation views retain the wider scale, recorded in shareable URLs.
+
+Precision and the 1944–1946 transition remain in the data and reading details, without hatch patterns. Shoghi Effendi belongs to the same ministry lane as the other ministries, rendered as a vertical column; the ministry outlines sit above the Divine Plan bands, with top-left labels and faint date guides descending behind the bands. Their overlap expresses simultaneous activity without reserving an extra row.
+
+The same background lane contains institutional leadership records (`kind: institution`) for the Hands’ custodianship and Universal House of Justice, alongside the personal ministries. `--ministry-fill` and `--ministry-border` control its unfilled neutral outlines independently of the coloured chronology bands.

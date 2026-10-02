@@ -11,9 +11,10 @@
 			"month": 11,
 			"day": 28,
 			"precision": "day"
-		}
+		},
+		"endNote": "No end date has been specified. The Formative Age comprises successive epochs and precedes the Golden Age."
 	},
-	"sourceIds": ["ages"],
+	"sourceIds": ["ages", "formative-guidance"],
 	"summary": "The development of the institutions and community life of the Faith.",
 	"importance": 5,
 	"shortTitle": "Formative Age",

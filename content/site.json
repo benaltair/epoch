@@ -2,5 +2,12 @@
 	"featuredEntryIds": ["declaration-bab", "ascension-abdulbaha", "election-uhj"],
 	"cycleEntryId": "bahai-cycle",
 	"historyStartYear": 1840,
-	"historyEndYear": 2046
+	"historyEndYear": 2046,
+	"historyLimitYear": 2101,
+	"reviewedThrough": {
+		"year": 2026,
+		"month": 10,
+		"day": 2,
+		"precision": "day"
+	}
 }

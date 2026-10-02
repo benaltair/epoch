@@ -9,12 +9,14 @@
 		"date": {
 			"year": 1963,
 			"month": 4,
-			"precision": "month"
+			"day": 21,
+			"precision": "day"
 		}
 	},
-	"sourceIds": ["community"],
+	"sourceIds": ["community", "uhj-constitution"],
 	"summary": "The international governing institution of the Bahá’í Faith was first elected in Haifa.",
 	"importance": 5,
 	"laneId": "event",
-	"status": "published"
+	"status": "published",
+	"relatedIds": ["universal-house-of-justice", "custodianship-hands"]
 }

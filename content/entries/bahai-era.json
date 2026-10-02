@@ -15,5 +15,9 @@
 	"summary": "The Bahá’í Era began in 1844.",
 	"sourceIds": ["era"],
 	"importance": 5,
-	"status": "published"
+	"status": "published",
+	"displayHorizon": {
+		"minimumOf": "bahai-dispensation"
+	},
+	"editorialNote": "The displayed continuation uses the minimum horizon of the Dispensation of Bahá’u’lláh. It is not an independently dated endpoint for the Era."
 }

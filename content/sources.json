@@ -63,5 +63,25 @@
 	"era": {
 		"title": "The Dispensation of Bahá’u’lláh · Shoghi Effendi",
 		"url": "https://reference.bahai.org/en/t/se/WOB/wob-37.html"
+	},
+	"shoghi-effendi": {
+		"title": "The Life and Work of Shoghi Effendi · Bahai.org",
+		"url": "https://www.bahai.org/shoghi-effendi/life-work-shoghi-effendi"
+	},
+	"shoghi-passing": {
+		"title": "Shoghi Effendi’s Passing · Bahai.org",
+		"url": "https://www.bahai.org/shoghi-effendi/shoghi-effendis-passing"
+	},
+	"formative-guidance": {
+		"title": "The Significance of the Formative Age · Writings of Shoghi Effendi",
+		"url": "https://www.bahai.org/library/authoritative-texts/compilations/significance-formative-age-our-faith/2"
+	},
+	"uhj": {
+		"title": "The Universal House of Justice · Bahai.org",
+		"url": "https://www.bahai.org/the-universal-house-of-justice"
+	},
+	"uhj-constitution": {
+		"title": "The Constitution of the Universal House of Justice",
+		"url": "https://www.bahai.org/documents/the-universal-house-of-justice/constitution-universal-house-justice"
 	}
 }

@@ -15,13 +15,13 @@
 </script>
 
 <svelte:head
-	><title>{data.entry.title} · Epoch</title><meta
+	><title>{data.entry.title} · Bahá’í Timeline</title><meta
 		name="description"
 		content={data.entry.summary}
 	/></svelte:head
 >
 <header class="reading-header">
-	<a class="brand" href="/">epoch</a><a class="button" href={link}>Show in timeline ↗</a>
+	<a class="brand" href="/">Bahá’í Timeline</a><a class="button" href={link}>Show in timeline ↗</a>
 </header>
 <main class="reading-page">
 	<nav aria-label="Period ancestry">

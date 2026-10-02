@@ -20,7 +20,7 @@ test.afterEach(async ({ page }) => {
 test.beforeEach(async ({ page }) => {
 	await page.goto('/');
 	await expect(page.locator('.app')).toHaveAttribute('data-ready', 'true');
-	await expect(page.getByRole('heading', { name: 'Bahá’í timeline' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Bahá’í Timeline' })).toBeVisible();
 });
 test('full cycle → history → age → event → sourced card → back', async ({ page }) => {
 	await page.getByRole('button', { name: 'Whole cycle', exact: true }).click();
@@ -64,7 +64,7 @@ test('zoom controls, keyboard and URL restoration preserve dates', async ({ page
 	await page.keyboard.press('ArrowRight');
 	expect((await state(page)).start).toBeGreaterThan(zoomed.start);
 	await page.keyboard.press('Home');
-	await expect(page.getByRole('heading', { name: 'Bahá’í timeline' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Bahá’í Timeline' })).toBeVisible();
 });
 test('cards link to prerendered pages that work without JavaScript', async ({ page, browser }) => {
 	await openEntry(page, 'The Ascension of ‘Abdu’l-Bahá');
@@ -221,4 +221,65 @@ test('canvas bands stay fixed while plan labels expand with zoom', async ({ page
 	expect((await page.locator('[data-track="ministry"]').boundingBox())!.height).toBeGreaterThan(
 		100
 	);
+});
+
+test('floating details leave the canvas usable and dismiss outside or with Escape', async ({
+	page
+}) => {
+	await openEntry(page, 'The Declaration of the Báb');
+	const pane = page.locator('.detail-dialog');
+	await expect(pane).toHaveAttribute('aria-modal', 'false');
+	const box = (await pane.boundingBox())!;
+	const plot = (await page.getByTestId('timeline-plot').boundingBox())!;
+	if (page.viewportSize()!.width > 760) expect(plot.x + plot.width).toBeLessThanOrEqual(box.x);
+	else expect(plot.y + plot.height).toBeLessThanOrEqual(box.y);
+	await page.getByRole('button', { name: 'Zoom in', exact: true }).click();
+	await expect(pane).not.toBeVisible();
+	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
+	await openEntry(page, 'The Declaration of the Báb');
+	await page.keyboard.press('Escape');
+	await expect(pane).not.toBeVisible();
+	await expect(page.getByRole('button', { name: 'Browse periods', exact: true })).toBeFocused();
+});
+
+test('history cannot drift past 2100, while the full cycle remains available', async ({ page }) => {
+	await page.goto('/?from=45000&to=419868&focus=formative-age');
+	await expect(page.locator('.app')).toHaveAttribute('data-ready', 'true');
+	expect((await state(page)).end).toBeLessThanOrEqual(47847); // 1 January 2101, exclusive
+	await expect(page.locator('.uncertainty')).toHaveCount(0);
+	await page.getByRole('button', { name: 'Whole cycle', exact: true }).click();
+	expect((await state(page)).end - (await state(page)).start).toBeGreaterThan(180_000_000);
+	await page.reload();
+	await expect(page.locator('.app')).toHaveAttribute('data-scale', 'wide');
+	await page.getByRole('button', { name: 'Recorded history', exact: true }).click();
+	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
+	await expect(
+		page.locator('[data-track="ministry"].column [data-entry="ministry-shoghi-effendi"]')
+	).toBeVisible();
+});
+
+test('leadership continues behind clickable plan bands with visible upper labels', async ({
+	page
+}) => {
+	const ministry = page.locator('[data-track="ministry"]');
+	await expect(ministry).toHaveClass(/column/);
+	await page.getByRole('button', { name: 'Browse periods', exact: true }).click();
+	await page.getByRole('searchbox').fill('Universal House of Justice');
+	await page
+		.locator('.search-results')
+		.getByRole('button', { name: /^The Universal House of Justice 21 April 1963/ })
+		.click();
+	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
+	const institution = page.locator('[data-entry="universal-house-of-justice"]');
+	await expect(institution).toBeVisible();
+	const label = institution.locator('.bar-label');
+	const box = (await institution.boundingBox())!,
+		text = (await label.boundingBox())!;
+	expect(text.y - box.y).toBeLessThan(15);
+	expect(text.x - box.x).toBeLessThan(15);
+	const plan = page.locator('[data-entry="nine-year-plan"] button');
+	await plan.scrollIntoViewIfNeeded();
+	await plan.click();
+	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
+	await expect(page.getByRole('heading', { name: 'Nine Year Plan', exact: true })).toBeVisible();
 });

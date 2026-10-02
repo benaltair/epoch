@@ -23,7 +23,17 @@
 		},
 		"kind": {
 			"type": "string",
-			"enum": ["cycle", "era", "dispensation", "age", "ministry", "epoch", "plan", "event"]
+			"enum": [
+				"cycle",
+				"era",
+				"dispensation",
+				"age",
+				"ministry",
+				"institution",
+				"epoch",
+				"plan",
+				"event"
+			]
 		},
 		"scheme": {
 			"type": "string",
@@ -243,6 +253,17 @@
 		"display": {
 			"type": "string",
 			"enum": ["timeline", "navigation"]
+		},
+		"displayHorizon": {
+			"type": "object",
+			"properties": {
+				"minimumOf": {
+					"type": "string",
+					"pattern": "^[a-z0-9-]+$"
+				}
+			},
+			"required": ["minimumOf"],
+			"additionalProperties": false
 		},
 		"status": {
 			"type": "string",

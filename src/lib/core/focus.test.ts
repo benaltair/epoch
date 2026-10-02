@@ -34,3 +34,12 @@ it('interpolates enormous zoom changes with finite monotonic scale and exact end
 		previous = span(v);
 	}
 });
+
+it('ramps logarithmic zoom speed up and down symmetrically', () => {
+	const logSize = (p: number) => Math.log(span(interpolateView(CYCLE, HISTORY, p)));
+	const first = logSize(0) - logSize(0.1);
+	const middle = logSize(0.4) - logSize(0.5);
+	const last = logSize(0.9) - logSize(1);
+	expect(first).toBeLessThan(middle);
+	expect(last).toBeCloseTo(first, 8);
+});

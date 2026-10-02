@@ -67,3 +67,10 @@ The initial implementation passed all 85 applicable browser checks in GitHub Act
 - Unit tests: 31 passed. Content workflow, static production build and Svelte/TypeScript checks passed with no errors or warnings.
 - All 86 applicable local browser checks passed across desktop Chromium/WebKit, iPhone, Android and iPad profiles; four intentional native-CDP skips. Includes fixed vertical band positions across zoom, abbreviation expansion, reduced motion, gestures, accessibility and content-failure recovery.
 - Desktop, mobile and tablet screenshots reviewed. Axis labels are constrained within the viewport and columns hide text when too narrow to render it legibly. Physical-device testing remains unperformed.
+
+## Reading pane and chronology refinement — 2 October 2026
+
+- Added a nonmodal floating reading sidebar with outside-click/Escape dismissal, keyboard focus restoration and reserved canvas space. Narrow screens use a compact bottom pane and scroll the chosen item into the remaining canvas.
+- Renamed the public interface Bahá’í Timeline; added Shoghi Effendi’s ministry, the Hands’ custodianship and the Universal House of Justice to a compact leadership row with rounded unfilled outlines, top-left labels and fine guides behind the Divine Plan bands. Removed hatching while retaining source precision and transition notes. Click zoom now uses 460 ms with symmetric easing; reduced motion and direct gestures are preserved.
+- Kept source endpoints independent of visual horizons. Unknown ends no longer fill distant-future views; the minimum dispensation horizon is October 2852 with an arrow. Ordinary history navigation stops at 2100 and wide-scale URLs remain reloadable.
+- Content: 55 entries, 11 stories, 20 sources. Unit suite: 36 passed. Content workflow, Svelte/type checks and static production build passed. The full local browser suite passed 101 applicable checks across five desktop/mobile/tablet profiles, with four intentional native-CDP skips; affected checks were repeated after the final ministry styling adjustment. Physical-device tests remain separate.

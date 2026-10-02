@@ -8,7 +8,16 @@ import {
 } from './date';
 import { CYCLE, HISTORY, type Viewport } from './viewport';
 export type Kind =
-	'cycle' | 'era' | 'dispensation' | 'age' | 'ministry' | 'epoch' | 'plan' | 'event';
+	| 'cycle'
+	| 'era'
+	| 'dispensation'
+	| 'age'
+	| 'ministry'
+	| 'institution'
+	| 'epoch'
+	| 'plan'
+	| 'event';
+export const kindLabel = (kind: Kind) => kind[0].toUpperCase() + kind.slice(1);
 export type Scheme = string;
 export interface Source {
 	title: string;
@@ -31,6 +40,7 @@ export interface Entry {
 	laneId: string;
 	status?: 'draft' | 'published';
 	display?: 'timeline' | 'navigation';
+	displayHorizon?: { minimumOf: string };
 	editorialNote?: string;
 	title: string;
 	shortTitle?: string;

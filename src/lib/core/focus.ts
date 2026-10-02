@@ -1,9 +1,11 @@
 import { entryRange, type Entry } from './model';
+import { displayEnd } from './horizon';
 import type { TimelineIndex } from './layout';
 import { constrain, fit, span, type Viewport } from './viewport';
 /** Keep smaller periods in context, giving dense neighbourhoods a little more room. */
 export function focusView(entry: Entry, index: TimelineIndex, width: number): Viewport {
 	const range = entryRange(entry);
+	if (entry.kind === 'era') range.end = displayEnd(entry, index.byId);
 	if (
 		entry.kind === 'cycle' ||
 		entry.kind === 'era' ||
@@ -26,7 +28,7 @@ export function focusView(entry: Entry, index: TimelineIndex, width: number): Vi
 export function interpolateView(from: Viewport, to: Viewport, progress: number): Viewport {
 	if (progress <= 0) return from;
 	if (progress >= 1) return to;
-	const t = 1 - (1 - progress) ** 3;
+	const t = progress * progress * (3 - 2 * progress);
 	const size = Math.exp(Math.log(span(from)) * (1 - t) + Math.log(span(to)) * t);
 	// Follow the date whose screen position is invariant under this zoom, where possible.
 	const delta = span(from) - span(to);

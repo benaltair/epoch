@@ -9,7 +9,8 @@
 		"start": {
 			"year": 2021,
 			"precision": "year"
-		}
+		},
+		"endNote": "No end date has been specified."
 	},
 	"sourceIds": ["divine"],
 	"summary": "Announced at Riḍván 2021.",

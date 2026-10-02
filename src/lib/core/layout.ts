@@ -1,4 +1,5 @@
 import { extent, type Entry } from './model';
+import { displayEnd, hasUndatedContinuation } from './horizon';
 import { toDay, precisionBounds } from './date';
 import { position, span, type Viewport } from './viewport';
 const MAX_PERIOD_LANES = 8;
@@ -13,9 +14,11 @@ export interface Indexed {
 /** Balanced interval tree: long continuing spans cannot poison a prefix scan. */
 export class TimelineIndex {
 	private root?: Indexed;
+	readonly byId: Map<string, Entry>;
 	readonly laneById = new Map<string, number>();
 	readonly displayEndById = new Map<string, number>();
 	constructor(entries: Entry[]) {
+		this.byId = new Map(entries.map((e) => [e.id, e]));
 		const sorted = entries
 			.filter((e) => e.temporal.type !== 'undated')
 			.map((entry) => ({ entry, start: extent(entry)[0], end: extent(entry)[1] }))
@@ -123,12 +126,15 @@ export function layout(
 			let laneCount = 0;
 			for (const e of items) {
 				const [start, sourceEnd] = extent(e),
-					end = index.displayEndById.get(e.id) ?? sourceEnd,
+					end = Math.min(index.displayEndById.get(e.id) ?? sourceEnd, displayEnd(e, index.byId)),
 					t = e.temporal;
 				if (end <= view.start || start >= view.end) continue;
 				// A continuing mark reaches the viewport edge; that edge is always an arrow, not a date.
 				const left = Math.max(0, position(start, view, width)),
-					right = Math.min(width, position(end, view, width));
+					right = Math.min(
+						width,
+						position(end, view, width) + (hasUndatedContinuation(e) ? 18 : 0)
+					);
 				const isPoint = t.type === 'point',
 					size = right - left;
 				if (
@@ -151,7 +157,7 @@ export function layout(
 					point: false,
 					leftClipped: start < view.start,
 					rightClipped: end > view.end,
-					open: !Number.isFinite(end),
+					open: t.type === 'period' && !t.end,
 					uncertain: Math.max(0, right - Math.max(left, earliest)),
 					uncertainStart:
 						t.type === 'period' && t.start.precision !== 'day'

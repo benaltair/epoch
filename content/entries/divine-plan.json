@@ -9,7 +9,8 @@
 		"start": {
 			"year": 1937,
 			"precision": "year"
-		}
+		},
+		"endNote": "No end date has been specified."
 	},
 	"sourceIds": ["ages", "divine"],
 	"summary": "A distinct framework for successive teaching plans.",

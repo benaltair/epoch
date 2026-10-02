@@ -4,6 +4,7 @@
 	import {
 		ancestors,
 		dateLabel,
+		kindLabel,
 		entryRange,
 		extent,
 		type Entry,
@@ -13,6 +14,7 @@
 	import { TimelineIndex, layout, groups, type Mark } from '$lib/core/layout';
 	import {
 		HISTORY,
+		HISTORY_BOUNDS,
 		CYCLE,
 		WORLD,
 		span,
@@ -27,6 +29,7 @@
 	} from '$lib/core/viewport';
 	import { diagramTicks } from '$lib/core/axis';
 	import { diagramLabel } from '$lib/core/labels';
+	import { displayEnd } from '$lib/core/horizon';
 	import { focusView, interpolateView } from '$lib/core/focus';
 	import { readStory } from '$lib/data/story-response';
 	import Hierarchy from './Hierarchy.svelte';
@@ -36,6 +39,13 @@
 	let view = $state<Viewport>({ ...HISTORY }),
 		focus = $state<string | null>(null),
 		selected = $state<string | null>(null);
+	let wide = $state(false);
+	function bounded(v: Viewport) {
+		return constrain(v, wide ? WORLD : HISTORY_BOUNDS);
+	}
+	function isWideFocus(id: string | null) {
+		return ['cycle', 'era', 'dispensation'].includes(byId.get(id ?? '')?.kind ?? '');
+	}
 	let mode = $state<'timeline' | 'list'>('timeline'),
 		navOpen = $state(false),
 		theme = $state('light'),
@@ -72,7 +82,7 @@
 		const duration =
 			Number.parseFloat(
 				getComputedStyle(document.documentElement).getPropertyValue('--view-transition-ms')
-			) || 180;
+			) || 460;
 		if (
 			matchMedia('(prefers-reduced-motion: reduce)').matches ||
 			(from.start === target.start && from.end === target.end)
@@ -147,6 +157,7 @@
 	const visibleEntries = $derived(
 		index
 			.query(view.start, view.end)
+			.filter((e) => displayEnd(e, byId) > view.start)
 			.sort((a, b) => extent(a)[0] - extent(b)[0] || b.importance - a.importance)
 	);
 	const overviewDomain = $derived.by(() => {
@@ -161,7 +172,12 @@
 	const maxZoom = Math.log2(span(WORLD));
 	function persist(push = true) {
 		if (!ready) return;
-		const url = encodeNavigation({ view: animationTarget ?? view, focus, selected });
+		const url = encodeNavigation({
+			view: animationTarget ?? view,
+			focus,
+			selected,
+			...(wide ? { scale: 'wide' as const } : {})
+		});
 		if (url === window.location.search) return;
 		window.history[push ? 'pushState' : 'replaceState'](window.history.state, '', url);
 		announcement = `Showing ${rangeLabel(view.start, view.end)}`;
@@ -176,7 +192,7 @@
 		}
 	}
 	function schedule(v: Viewport) {
-		pending = constrain(v);
+		pending = bounded(v);
 		if (!frame)
 			frame = requestAnimationFrame(() => {
 				frame = 0;
@@ -188,16 +204,18 @@
 	}
 	function navigate(v: Viewport, f: string | null = focus, s: string | null = selected) {
 		flush();
-		moveTo(constrain(v));
+		moveTo(bounded(v));
 		focus = f;
 		selected = s;
 		cluster = [];
 		persist();
 	}
 	function home() {
+		wide = false;
 		navigate({ ...HISTORY }, null, null);
 	}
 	function wholeCycle() {
+		wide = true;
 		navigate({ ...CYCLE }, site.cycleEntryId, null);
 	}
 	function focusEntry(id: string) {
@@ -208,6 +226,7 @@
 			navOpen = false;
 			return;
 		}
+		wide = isWideFocus(id);
 		navigate(
 			focusView(entry, index, width),
 			entry.kind === 'event' ? (entry.parentId ?? null) : id,
@@ -225,10 +244,11 @@
 		selected = id;
 		persist();
 	}
-	function closeDetails() {
+	function closeDetails(restoreFocus = true) {
 		selected = null;
 		cluster = [];
 		persist();
+		if (!restoreFocus) return;
 		tick().then(() => {
 			if (priorFocus?.isConnected) priorFocus.focus();
 			else plot?.focus({ preventScroll: true });
@@ -354,7 +374,7 @@
 	}
 	function updateOverview(v: Viewport, commit: boolean) {
 		flush();
-		view = constrain(v);
+		view = bounded(v);
 		if (commit) persist();
 	}
 
@@ -385,7 +405,8 @@
 	onMount(() => {
 		textContext = document.createElement('canvas').getContext('2d');
 		const n = decodeNavigation(window.location.search, new Set(byId.keys()));
-		view = n.view;
+		wide = n.scale === 'wide' || isWideFocus(n.focus);
+		view = bounded(n.view);
 		focus = n.focus;
 		selected = n.selected;
 		ready = true;
@@ -400,14 +421,29 @@
 		const pop = () => {
 			flush();
 			const state = decodeNavigation(location.search, new Set(byId.keys()));
-			moveTo(state.view);
+			wide = state.scale === 'wide' || isWideFocus(state.focus);
+			moveTo(bounded(state.view));
 			focus = state.focus;
 			selected = state.selected;
 			cluster = [];
 		};
+		const dismissOutside = (e: PointerEvent) => {
+			if (dialog?.open && !dialog.contains(e.target as Node)) closeDetails(false);
+		};
+		const dismissEscape = (e: KeyboardEvent) => {
+			if (e.key === 'Escape' && dialog?.open) {
+				e.preventDefault();
+				e.stopPropagation();
+				closeDetails();
+			}
+		};
+		document.addEventListener('pointerdown', dismissOutside, true);
+		document.addEventListener('keydown', dismissEscape, true);
 		window.addEventListener('popstate', pop);
 		plot.addEventListener('wheel', wheel, { passive: false });
 		return () => {
+			document.removeEventListener('pointerdown', dismissOutside, true);
+			document.removeEventListener('keydown', dismissEscape, true);
 			window.removeEventListener('popstate', pop);
 			plot.removeEventListener('wheel', wheel);
 			stopMotion();
@@ -424,7 +460,18 @@
 	$effect(() => {
 		if (dialog) {
 			if (chosen || cluster.length) {
-				if (!dialog.open) dialog.showModal();
+				if (!dialog.open) dialog.show();
+				const id = chosen?.id;
+				void tick().then(() => {
+					if (!id || selected !== id || !dialog.open) return;
+					const mark = plot.querySelector<HTMLElement>(`[data-entry="${id}"] button`);
+					if (!mark) return;
+					const rect = mark.getBoundingClientRect(),
+						area = plot.getBoundingClientRect();
+					const available = plot.clientHeight - 42;
+					if (rect.top < area.top || rect.bottom > area.top + available)
+						plot.scrollTop += rect.top - area.top - Math.max(0, (available - rect.height) / 2);
+				});
 			} else if (dialog.open) dialog.close();
 		}
 	});
@@ -469,6 +516,8 @@
 <div
 	class="app"
 	data-ready={ready}
+	data-details-open={!!chosen || cluster.length > 0}
+	data-scale={wide ? 'wide' : 'history'}
 	data-navigating={animationTarget !== null}
 	data-theme={theme}
 	style="--ui-scale:{uiScale}"
@@ -481,7 +530,7 @@
 			onclick={(e) => {
 				e.preventDefault();
 				home();
-			}}>epoch</a
+			}}>Bahá’í Timeline</a
 		>
 		<button
 			class="nav-trigger"
@@ -489,7 +538,9 @@
 			aria-haspopup="dialog"
 			onclick={() => (navOpen = true)}>Browse</button
 		>
-		<h1 class="view-title">{current ? current.title : 'Bahá’í timeline'}</h1>
+		<h1 class="view-title" class:sr-only={!current}>
+			{current ? current.title : 'Bahá’í Timeline'}
+		</h1>
 		<div class="header-actions">
 			<button
 				class="settings-trigger"
@@ -545,9 +596,7 @@
 			>
 		</div>
 		<p>Drag to pan. Pinch or use + / − to zoom.</p>
-		<p class="small muted">
-			Hatching: uncertain dates. Arrows: continuing periods. Gregorian dates.
-		</p>
+		<p class="small muted">Arrows indicate continuation, not an end date. Gregorian dates.</p>
 		<p class="small muted">
 			Keyboard: ← / → to pan, + / − to zoom, Home to reset, Escape for the parent period.
 		</p>
@@ -572,7 +621,7 @@
 				aria-valuetext={`${Math.round(span(view)).toLocaleString()} days visible`}
 				oninput={(e) => {
 					flush();
-					view = zoomAt(view, 2 ** (+e.currentTarget.value - zoomValue), 0.5);
+					view = bounded(zoomAt(view, 2 ** (+e.currentTarget.value - zoomValue), 0.5));
 				}}
 				onchange={() => persist()}
 			/></label
@@ -679,14 +728,6 @@
 														style="left:{segment.x}px;width:{segment.width}px"
 														aria-hidden="true"
 													>
-														{#if segment.uncertainStart > 0}<span
-																class="uncertainty"
-																style="left:0;right:auto;width:{segment.uncertainStart}px"
-															></span>{/if}
-														{#if segment.uncertain > 0}<span
-																class="uncertainty"
-																style="width:{segment.uncertain}px"
-															></span>{/if}
 													</span>{/each}{/if}
 											{#if mark.point}<span class="point-glyph" aria-hidden="true"
 													>{mark.entries.length > 1 ? mark.entries.length : '◆'}</span
@@ -698,9 +739,7 @@
 														: labelFor(
 																entry,
 																track.shape === 'column'
-																	? mark.width >= 17 * uiScale
-																		? track.spanRows * diagramStep - 24
-																		: 0
+																	? mark.width - (mark.open ? 32 : 16)
 																	: mark.width - (mark.open || mark.rightClipped ? 22 : 8)
 															)}</span
 												>
@@ -708,16 +747,6 @@
 														class="continues"
 														aria-hidden="true">›</span
 													>{/if}{/if}
-											{#if mark.uncertainStart > 0}<span
-													class="uncertainty"
-													style="left:0;right:auto;width:{mark.uncertainStart}px"
-													aria-hidden="true"
-												></span>{/if}
-											{#if mark.uncertain > 0}<span
-													class="uncertainty"
-													style="width:{mark.uncertain}px"
-													aria-hidden="true"
-												></span>{/if}
 										</button>
 									</div>
 								{/each}
@@ -770,7 +799,7 @@
 					>Info</button
 				>{/if}
 			{#each undated as entry}<button class="undated-link" onclick={() => selectEntry(entry.id)}
-					>{entry.shortTitle ?? entry.title.replace(/^The /, '')} · undated</button
+					>{entry.shortTitle ?? entry.title.replace(/^The /, '')} · Undated</button
 				>{/each}
 			<button aria-expanded={overviewOpen} onclick={() => (overviewOpen = !overviewOpen)}
 				>Overview</button
@@ -784,6 +813,7 @@
 			e.preventDefault();
 			closeDetails();
 		}}
+		aria-modal="false"
 		aria-label={chosen?.title ?? 'Events in this group'}
 	>
 		<div class="detail-top">
@@ -791,7 +821,7 @@
 				bind:this={closeButton}
 				class="close-button"
 				aria-label="Close details"
-				onclick={closeDetails}>×</button
+				onclick={() => closeDetails()}>×</button
 			>
 		</div>
 		{#if chosen}<EntryContent
@@ -827,7 +857,7 @@
 			<div class="cluster-list">
 				{#each cluster.slice(0, clusterLimit) as entry}<button onclick={() => selectEntry(entry.id)}
 						><small>{dateLabel(entry)}</small><strong>{entry.title}</strong><span
-							class="small muted">{entry.kind}</span
+							class="small muted">{kindLabel(entry.kind)}</span
 						></button
 					>{/each}{#if cluster.length > clusterLimit}<button onclick={() => (clusterLimit += 30)}
 						>Show more</button

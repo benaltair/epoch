@@ -27,12 +27,16 @@ export const CYCLE: Viewport = {
 		year: cycle?.end?.year ?? cycleStart + (cycle?.minimumYears ?? site.historyEndYear - cycleStart)
 	})
 };
+export const HISTORY_BOUNDS: Viewport = {
+	start: WORLD.start,
+	end: toDay({ year: site.historyLimitYear })
+};
 export const MIN_SPAN = 1;
 export const span = (v: Viewport) => v.end - v.start;
-export function constrain(v: Viewport): Viewport {
+export function constrain(v: Viewport, bounds: Viewport = WORLD): Viewport {
 	if (!Number.isFinite(v.start) || !Number.isFinite(v.end)) return { ...HISTORY };
-	const duration = Math.max(MIN_SPAN, Math.min(span(WORLD), span(v)));
-	const start = Math.max(WORLD.start, Math.min(WORLD.end - duration, v.start));
+	const duration = Math.max(MIN_SPAN, Math.min(span(bounds), span(v)));
+	const start = Math.max(bounds.start, Math.min(bounds.end - duration, v.start));
 	return { start, end: start + duration };
 }
 export function position(day: number, v: Viewport, width: number) {
@@ -75,6 +79,7 @@ export interface Navigation {
 	view: Viewport;
 	focus: string | null;
 	selected: string | null;
+	scale?: 'wide';
 }
 export function encodeNavigation(n: Navigation) {
 	const p = new URLSearchParams();
@@ -82,6 +87,7 @@ export function encodeNavigation(n: Navigation) {
 	p.set('to', n.view.end.toFixed(4));
 	if (n.focus) p.set('focus', n.focus);
 	if (n.selected) p.set('entry', n.selected);
+	if (n.scale) p.set('scale', n.scale);
 	return `?${p}`;
 }
 export function decodeNavigation(search: string, ids: Set<string>): Navigation {
@@ -94,6 +100,7 @@ export function decodeNavigation(search: string, ids: Set<string>): Navigation {
 				? constrain({ start: a, end: b })
 				: { ...HISTORY },
 		focus: ids.has(p.get('focus') ?? '') ? p.get('focus') : null,
-		selected: ids.has(p.get('entry') ?? '') ? p.get('entry') : null
+		selected: ids.has(p.get('entry') ?? '') ? p.get('entry') : null,
+		...(p.get('scale') === 'wide' ? { scale: 'wide' as const } : {})
 	};
 }
