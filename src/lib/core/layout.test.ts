@@ -89,3 +89,76 @@ it('does not include a day-precision event in the immediately neighbouring days'
 	expect(index.query(day + 1, day + 2)).toEqual([]);
 	expect(index.query(day - 1, day)).toEqual([]);
 });
+
+it('keeps each chronological sequence on one row at desktop and phone scales', () => {
+	const index = new TimelineIndex(entries);
+	for (const width of [320, 1000, 1440]) {
+		for (const id of ['dispensation', 'age', 'ministry', 'formative', 'divine', 'plan']) {
+			const track = layout(index, HISTORY, width, 48).find((t) => t.id === id)!;
+			expect(track.lanes, id).toBe(1);
+			expect(
+				track.marks.every((m) => m.lane === 0),
+				id
+			).toBe(true);
+			const expected = index
+				.query(HISTORY.start, HISTORY.end)
+				.filter((e) => e.laneId === id && e.display !== 'navigation')
+				.map((e) => e.id)
+				.sort();
+			expect(track.marks.flatMap((m) => m.entries.map((e) => e.id)).sort()).toEqual(expected);
+		}
+	}
+});
+
+it('uses shared uncertain transitions without rewriting the source dates', () => {
+	const index = new TimelineIndex(entries);
+	const first = byId.get('formative-1')!,
+		second = byId.get('formative-2')!;
+	const sourceEnd = extent(first)[1];
+	expect(index.displayEndById.get(first.id)).toBe(extent(second)[0]);
+	expect(extent(first)[1]).toBe(sourceEnd);
+	const track = layout(
+		index,
+		{ start: toDay({ year: 1920 }), end: toDay({ year: 1965 }) },
+		1440
+	).find((t) => t.id === 'formative')!;
+	const a = track.marks.find((m) => m.key === first.id)!,
+		b = track.marks.find((m) => m.key === second.id)!;
+	expect(a.x + a.width).toBeCloseTo(b.x);
+	expect(a.uncertain).toBeGreaterThan(0);
+	expect(b.uncertainStart).toBeGreaterThan(0);
+});
+
+it('retains real gaps and definite overlaps instead of forcing continuity', () => {
+	const fixture: Entry[] = [
+		{
+			...byId.get('heroic-age')!,
+			id: 'one',
+			temporal: {
+				type: 'period',
+				start: { year: 1900, precision: 'year' },
+				end: { year: 1920, precision: 'year' }
+			}
+		},
+		{
+			...byId.get('heroic-age')!,
+			id: 'two',
+			temporal: {
+				type: 'period',
+				start: { year: 1910, precision: 'year' },
+				end: { year: 1930, precision: 'year' }
+			}
+		}
+	];
+	const index = new TimelineIndex(fixture);
+	expect(index.laneById.get('one')).not.toBe(index.laneById.get('two'));
+	expect(index.displayEndById.has('one')).toBe(false);
+	const plans = layout(
+		new TimelineIndex(entries),
+		{ start: toDay({ year: 1930 }), end: toDay({ year: 1960 }) },
+		1440
+	).find((t) => t.id === 'plan')!;
+	const first = plans.marks.find((m) => m.key === 'first-seven-year-plan')!,
+		second = plans.marks.find((m) => m.key === 'second-seven-year-plan')!;
+	expect(second.x).toBeGreaterThan(first.x + first.width);
+});

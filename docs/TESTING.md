@@ -51,3 +51,11 @@ Physical-device tests remain unperformed. No claim is made about physical touch 
 ## Ubuntu CI verification
 
 The initial implementation passed all 85 applicable browser checks in GitHub Actions, including Firefox, against the local Cloudflare runtime: [successful run](https://github.com/benaltair/epoch/actions/runs/36896803124). Five intentional skips are the Chromium-CDP-only pinch test on other projects. This closes the local Firefox coverage gap; physical-device testing remains separate. The final interval-boundary regression and this report update are rechecked on the PR head.
+
+## Full-screen revision — 2 October 2026
+
+- Restored the original white/blue system-font aesthetic and viewport-sized canvas; removed the permanent sidebar, introduction, promotional copy and story teasers.
+- Added regression coverage for continuous sequence rows, uncertainty-only transitions, genuine gaps/overlaps, contextual focus, short logarithmic zoom transitions and reduced motion.
+- Unit tests: 29 passed. Content workflow, type/Svelte checks and static production build passed.
+- All 81 applicable local browser checks passed across Chromium/WebKit desktop, iPhone, Android and iPad profiles (73 on the first full run, with corrected test selection and Safari focus restoration verified in targeted reruns). Four intentional native-CDP skips remain. The 20 affected dialog, navigation, layout and accessibility checks passed in the final rerun.
+- Desktop, phone and tablet screenshots were inspected. Safari dialog dismissal now explicitly restores focus. Physical-device testing remains unperformed; the CI run for this revision is recorded on the PR.

@@ -26,10 +26,8 @@
 			{entry.temporal.endNote}
 		</p>{/if}
 	{#if story?.image && failedImage === story.image.src}<p class="source-note">
-			The photograph is unavailable. <a
-				href={story.image.sourceUrl}
-				target="_blank"
-				rel="noreferrer">View the photo source</a
+			Image unavailable. <a href={story.image.sourceUrl} target="_blank" rel="noreferrer"
+				>View the photo source</a
 			>.
 		</p>{:else if story?.image}
 		<figure>
@@ -61,17 +59,16 @@
 			<span aria-hidden="true">↗</span></button
 		>{/if}
 	<section class="sources">
-		<h3>Read the sources</h3>
+		<h3>Sources</h3>
 		{#each entry.sourceIds as id}<a href={sources[id].url} target="_blank" rel="noreferrer"
 				>{sources[id].title}<span aria-hidden="true">↗</span></a
 			>{#if sources[id].note}<p class="small muted">{sources[id].note}</p>{/if}{/each}
 	</section>
 	{#if entry.relatedIds?.length}<section class="related">
-			<h3>Connected in history</h3>
+			<h3>Related</h3>
 			{#each entry.relatedIds as id}{#if onselect}<button onclick={() => onselect?.(id)}
 						>{byId.get(id)?.title} <span aria-hidden="true">→</span></button
 					>{:else}<a href="/entry/{id}/">{byId.get(id)?.title} →</a>{/if}{/each}
 		</section>{/if}
-	{#if onselect}<a class="permalink" href="/entry/{entry.id}/">Open permanent reading page ↗</a
-		>{/if}
+	{#if onselect}<a class="permalink" href="/entry/{entry.id}/">Open page ↗</a>{/if}
 </div>

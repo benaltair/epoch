@@ -14,6 +14,7 @@ export interface Indexed {
 export class TimelineIndex {
 	private root?: Indexed;
 	readonly laneById = new Map<string, number>();
+	readonly displayEndById = new Map<string, number>();
 	constructor(entries: Entry[]) {
 		const sorted = entries
 			.filter((e) => e.temporal.type !== 'undated')
@@ -32,13 +33,32 @@ export class TimelineIndex {
 			return n;
 		};
 		this.root = build(0, sorted.length);
+		// A sequence shares a row when only its imprecise transition dates overlap.
+		// Source extents stay intact for querying and details; never clip a definite overlap.
+		for (const group of groups.filter((g) => g.sequential)) {
+			const periods = sorted.filter(
+				(n) =>
+					n.entry.laneId === group.id &&
+					n.entry.temporal.type === 'period' &&
+					n.entry.display !== 'navigation'
+			);
+			for (let i = 0; i < periods.length - 1; i++) {
+				const item = periods[i],
+					next = periods[i + 1],
+					t = item.entry.temporal;
+				if (t.type === 'period' && t.end && toDay(t.end) <= next.start && item.start < next.start) {
+					this.displayEndById.set(item.entry.id, Math.min(item.end, next.start));
+				}
+			}
+		}
 		const ends = new Map<string, number[]>();
 		for (const item of sorted) {
-			if (item.entry.temporal.type !== 'period') continue;
+			if (item.entry.temporal.type !== 'period' || item.entry.display === 'navigation') continue;
 			const laneEnds = ends.get(item.entry.laneId) ?? [];
 			let lane = laneEnds.findIndex((end) => end <= item.start);
 			if (lane < 0) lane = Math.min(laneEnds.length, MAX_PERIOD_LANES);
-			if (lane < MAX_PERIOD_LANES) laneEnds[lane] = item.end;
+			if (lane < MAX_PERIOD_LANES)
+				laneEnds[lane] = this.displayEndById.get(item.entry.id) ?? item.end;
 			ends.set(item.entry.laneId, laneEnds);
 			this.laneById.set(item.entry.id, lane);
 		}
@@ -72,6 +92,7 @@ export interface Mark {
 	open: boolean;
 	uncertain: number;
 	uncertainStart: number;
+	segments?: { x: number; width: number; uncertain: number; uncertainStart: number }[];
 }
 export interface Track {
 	id: string;
@@ -97,14 +118,20 @@ export function layout(
 				small: Entry[] = [];
 			let laneCount = 0;
 			for (const e of items) {
-				const [start, end] = extent(e),
+				const [start, sourceEnd] = extent(e),
+					end = index.displayEndById.get(e.id) ?? sourceEnd,
 					t = e.temporal;
+				if (end <= view.start || start >= view.end) continue;
 				// A continuing mark reaches the viewport edge; that edge is always an arrow, not a date.
 				const left = Math.max(0, position(start, view, width)),
 					right = Math.min(width, position(end, view, width));
 				const isPoint = t.type === 'point',
 					size = right - left;
-				if (isPoint || size < target || (index.laneById.get(e.id) ?? 0) >= MAX_PERIOD_LANES) {
+				if (
+					isPoint ||
+					(!g.sequential && size < target) ||
+					(index.laneById.get(e.id) ?? 0) >= MAX_PERIOD_LANES
+				) {
 					small.push(e);
 					continue;
 				}
@@ -130,6 +157,56 @@ export function layout(
 								)
 							: 0
 				});
+			}
+			if (g.sequential) {
+				// Merge sub-target neighbours within the SAME row, preserving every entry
+				// and the true geometry of gaps. Zooming separates the group again.
+				for (let lane = 0; lane < laneCount; lane++) {
+					const row = marks.filter((m) => m.lane === lane).sort((a, b) => a.x - b.x);
+					for (let i = 0; i < row.length && row.length > 1;) {
+						if (row[i].width >= target) {
+							i++;
+							continue;
+						}
+						const j =
+							i === 0
+								? 1
+								: i === row.length - 1
+									? i - 1
+									: row[i - 1].width <= row[i + 1].width
+										? i - 1
+										: i + 1;
+						const lo = Math.min(i, j),
+							hi = Math.max(i, j),
+							a = row[lo],
+							b = row[hi];
+						const segments = (m: Mark) =>
+							(
+								m.segments ?? [
+									{ x: 0, width: m.width, uncertain: m.uncertain, uncertainStart: m.uncertainStart }
+								]
+							).map((part) => ({
+								...part,
+								x: m.x - a.x + part.x
+							}));
+						const merged: Mark = {
+							...a,
+							key: a.key + '+' + b.key,
+							entries: [...a.entries, ...b.entries],
+							width: b.x + b.width - a.x,
+							rightClipped: b.rightClipped,
+							open: b.open,
+							uncertain: 0,
+							uncertainStart: 0,
+							segments: [...segments(a), ...segments(b)]
+						};
+						marks.splice(marks.indexOf(a), 1);
+						marks.splice(marks.indexOf(b), 1);
+						marks.push(merged);
+						row.splice(lo, 2, merged);
+						i = lo;
+					}
+				}
 			}
 			// Screen-space bins bound DOM size even when thousands of events share one date.
 			const buckets = new Map<number, Entry[]>();

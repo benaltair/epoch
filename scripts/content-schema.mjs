@@ -61,6 +61,7 @@ export const laneSchema = z
 			id,
 			label: z.string().min(1),
 			tone: id,
+			sequential: z.boolean().optional(),
 			maxSpanYears: z.number().positive().optional()
 		})
 	)

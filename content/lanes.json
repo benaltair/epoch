@@ -7,37 +7,43 @@
 	{
 		"id": "dispensation",
 		"label": "DISPENSATIONS",
-		"tone": "context"
+		"tone": "context",
+		"sequential": true
 	},
 	{
 		"id": "age",
 		"label": "AGES",
 		"tone": "age",
-		"maxSpanYears": 5000
+		"maxSpanYears": 5000,
+		"sequential": true
 	},
 	{
 		"id": "ministry",
 		"label": "MINISTRIES",
 		"tone": "ministry",
-		"maxSpanYears": 5000
+		"maxSpanYears": 5000,
+		"sequential": true
 	},
 	{
 		"id": "formative",
 		"label": "FORMATIVE EPOCHS",
 		"tone": "formative",
-		"maxSpanYears": 5000
+		"maxSpanYears": 5000,
+		"sequential": true
 	},
 	{
 		"id": "divine",
 		"label": "DIVINE PLAN EPOCHS",
 		"tone": "divine",
-		"maxSpanYears": 5000
+		"maxSpanYears": 5000,
+		"sequential": true
 	},
 	{
 		"id": "plan",
 		"label": "TEACHING PLANS",
 		"tone": "plan",
-		"maxSpanYears": 5000
+		"maxSpanYears": 5000,
+		"sequential": true
 	},
 	{
 		"id": "event",

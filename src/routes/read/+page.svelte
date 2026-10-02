@@ -10,15 +10,10 @@
 	/></svelte:head
 >
 <header class="reading-header">
-	<a class="brand" href="/">epoch</a><a href="/">Explore the timeline ↗</a>
+	<a class="brand" href="/">epoch</a><a href="/">Timeline ↗</a>
 </header>
 <main class="reading-page">
-	<p class="eyebrow">Every period and event</p>
 	<h1>Reading index</h1>
-	<p>
-		Explore the chronology as a collection of sourced reading pages. Undated periods appear after
-		dated entries.
-	</p>
 	<ol class="reading-index">
 		{#each data.entries as entry}<li>
 				<a href="/entry/{entry.id}/"

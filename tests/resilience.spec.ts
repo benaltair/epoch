@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-const range = async (page: import('@playwright/test').Page) =>
-	page.getByTestId('timeline-plot').evaluate((el) => ({
+import { openEntry } from './helpers';
+const range = async (page: import('@playwright/test').Page) => {
+	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
+	return page.getByTestId('timeline-plot').evaluate((el) => ({
 		start: Number((el as HTMLElement).dataset.start),
 		end: Number((el as HTMLElement).dataset.end)
 	}));
+};
 const errorsByPage = new WeakMap<import('@playwright/test').Page, string[]>();
 test.beforeEach(async ({ page }) => {
 	const errors: string[] = [];
@@ -20,17 +23,14 @@ test.beforeEach(async ({ page }) => {
 });
 test('failed story retains summary and citations, retry recovers', async ({ page }) => {
 	await page.route('**/data/declaration-bab.json', (r) => r.abort());
-	await page
-		.locator('.story-teasers')
-		.getByRole('button', { name: /The Declaration of the Báb/ })
-		.click();
-	await expect(page.getByRole('button', { name: 'Retry story' })).toBeVisible();
+	await openEntry(page, 'The Declaration of the Báb');
+	await expect(page.getByRole('button', { name: 'Retry' })).toBeVisible();
 	await expect(
 		page.getByRole('dialog').getByRole('link', { name: 'The Life of the Báb · Bahai.org' })
 	).toBeVisible();
 	await page.unroute('**/data/declaration-bab.json');
-	await page.getByRole('button', { name: 'Retry story' }).click();
-	await expect(page.getByRole('button', { name: 'Retry story' })).not.toBeVisible();
+	await page.getByRole('button', { name: 'Retry' }).click();
+	await expect(page.getByRole('button', { name: 'Retry' })).not.toBeVisible();
 	await expect(page.getByRole('status')).not.toBeVisible();
 });
 test('320px layout, larger reading size, orientation change, and dark contrast', async ({
@@ -102,6 +102,7 @@ test('pointer cancellation, overview drag, and ctrl-wheel preserve usable state'
 		})
 		.toBeLessThan(before.end - before.start);
 	await page.getByRole('button', { name: 'Recorded history', exact: true }).last().click();
+	await page.getByRole('button', { name: 'Overview', exact: true }).click();
 	const overview = page.getByRole('group', { name: 'Timeline overview' });
 	await overview.scrollIntoViewIfNeeded();
 	const o = (await overview.boundingBox())!;
@@ -159,11 +160,8 @@ test('Chromium native two-finger pinch keeps midpoint anchored', async ({
 
 test('malformed story JSON degrades to its sourced summary', async ({ page }) => {
 	await page.route('**/data/declaration-bab.json', (r) => r.fulfill({ json: { paragraphs: 42 } }));
-	await page
-		.locator('.story-teasers')
-		.getByRole('button', { name: /The Declaration of the Báb/ })
-		.click();
-	await expect(page.getByRole('button', { name: 'Retry story' })).toBeVisible();
+	await openEntry(page, 'The Declaration of the Báb');
+	await expect(page.getByRole('button', { name: 'Retry' })).toBeVisible();
 	await expect(
 		page
 			.getByRole('dialog')
@@ -184,10 +182,7 @@ test('the home page provides a complete reading path without JavaScript', async 
 
 test('failed optional photograph leaves the story and source usable', async ({ page }) => {
 	await page.route('**/single-image-3.jpg*', (r) => r.abort());
-	await page
-		.locator('.story-teasers')
-		.getByRole('button', { name: /The Ascension of ‘Abdu’l-Bahá/ })
-		.click();
+	await openEntry(page, 'The Ascension of ‘Abdu’l-Bahá');
 	await expect(page.getByRole('link', { name: 'View the photo source' })).toBeVisible();
 	await expect(
 		page.getByRole('dialog').getByRole('link', { name: 'The Life of ‘Abdu’l-Bahá · Bahai.org' })

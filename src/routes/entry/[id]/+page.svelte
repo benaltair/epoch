@@ -21,11 +21,7 @@
 	/></svelte:head
 >
 <header class="reading-header">
-	<a class="brand" href="/"
-		><span class="brand-mark" aria-hidden="true">✳</span> epoch<span class="brand-sub"
-			>A BAHÁ’Í CHRONOLOGY</span
-		></a
-	><a class="button" href={link}>Show in timeline ↗</a>
+	<a class="brand" href="/">epoch</a><a class="button" href={link}>Show in timeline ↗</a>
 </header>
 <main class="reading-page">
 	<nav aria-label="Period ancestry">
@@ -35,7 +31,3 @@
 	</nav>
 	<EntryContent headingLevel={1} entry={data.entry} story={data.story} />
 </main>
-<footer class="reading-footer">
-	An independent exploration of Bahá’í history. Dates and interpretations are accompanied by their
-	sources.
-</footer>

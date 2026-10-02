@@ -65,11 +65,9 @@
 				>
 			</li>{/each}
 	</ul>
-	{#if !found.length}<p class="small muted">
-			No matching entries. Try a year-independent term such as “Plan” or “Báb”.
-		</p>{/if}
+	{#if !found.length}<p class="small muted">No matches.</p>{/if}
 {:else}
-	<p class="eyebrow nav-caption">Explore the chronology</p>
+	<p class="eyebrow nav-caption">Periods</p>
 	{#snippet branch(parentId: string | undefined, depth: number)}
 		<ul class="hierarchy" style="--depth:{depth}">
 			{#each entries.filter((e) => e.parentId === parentId && e.kind !== 'event') as entry}
@@ -95,9 +93,4 @@
 		</ul>
 	{/snippet}
 	{@render branch(undefined, 0)}
-	<div class="sidebar-note">
-		<span class="note-orbit" aria-hidden="true">◌</span>
-		<p>Many scales.<br />One unfolding story.</p>
-		<small>Explore a period to discover the events and relationships within it.</small>
-	</div>
 {/if}

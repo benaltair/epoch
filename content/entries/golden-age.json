@@ -11,7 +11,7 @@
 		"type": "undated",
 		"label": "Future age · dates not specified"
 	},
-	"summary": "The Golden Age follows the Formative Age. It is part of the Faith’s described development, but the cited source gives no calendar boundaries.",
+	"summary": "The Golden Age follows the Formative Age. Its dates are unspecified.",
 	"sourceIds": ["ages"],
 	"relatedIds": ["formative-age"],
 	"importance": 5,

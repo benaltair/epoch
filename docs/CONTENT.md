@@ -4,14 +4,14 @@ The chronology is authored as data. Adding or correcting an event does not requi
 
 ## Where to edit
 
-| Location                    | Purpose                                                              |
-| --------------------------- | -------------------------------------------------------------------- |
-| `content/entries/<id>.json` | One event or period, its dates, hierarchy, short summary and sources |
-| `content/stories/<id>.json` | Optional longer reading material, quotation and image                |
-| `content/sources.json`      | Shared citations with stable IDs, titles, HTTPS URLs and notes       |
-| `content/schemes.json`      | Human-readable names of independent classifications                  |
-| `content/lanes.json`        | Row order, labels, theme token and maximum visible time span         |
-| `content/site.json`         | Featured stories and the initial historical viewing range            |
+| Location                    | Purpose                                                                 |
+| --------------------------- | ----------------------------------------------------------------------- |
+| `content/entries/<id>.json` | One event or period, its dates, hierarchy, short summary and sources    |
+| `content/stories/<id>.json` | Optional longer reading material, quotation and image                   |
+| `content/sources.json`      | Shared citations with stable IDs, titles, HTTPS URLs and notes          |
+| `content/schemes.json`      | Human-readable names of independent classifications                     |
+| `content/lanes.json`        | Row order, labels, sequential layout, theme token and visible time span |
+| `content/site.json`         | Initial historical range, cycle preset and reserved featured IDs        |
 
 File names and entry IDs must match. IDs are permanent: changing an ID breaks existing reading links. Correct the contents of a record without renaming it.
 
@@ -82,6 +82,6 @@ Sources support the content; a source link alone is not proof that every interpr
 
 The gate writes a generated catalogue containing published records only. Source JSON and draft entries are not imported directly into the production browser bundle. The renderer performs interval queries over this catalogue, and extended stories pass a small response-shape check before display. Invalid or unavailable story payloads fall back to the already-loaded summary and citations.
 
-A year- or month-precision boundary is rendered as a possible interval, with a patterned cap. This can create a small overlap between neighbouring periods; it does not assert that the source supplied an exact New Year’s Day boundary. Undated entries have no position in the interval index. Finite calendar records currently support astronomical years −10,000 through 999,999; an out-of-range record fails publication explicitly.
+A year- or month-precision boundary is rendered as a possible interval, with a patterned cap. For a lane marked `sequential: true`, uncertainty-only overlaps share a transition on the same row. The next period’s start supplies the display split; hatching and the original dates retain their uncertainty. Definite overlaps still receive separate rows, and genuine gaps remain visible. Navigation-only records never reserve a row. Narrow adjacent periods form one selectable group on that row; the individual spans, gaps and source records remain intact. This does not assert an exact New Year’s Day boundary. Undated entries have no position in the interval index. Finite calendar records currently support astronomical years −10,000 through 999,999; an out-of-range record fails publication explicitly.
 
 `npm run test:content` exercises adding a draft, publication, correction, and rejection of a broken source reference in an isolated temporary dataset. It proves these ordinary editorial changes require no component or layout edits.

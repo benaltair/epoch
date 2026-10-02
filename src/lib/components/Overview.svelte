@@ -68,7 +68,7 @@
 </script>
 
 <div class="overview-heading">
-	<span class="eyebrow">Your place in time</span><span class="small muted"
+	<span class="eyebrow">Overview</span><span class="small muted"
 		>{rangeLabel(domain.start, domain.end)}</span
 	>
 </div>
@@ -102,10 +102,10 @@
 		></span>{/if}
 </div>
 <details class="range-options">
-	<summary>Adjust the visible date range</summary>
+	<summary>Date range</summary>
 	<div class="range-inputs">
 		<label
-			>Start of window<input
+			>Start<input
 				aria-label="Start of visible window"
 				type="range"
 				min={domain.start}
@@ -119,7 +119,7 @@
 			/></label
 		>
 		<label
-			>End of window<input
+			>End<input
 				aria-label="End of visible window"
 				type="range"
 				min={view.start + 1}

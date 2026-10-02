@@ -9,3 +9,9 @@
 The site is prepared for Cloudflare Workers Static Assets or Pages. A live deployment and physical-device sign-off remain separate release activities. See `TESTING.md` for actual verification results and remaining checks, `CONTENT.md` for maintenance, `SOURCES.md` for historical decisions, and `DEPLOYMENT.md` for platform settings.
 
 No future endpoint is fabricated. No unverified Gregorian-to-Badí‘ conversion is included. A future CMS can export the same validated content shape without changing the renderer.
+
+## Full-screen explorer
+
+The canvas occupies the viewport. Browse, settings and reading cards use native dialogs; the overview is optional. The baseline appearance follows the original white/blue system-font interface. CSS variables control colours, row sizes, canvas inset, reading scale and `--view-transition-ms` (180 milliseconds). Navigation interpolates the date scale; gestures cancel animation and remain direct. Reduced-motion preferences skip the transition.
+
+Smaller periods keep surrounding dates in view. Epochs, plans and ministries occupy about 35–65% of the window, with denser neighbourhoods receiving more space. Historical dates and navigation ranges remain separate. Copy is limited to controls, short operational instructions, historical content and citations.
