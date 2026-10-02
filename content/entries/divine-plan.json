@@ -1,6 +1,6 @@
 {
 	"id": "divine-plan",
-	"title": "The unfolding of the Divine Plan",
+	"title": "Divine Plan",
 	"kind": "plan",
 	"scheme": "divine-plan",
 	"parentId": "bahai-cycle",
@@ -16,7 +16,7 @@
 	"importance": 4,
 	"shortTitle": "Divine Plan",
 	"relatedIds": ["tablets-divine-plan"],
-	"laneId": "plan",
+	"laneId": "divine-framework",
 	"status": "published",
-	"display": "navigation"
+	"display": "timeline"
 }

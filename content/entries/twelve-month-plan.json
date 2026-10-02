@@ -19,5 +19,6 @@
 	"summary": "A short plan connecting successive stages of development.",
 	"importance": 2,
 	"laneId": "plan",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "12MP"
 }

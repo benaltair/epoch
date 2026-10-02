@@ -4,7 +4,12 @@ import { constrain, fit, span, type Viewport } from './viewport';
 /** Keep smaller periods in context, giving dense neighbourhoods a little more room. */
 export function focusView(entry: Entry, index: TimelineIndex, width: number): Viewport {
 	const range = entryRange(entry);
-	if (entry.kind === 'cycle' || entry.kind === 'dispensation' || entry.kind === 'age')
+	if (
+		entry.kind === 'cycle' ||
+		entry.kind === 'era' ||
+		entry.kind === 'dispensation' ||
+		entry.kind === 'age'
+	)
 		return fit(range.start, range.end);
 	const size = Math.max(1, span(range));
 	const centre = (range.start + range.end) / 2;

@@ -23,5 +23,6 @@
 	"shortTitle": "Bábí Dispensation",
 	"laneId": "dispensation",
 	"status": "published",
-	"relatedIds": ["ministry-bab", "bahai-dispensation"]
+	"relatedIds": ["ministry-bab", "bahai-dispensation"],
+	"abbreviation": "Bábí"
 }

@@ -16,9 +16,14 @@
 			"minLength": 1,
 			"maxLength": 100
 		},
+		"abbreviation": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 24
+		},
 		"kind": {
 			"type": "string",
-			"enum": ["cycle", "dispensation", "age", "ministry", "epoch", "plan", "event"]
+			"enum": ["cycle", "era", "dispensation", "age", "ministry", "epoch", "plan", "event"]
 		},
 		"scheme": {
 			"type": "string",

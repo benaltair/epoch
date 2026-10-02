@@ -1,0 +1,19 @@
+{
+	"id": "bahai-era",
+	"title": "Bahá’í Era",
+	"kind": "era",
+	"scheme": "context",
+	"laneId": "era",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1844,
+			"precision": "year"
+		}
+	},
+	"summary": "The Bahá’í Era began in 1844.",
+	"sourceIds": ["era"],
+	"importance": 5,
+	"status": "published"
+}

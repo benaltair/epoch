@@ -16,3 +16,11 @@ The dataset uses authoritative texts and official Bahá’í sources. Each publi
 Ages, ministries, dispensations and plans are related classifications; their dates need not form one strict containment tree. The Heroic Age is linked to both dispensations. Parent relationships provide navigational context and are reviewed separately from dates. Sources and editorial notes should be rechecked when a future correction changes that relationship.
 
 Plan dates are mostly retained at year precision. An exact Riḍván day should only be added with supporting calendar evidence. The Gregorian viewing range is a display choice, not a declaration about the beginning or end of history. The dataset is an initial collection, not an exhaustive account.
+
+## Diagram additions
+
+The Bahá’í Era record begins in 1844, following the opening of Shoghi Effendi’s [The Dispensation of Bahá’u’lláh](https://reference.bahai.org/en/t/se/WOB/wob-37.html), which identifies 1934 as the ninetieth anniversary and discusses the first century of the era. No end date is supplied.
+
+The three Heroic Age epoch records use the year-level divisions 1844–1853, 1853–1892 and 1892–1921, derived from the nine-, thirty-nine- and twenty-nine-year sequence in the [1986 Research Department statement](https://www.bahai.org/library/authoritative-texts/the-universal-house-of-justice/messages/19860205_001/1). These are periodization boundaries, distinct from the dated earthly ministries and the October 1852 dispensation boundary. The source also discusses the significance of the Greatest Holy Leaf’s passing in 1932; the dataset retains 1921 as the conventional age transition already documented above.
+
+The supplied illustration is a design reference. It does not replace source records: the cycle retains its minimum duration, the sixth Formative epoch is present, the second Divine Plan epoch begins in 1964, and the Golden Age is not placed at a calendar coordinate. The Divine Plan band denotes its organized implementation from 1937; the Tablets remain a separate event in 1916–1917.

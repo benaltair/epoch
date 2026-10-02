@@ -19,5 +19,6 @@
 	"summary": "A coordinated worldwide teaching enterprise.",
 	"importance": 2,
 	"laneId": "plan",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "10YC"
 }

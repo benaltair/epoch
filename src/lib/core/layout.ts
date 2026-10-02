@@ -97,6 +97,10 @@ export interface Mark {
 export interface Track {
 	id: string;
 	label: string;
+	row: number;
+	shape: string;
+	spanRows: number;
+	guides?: boolean;
 	tone: string;
 	marks: Mark[];
 	lanes: number;
@@ -164,7 +168,7 @@ export function layout(
 				for (let lane = 0; lane < laneCount; lane++) {
 					const row = marks.filter((m) => m.lane === lane).sort((a, b) => a.x - b.x);
 					for (let i = 0; i < row.length && row.length > 1;) {
-						if (row[i].width >= target) {
+						if (row[i].width >= 6) {
 							i++;
 							continue;
 						}

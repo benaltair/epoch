@@ -1,0 +1,26 @@
+{
+	"id": "heroic-3",
+	"title": "Third epoch · Heroic Age",
+	"shortTitle": "3rd epoch",
+	"abbreviation": "3rd",
+	"kind": "epoch",
+	"scheme": "heroic",
+	"laneId": "formative",
+	"parentId": "heroic-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1892,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1921,
+			"precision": "year"
+		}
+	},
+	"summary": "The third of the three epochs of the Heroic Age.",
+	"sourceIds": ["ages"],
+	"importance": 2,
+	"status": "published",
+	"editorialNote": "Year boundaries follow the nine-, thirty-nine-, and twenty-nine-year historical divisions described by Shoghi Effendi. These are epoch divisions, not replacements for the separately sourced dates of earthly ministries or dispensations."
+}

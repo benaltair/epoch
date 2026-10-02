@@ -20,5 +20,6 @@
 	"importance": 2,
 	"shortTitle": "1st epoch",
 	"laneId": "divine",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "1st"
 }

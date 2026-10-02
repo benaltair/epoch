@@ -19,5 +19,6 @@
 	"summary": "A continuing plan centred on the society-building power of the Faith.",
 	"importance": 2,
 	"laneId": "plan",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "9YP"
 }

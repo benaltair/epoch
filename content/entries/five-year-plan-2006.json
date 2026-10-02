@@ -19,5 +19,6 @@
 	"summary": "A worldwide plan of community development.",
 	"importance": 2,
 	"laneId": "plan",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "5YP"
 }

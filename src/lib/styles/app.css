@@ -17,18 +17,20 @@
 	--accent-soft: #edf2fc;
 	--focus: #0d47a1;
 	--bar-border: #8294b4;
-	--row-height: calc(38px * var(--ui-scale));
-	--lane-height: calc(42px * var(--ui-scale));
+	--row-height: calc(32px * var(--ui-scale));
+	--lane-height: calc(38px * var(--ui-scale));
 	--radius: 4px;
 	--canvas-inset: clamp(12px, 2.5vw, 40px);
-	--color-cycle: var(--subtle);
-	--color-context: var(--subtle);
-	--color-age: var(--subtle);
-	--color-ministry: var(--subtle);
-	--color-formative: var(--subtle);
-	--color-divine: var(--subtle);
-	--color-plan: var(--subtle);
-	--color-event: var(--accent);
+	--color-era: #315c8a;
+	--color-framework: #75502e;
+	--color-cycle: #232943;
+	--color-context: #286f86;
+	--color-age: #425f3b;
+	--color-ministry: #536b48;
+	--color-formative: #587435;
+	--color-divine: #966023;
+	--color-plan: #30343c;
+	--color-event: #934551;
 	color: var(--ink);
 	background: var(--page);
 }
@@ -956,8 +958,8 @@ cite {
 }
 @media (pointer: coarse) {
 	:root {
-		--row-height: calc(44px * var(--ui-scale));
-		--lane-height: calc(46px * var(--ui-scale));
+		--row-height: calc(32px * var(--ui-scale));
+		--lane-height: calc(38px * var(--ui-scale));
 	}
 	.app-header button,
 	.zoom-controls button,
@@ -993,4 +995,231 @@ cite {
 		transition: none !important;
 		animation: none !important;
 	}
+}
+
+/* Stable diagram coordinates: zoom changes dates, not the vertical arrangement. */
+.plot {
+	--diagram-step: clamp(48px, calc((100dvh - 225px) / 10), 72px);
+}
+.track-area {
+	min-height: calc(var(--diagram-rows) * var(--diagram-step));
+	flex: 1 0 auto;
+	padding: 0;
+}
+.track {
+	position: absolute;
+	top: calc(var(--track-row) * var(--diagram-step));
+	left: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+}
+.marks {
+	margin: 0;
+}
+.mark-position {
+	height: var(--row-height);
+}
+.mark {
+	--mark-fill: var(--track-color);
+	background: var(--mark-fill);
+	color: #fff;
+	border: 0;
+	border-left: 1px solid var(--surface);
+	border-radius: 9px 9px 1px 1px;
+	padding: 0 4px;
+}
+.mark:hover:not(:disabled) {
+	background: var(--mark-fill);
+	filter: brightness(1.14);
+}
+.mark.selected {
+	box-shadow:
+		inset 0 0 0 2px var(--surface),
+		0 0 0 2px var(--track-color);
+}
+.mark.continuing,
+.mark.right-clipped {
+	border-right: 0;
+	border-radius: 9px 0 0 1px;
+	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+	padding-right: 16px;
+}
+.mark.left-clipped {
+	border-left: 0;
+	border-top-left-radius: 0;
+}
+.continues {
+	display: none;
+}
+.bar-label {
+	font-size: calc(13px * var(--ui-scale));
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	text-overflow: clip;
+	overflow: hidden;
+	padding: 0;
+}
+.uncertainty {
+	opacity: 0.17;
+}
+.bar-segment {
+	background: var(--track-color);
+	border: 0;
+	border-left: 1px solid var(--surface);
+	border-radius: 8px 8px 0 0;
+	overflow: hidden;
+}
+.grouped:hover .bar-segment {
+	background: var(--track-color);
+}
+.grouped .bar-label {
+	background: transparent;
+	padding: 0;
+}
+.column .marks,
+.column .mark-position {
+	height: calc(var(--span-rows) * var(--diagram-step));
+}
+.column .mark {
+	background: color-mix(in srgb, var(--track-color) 4%, var(--surface));
+	color: var(--ink);
+	border-radius: 0;
+	border-left: 1px solid color-mix(in srgb, var(--track-color) 45%, var(--surface));
+	border-right: 1px solid color-mix(in srgb, var(--track-color) 45%, var(--surface));
+	clip-path: none;
+	padding: 8px 0;
+}
+.column .mark:hover {
+	background: color-mix(in srgb, var(--track-color) 10%, var(--surface));
+}
+.column .bar-label {
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+}
+.column .uncertainty {
+	opacity: 0.06;
+}
+.column .bar-segment {
+	background: color-mix(in srgb, var(--track-color) 4%, var(--surface));
+	border-left: 1px solid var(--line);
+	border-radius: 0;
+}
+.boundary-guides {
+	position: absolute;
+	top: var(--row-height);
+	left: 0;
+	right: 0;
+	height: calc((8.8 - var(--track-row)) * var(--diagram-step));
+	pointer-events: none;
+	z-index: -1;
+}
+.boundary-guides i {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	border-left: 1px solid var(--line);
+}
+.grid-lines i {
+	opacity: 0.2;
+}
+.axis {
+	height: 42px;
+	border-top: 5px solid var(--ink);
+}
+.axis > span {
+	top: 12px;
+	font-size: 0.7rem;
+}
+.point .mark {
+	background: transparent;
+	clip-path: none;
+	border: 0;
+	padding: 0;
+	color: var(--ink);
+}
+.point-glyph {
+	background: var(--surface);
+	color: var(--color-event);
+	border-color: color-mix(in srgb, var(--color-event) 40%, var(--surface));
+	width: 24px;
+	height: 24px;
+	min-width: 24px;
+	font-size: 0.65rem;
+}
+.point .selected .point-glyph {
+	background: var(--color-event);
+	color: #fff;
+}
+.history-inset {
+	position: absolute;
+	left: 0;
+	top: calc(3.5 * var(--diagram-step));
+	padding: 0;
+}
+.undated-link {
+	color: var(--muted);
+	font-size: 0.7rem;
+	margin-left: auto;
+	white-space: nowrap;
+}
+:root[data-theme='dark'] {
+	--color-cycle: #343e6a;
+	--color-era: #315c8a;
+	--color-context: #286f86;
+	--color-age: #425f3b;
+	--color-formative: #587435;
+	--color-framework: #75502e;
+	--color-divine: #966023;
+	--color-plan: #444953;
+	--color-event: #b64f62;
+}
+@media (max-width: 600px) {
+	.plot {
+		--diagram-step: clamp(46px, calc((100dvh - 210px) / 10), 62px);
+	}
+	.plot-footer {
+		position: relative;
+	}
+	.undated-link {
+		display: none;
+	}
+	.bar-label {
+		font-size: calc(13px * var(--ui-scale));
+	}
+	.breadcrumbs {
+		margin-left: auto;
+	}
+}
+
+.column .bar-label {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: max-content;
+	writing-mode: horizontal-tb;
+	transform: translate(-50%, -50%) rotate(-90deg);
+	overflow: visible;
+	max-width: none;
+}
+.plan-callout {
+	position: absolute;
+	top: calc(-23px * var(--ui-scale));
+	text-align: center;
+	color: var(--ink);
+	font-size: calc(10px * var(--ui-scale));
+	line-height: 16px;
+	pointer-events: none;
+}
+.plan-callout i {
+	position: absolute;
+	top: 17px;
+	height: 6px;
+	border-left: 1px solid var(--muted);
+}
+
+.axis > span:first-child,
+.axis > span:last-child {
+	transform: translateX(-50%);
 }

@@ -58,9 +58,10 @@ Internally, year 0 means 1 BCE; year -1 means 2 BCE. The UI formats BCE years wi
 - `kind` describes the entry. `scheme` identifies its historical classification.
 - `parentId` defines a reviewed navigational relationship, not one inferred from overlapping dates.
 - `relatedIds` connects records across classifications.
-- Formative Age epochs and Divine Plan epochs have different schemes, parents and lanes.
+- Heroic and Formative Age epochs have separate schemes and parents and share the age-epoch band. Divine Plan epochs use their own band.
 - `laneId` selects a configured display row. Add or reorder lanes through `content/lanes.json`.
 - `importance` ranges from 0 to 5 and selects a representative when entries are clustered. It does not remove records.
+- `abbreviation` supplies compact diagram labels such as `9YP` or `1st`. Labels expand to `shortTitle` and then `title` only when measured text fits; the bar geometry never changes.
 - `shortTitle` is optional. Text never determines a period's duration or pushes adjacent dates.
 - `focusRange` is an optional numeric viewing hint, not a historical endpoint. Prefer leaving it absent.
 
@@ -82,6 +83,12 @@ Sources support the content; a source link alone is not proof that every interpr
 
 The gate writes a generated catalogue containing published records only. Source JSON and draft entries are not imported directly into the production browser bundle. The renderer performs interval queries over this catalogue, and extended stories pass a small response-shape check before display. Invalid or unavailable story payloads fall back to the already-loaded summary and citations.
 
-A year- or month-precision boundary is rendered as a possible interval, with a patterned cap. For a lane marked `sequential: true`, uncertainty-only overlaps share a transition on the same row. The next period’s start supplies the display split; hatching and the original dates retain their uncertainty. Definite overlaps still receive separate rows, and genuine gaps remain visible. Navigation-only records never reserve a row. Narrow adjacent periods form one selectable group on that row; the individual spans, gaps and source records remain intact. This does not assert an exact New Year’s Day boundary. Undated entries have no position in the interval index. Finite calendar records currently support astronomical years −10,000 through 999,999; an out-of-range record fails publication explicitly.
+A year- or month-precision boundary is rendered as a possible interval, with a patterned cap. For a lane marked `sequential: true`, uncertainty-only overlaps share a transition on the same row. The next period’s start supplies the display split; hatching and the original dates retain their uncertainty. Definite overlaps still receive separate rows, and genuine gaps remain visible. Navigation-only records never reserve a row. Sub-pixel/narrower-than-six-pixel adjacent periods form one selectable group on that row; the individual spans, gaps and source records remain intact. This does not assert an exact New Year’s Day boundary. Undated entries have no position in the interval index. Finite calendar records currently support astronomical years −10,000 through 999,999; an out-of-range record fails publication explicitly.
 
 `npm run test:content` exercises adding a draft, publication, correction, and rejection of a broken source reference in an isolated temporary dataset. It proves these ordinary editorial changes require no component or layout edits.
+
+## Diagram layout
+
+`content/lanes.json` defines stable diagram coordinates: `row`, `spanRows`, and `shape` (`band` or `column`). Ministries use columns; the Divine Plan, its epochs and teaching plans occupy separate bands beside them. `guides` adds date leaders to a band. Positions do not reflow when another period leaves the viewport. Arrange new lanes by editing this data, not the component.
+
+Colours use `--color-<tone>` CSS variables. The original dates stay linear; a minimum duration or undated future age never gets an invented endpoint to match an illustration. The Golden Age remains outside the dated diagram. On narrow screens, pinching reveals short plan labels that cannot fit at the overview scale. Browse and the reading list provide all entries at any scale.

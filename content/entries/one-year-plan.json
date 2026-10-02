@@ -19,5 +19,6 @@
 	"summary": "A bridge into the next series of global plans.",
 	"importance": 2,
 	"laneId": "plan",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "1YP"
 }

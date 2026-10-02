@@ -20,5 +20,6 @@
 	"importance": 2,
 	"shortTitle": "2nd epoch",
 	"laneId": "formative",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "2nd"
 }

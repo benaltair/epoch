@@ -59,3 +59,11 @@ The initial implementation passed all 85 applicable browser checks in GitHub Act
 - Unit tests: 29 passed. Content workflow, type/Svelte checks and static production build passed.
 - All 81 applicable local browser checks passed across Chromium/WebKit desktop, iPhone, Android and iPad profiles (73 on the first full run, with corrected test selection and Safari focus restoration verified in targeted reruns). Four intentional native-CDP skips remain. The 20 affected dialog, navigation, layout and accessibility checks passed in the final rerun.
 - Desktop, phone and tablet screenshots were inspected. Safari dialog dismissal now explicitly restores focus. Physical-device testing remains unperformed; the CI run for this revision is recorded on the PR.
+
+## Diagram revision — 2 October 2026
+
+- Fixed canvas bands, vertical ministry columns, measured full/short/abbreviated names, compact plan callouts and historical boundary ticks follow the reference diagram while preserving linear dates.
+- Content: 52 published entries, 9 stories and 15 sources; added the Bahá’í Era and three sourced Heroic Age epochs. Layout and abbreviations remain editable as content.
+- Unit tests: 31 passed. Content workflow, static production build and Svelte/TypeScript checks passed with no errors or warnings.
+- All 86 applicable local browser checks passed across desktop Chromium/WebKit, iPhone, Android and iPad profiles; four intentional native-CDP skips. Includes fixed vertical band positions across zoom, abbreviation expansion, reduced motion, gestures, accessibility and content-failure recovery.
+- Desktop, mobile and tablet screenshots reviewed. Axis labels are constrained within the viewport and columns hide text when too narrow to render it legibly. Physical-device testing remains unperformed.

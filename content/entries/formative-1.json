@@ -25,5 +25,6 @@
 	"importance": 2,
 	"shortTitle": "1st epoch",
 	"laneId": "formative",
-	"status": "published"
+	"status": "published",
+	"abbreviation": "1st"
 }

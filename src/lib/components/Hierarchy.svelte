@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { entries, byId, site } from '$lib/data/catalog';
-	import { ancestors } from '$lib/core/model';
+	import { ancestors, dateLabel } from '$lib/core/model';
 	let {
 		focus,
 		onfocus,
@@ -61,7 +61,7 @@
 					onclick={() => {
 						entry.kind === 'event' ? onselect(entry.id) : onfocus(entry.id);
 						query = '';
-					}}><span>{entry.title}</span><small>{entry.kind}</small></button
+					}}><span>{entry.title}</span><small>{dateLabel(entry)}</small></button
 				>
 			</li>{/each}
 	</ul>

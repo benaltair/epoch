@@ -196,3 +196,29 @@ test('period navigation animates briefly, retains context, and respects reduced 
 	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
 	expect((await state(page)).end - (await state(page)).start).toBeGreaterThan(180_000_000);
 });
+
+test('canvas bands stay fixed while plan labels expand with zoom', async ({ page }) => {
+	const before = await page.locator('[data-track="plan"]').boundingBox();
+	const ageBefore = await page.locator('[data-track="age"]').boundingBox();
+	if (page.viewportSize()!.width >= 900)
+		await expect(page.locator('[data-entry="nine-year-plan"] .bar-label')).toHaveText('9YP');
+	await page.getByRole('button', { name: 'Browse periods', exact: true }).click();
+	await page.getByRole('searchbox').fill('Nine Year Plan');
+	await page
+		.locator('.search-results')
+		.getByRole('button', { name: 'Nine Year Plan 2022 — 2031', exact: true })
+		.click();
+	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
+	await expect(page.locator('[data-entry="nine-year-plan"] .bar-label')).toHaveText(
+		'Nine Year Plan'
+	);
+	const after = await page.locator('[data-track="plan"]').boundingBox();
+	const ageAfter = await page.locator('[data-track="age"]').boundingBox();
+	expect(after!.y).toBeCloseTo(before!.y, 0);
+	expect(ageAfter!.y).toBeCloseTo(ageBefore!.y, 0);
+	await page.getByRole('button', { name: 'Recorded history', exact: true }).click();
+	await expect(page.locator('.app')).toHaveAttribute('data-navigating', 'false');
+	expect((await page.locator('[data-track="ministry"]').boundingBox())!.height).toBeGreaterThan(
+		100
+	);
+});

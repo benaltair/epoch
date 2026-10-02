@@ -24,7 +24,8 @@ export const entrySchema = z.strictObject({
 	id,
 	title: z.string().min(1).max(300),
 	shortTitle: z.string().min(1).max(100).optional(),
-	kind: z.enum(['cycle', 'dispensation', 'age', 'ministry', 'epoch', 'plan', 'event']),
+	abbreviation: z.string().min(1).max(24).optional(),
+	kind: z.enum(['cycle', 'era', 'dispensation', 'age', 'ministry', 'epoch', 'plan', 'event']),
 	scheme: id,
 	laneId: id,
 	parentId: id.optional(),
@@ -61,6 +62,10 @@ export const laneSchema = z
 			id,
 			label: z.string().min(1),
 			tone: id,
+			row: z.number().min(0).max(100),
+			shape: z.enum(['band', 'column']),
+			spanRows: z.number().positive().max(100),
+			guides: z.boolean().optional(),
 			sequential: z.boolean().optional(),
 			maxSpanYears: z.number().positive().optional()
 		})

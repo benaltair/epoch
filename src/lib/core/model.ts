@@ -7,7 +7,8 @@ import {
 	type HistoricalDate
 } from './date';
 import { CYCLE, HISTORY, type Viewport } from './viewport';
-export type Kind = 'cycle' | 'dispensation' | 'age' | 'ministry' | 'epoch' | 'plan' | 'event';
+export type Kind =
+	'cycle' | 'era' | 'dispensation' | 'age' | 'ministry' | 'epoch' | 'plan' | 'event';
 export type Scheme = string;
 export interface Source {
 	title: string;
@@ -33,6 +34,7 @@ export interface Entry {
 	editorialNote?: string;
 	title: string;
 	shortTitle?: string;
+	abbreviation?: string;
 	kind: Kind;
 	scheme: Scheme;
 	parentId?: string;

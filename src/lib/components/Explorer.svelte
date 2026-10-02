@@ -9,8 +9,8 @@
 		type Entry,
 		type Story
 	} from '$lib/core/model';
-	import { ticks, rangeLabel, toDay } from '$lib/core/date';
-	import { TimelineIndex, layout, type Mark } from '$lib/core/layout';
+	import { rangeLabel, toDay } from '$lib/core/date';
+	import { TimelineIndex, layout, groups, type Mark } from '$lib/core/layout';
 	import {
 		HISTORY,
 		CYCLE,
@@ -25,6 +25,8 @@
 		encodeNavigation,
 		type Viewport
 	} from '$lib/core/viewport';
+	import { diagramTicks } from '$lib/core/axis';
+	import { diagramLabel } from '$lib/core/labels';
 	import { focusView, interpolateView } from '$lib/core/focus';
 	import { readStory } from '$lib/data/story-response';
 	import Hierarchy from './Hierarchy.svelte';
@@ -39,6 +41,7 @@
 		theme = $state('light'),
 		uiScale = $state(1);
 	let plot: HTMLDivElement, dialog: HTMLDialogElement, closeButton: HTMLButtonElement;
+	let height = $state(600);
 	let width = $state(900),
 		ready = $state(false),
 		coarse = $state(false),
@@ -102,7 +105,44 @@
 	const chosen = $derived(selected ? byId.get(selected) : undefined);
 	const path = $derived(current ? [...ancestors(current, byId), current] : []);
 	const tracks = $derived(layout(index, view, width, coarse ? 48 : 36, selected));
-	const axis = $derived(ticks(view.start, view.end, width));
+	const axis = $derived(diagramTicks(entries, view, width));
+	const diagramRows = Math.max(...groups.map((g) => g.row + g.spanRows)) + 0.5;
+	const diagramStep = $derived(
+		Math.max(44 * uiScale, Math.min(72 * uiScale, (height - 42) / diagramRows))
+	);
+	function callouts(track: import('$lib/core/layout').Track) {
+		if (!track.guides) return [];
+		const result: { mark: Mark; x: number; text: string; width: number }[] = [];
+		for (const mark of [...track.marks].sort((a, b) => a.x - b.x)) {
+			const entry = mark.entries[0];
+			if (
+				mark.point ||
+				mark.entries.length !== 1 ||
+				!entry.abbreviation ||
+				labelFor(entry, mark.width - 8)
+			)
+				continue;
+			const text = entry.abbreviation,
+				size = text.length * 6.4 * uiScale + 6;
+			const x = Math.max(0, Math.min(width - size, mark.x + mark.width / 2 - size / 2));
+			if (result.length && x < result[result.length - 1].x + result[result.length - 1].width + 6)
+				continue;
+			result.push({ mark, x, text, width: size });
+		}
+		return result;
+	}
+	let textContext: CanvasRenderingContext2D | null = null;
+	function labelFor(entry: Entry, available: number) {
+		const fontSize = 13 * uiScale;
+		if (textContext)
+			textContext.font = `500 ${fontSize}px -apple-system, BlinkMacSystemFont, sans-serif`;
+		return diagramLabel(
+			entry,
+			available,
+			(text) => textContext?.measureText(text).width ?? text.length * fontSize * 0.56
+		);
+	}
+	const undated = entries.filter((e) => e.temporal.type === 'undated');
 	const fullScale = $derived(span(view) > 365.2425 * 5000);
 	const visibleEntries = $derived(
 		index
@@ -343,6 +383,7 @@
 	});
 
 	onMount(() => {
+		textContext = document.createElement('canvas').getContext('2d');
 		const n = decodeNavigation(window.location.search, new Set(byId.keys()));
 		view = n.view;
 		focus = n.focus;
@@ -558,16 +599,14 @@
 			</div>
 		</div>
 		<section class="timeline-surface" aria-label="Interactive chronology">
-			{#if focusedOutside}<div class="context-notice">
-					Outside selected period. <button onclick={() => focus && focusEntry(focus)}>Return</button
-					><button onclick={home}>Show recorded history</button>
-				</div>{/if}
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions (Composite timeline provides documented keyboard navigation plus native control alternatives.) -->
 			<div
 				class="plot"
 				class:list-hidden={mode === 'list'}
 				bind:this={plot}
 				bind:clientWidth={width}
+				bind:clientHeight={height}
+				style="--diagram-step:{diagramStep}px"
 				tabindex="0"
 				role="application"
 				aria-label="Zoomable timeline. Arrow keys pan; plus and minus zoom."
@@ -581,11 +620,13 @@
 				data-end={view.end}
 			>
 				<div class="axis" aria-hidden="true">
-					{#each axis as t}<span style="left:{((t.day - view.start) / span(view)) * 100}%"
-							>{t.label}</span
+					{#each axis as t}<span
+							style="left:clamp(calc({t.label.length / 2}ch + 2px), {((t.day - view.start) /
+								span(view)) *
+								100}%, calc(100% - {t.label.length / 2}ch - 2px))">{t.label}</span
 						>{/each}
 				</div>
-				<div class="track-area">
+				<div class="track-area" style="--diagram-rows:{diagramRows}">
 					<div class="grid-lines" aria-hidden="true">
 						{#each axis as t}<i style="left:{((t.day - view.start) / span(view)) * 100}%"
 							></i>{/each}
@@ -593,16 +634,31 @@
 					{#each tracks as track}
 						<div
 							class="track tone-{track.tone}"
+							class:column={track.shape === 'column'}
+							role="group"
+							aria-label={track.label}
 							data-track={track.id}
-							style="--lanes:{track.lanes};--track-color:var(--color-{track.tone},var(--color-context))"
+							style="--lanes:{track.lanes};--track-row:{track.row};--span-rows:{track.spanRows};--track-color:var(--color-{track.tone},var(--color-context))"
 						>
-							<div class="track-label">{track.label}</div>
+							<div class="track-label sr-only">{track.label}</div>
+							{#if track.guides}<div class="boundary-guides" aria-hidden="true">
+									{#each track.marks as mark}<i style="left:{mark.x}px"></i>{/each}
+								</div>{/if}
+							{#each callouts(track) as callout}<span
+									class="plan-callout"
+									aria-hidden="true"
+									style="left:{callout.x}px;width:{callout.width}px"
+									>{callout.text}<i
+										style="left:{callout.mark.x + callout.mark.width / 2 - callout.x}px"
+									></i></span
+								>{/each}
 							<div class="marks">
 								{#each track.marks as mark (mark.key)}
 									{@const entry = mark.entries[0]}
 									<div
 										class="mark-position"
 										class:point={mark.point}
+										data-entry={entry.id}
 										style="left:{mark.x}px;width:{mark.width}px;top:calc({mark.lane} * var(--lane-height))"
 									>
 										<button
@@ -636,13 +692,19 @@
 													>{mark.entries.length > 1 ? mark.entries.length : '◆'}</span
 												>{:else}<span class="bar-label"
 													>{mark.entries.length > 1
-														? mark.width < 80
-															? `${mark.entries.length}`
-															: `${mark.entries.length} periods`
-														: mark.width > 180
-															? entry.title
-															: (entry.shortTitle ?? entry.title)}</span
-												>{#if mark.open || mark.rightClipped}<span
+														? mark.width > 36
+															? String(mark.entries.length)
+															: ''
+														: labelFor(
+																entry,
+																track.shape === 'column'
+																	? mark.width >= 17 * uiScale
+																		? track.spanRows * diagramStep - 24
+																		: 0
+																	: mark.width - (mark.open || mark.rightClipped ? 22 : 8)
+															)}</span
+												>
+												{#if mark.open || mark.rightClipped}<span
 														class="continues"
 														aria-hidden="true">›</span
 													>{/if}{/if}
@@ -657,14 +719,6 @@
 													aria-hidden="true"
 												></span>{/if}
 										</button>
-										{#if !mark.point && mark.entries.length === 1 && mark.width > 190}<button
-												class="mark-info"
-												aria-label="Read about {entry.title}"
-												onclick={(e) => {
-													e.stopPropagation();
-													if (!dragged) selectEntry(entry.id);
-												}}>i</button
-											>{/if}
 									</div>
 								{/each}
 							</div>
@@ -697,6 +751,9 @@
 				<Overview {view} domain={overviewDomain} onchange={updateOverview} />
 			</div>{/if}
 		<footer class="plot-footer">
+			{#if focusedOutside}<button class="return-focus" onclick={() => focus && focusEntry(focus)}
+					>Return</button
+				>{/if}
 			<div class="view-switch" role="group" aria-label="Presentation">
 				<button aria-pressed={mode === 'timeline'} onclick={() => (mode = 'timeline')}
 					>Timeline</button
@@ -712,6 +769,9 @@
 			{#if current}<button aria-label="About this period" onclick={() => selectEntry(current.id)}
 					>Info</button
 				>{/if}
+			{#each undated as entry}<button class="undated-link" onclick={() => selectEntry(entry.id)}
+					>{entry.shortTitle ?? entry.title.replace(/^The /, '')} · undated</button
+				>{/each}
 			<button aria-expanded={overviewOpen} onclick={() => (overviewOpen = !overviewOpen)}
 				>Overview</button
 			>
