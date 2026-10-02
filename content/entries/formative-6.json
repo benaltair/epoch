@@ -1,0 +1,22 @@
+{
+	"id": "formative-6",
+	"title": "Sixth epoch · Formative Age",
+	"kind": "epoch",
+	"scheme": "formative",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 2022,
+			"precision": "year"
+		},
+		"endNote": "No end date has been specified."
+	},
+	"sourceIds": ["fifth"],
+	"summary": "A continuing epoch; no end date is assigned.",
+	"importance": 2,
+	"shortTitle": "6th epoch",
+	"laneId": "formative",
+	"status": "published",
+	"abbreviation": "6th"
+}

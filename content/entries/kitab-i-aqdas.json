@@ -1,0 +1,19 @@
+{
+	"id": "kitab-i-aqdas",
+	"title": "The Kitáb-i-Aqdas",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-bahaullah",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1873,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["aqdas", "bahaullah"],
+	"summary": "Bahá’u’lláh’s Most Holy Book sets out laws and principles for a new civilization.",
+	"importance": 4,
+	"laneId": "event",
+	"status": "published"
+}

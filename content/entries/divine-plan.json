@@ -1,0 +1,23 @@
+{
+	"id": "divine-plan",
+	"title": "Divine Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1937,
+			"precision": "year"
+		},
+		"endNote": "No end date has been specified."
+	},
+	"sourceIds": ["ages", "divine"],
+	"summary": "A distinct framework for successive teaching plans.",
+	"importance": 4,
+	"shortTitle": "Divine Plan",
+	"relatedIds": ["tablets-divine-plan"],
+	"laneId": "divine-framework",
+	"status": "published",
+	"display": "timeline"
+}

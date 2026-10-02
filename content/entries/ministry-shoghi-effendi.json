@@ -1,0 +1,37 @@
+{
+	"id": "ministry-shoghi-effendi",
+	"title": "The Ministry of Shoghi Effendi",
+	"shortTitle": "Shoghi Effendi",
+	"abbreviation": "Shoghi Effendi",
+	"kind": "ministry",
+	"scheme": "ministries",
+	"laneId": "ministry",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1921,
+			"month": 11,
+			"day": 28,
+			"precision": "day"
+		},
+		"end": {
+			"year": 1957,
+			"month": 11,
+			"day": 4,
+			"precision": "day"
+		}
+	},
+	"summary": "Shoghi Effendi guided the Bahá’í community as Guardian from the passing of ‘Abdu’l-Bahá in 1921 until his own passing in 1957.",
+	"sourceIds": ["shoghi-effendi", "shoghi-passing"],
+	"importance": 4,
+	"status": "published",
+	"relatedIds": [
+		"ascension-abdulbaha",
+		"first-seven-year-plan",
+		"ten-year-crusade",
+		"election-uhj",
+		"custodianship-hands",
+		"universal-house-of-justice"
+	]
+}

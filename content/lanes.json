@@ -1,0 +1,96 @@
+[
+	{
+		"id": "cycle",
+		"label": "CYCLE",
+		"tone": "cycle",
+		"row": 0,
+		"shape": "band",
+		"spanRows": 1
+	},
+	{
+		"id": "era",
+		"label": "ERA",
+		"tone": "era",
+		"row": 1,
+		"shape": "band",
+		"spanRows": 1
+	},
+	{
+		"id": "dispensation",
+		"label": "DISPENSATIONS",
+		"tone": "context",
+		"sequential": true,
+		"row": 2,
+		"shape": "band",
+		"spanRows": 1
+	},
+	{
+		"id": "age",
+		"label": "AGES",
+		"tone": "age",
+		"maxSpanYears": 5000,
+		"sequential": true,
+		"row": 3,
+		"shape": "band",
+		"spanRows": 1
+	},
+	{
+		"id": "ministry",
+		"label": "MINISTRIES & LEADERSHIP",
+		"tone": "ministry",
+		"maxSpanYears": 5000,
+		"sequential": true,
+		"row": 4.65,
+		"shape": "column",
+		"spanRows": 4.15
+	},
+	{
+		"id": "formative",
+		"label": "EPOCHS OF THE AGES",
+		"tone": "formative",
+		"maxSpanYears": 5000,
+		"sequential": true,
+		"row": 4,
+		"shape": "band",
+		"spanRows": 1
+	},
+	{
+		"id": "divine-framework",
+		"label": "DIVINE PLAN",
+		"tone": "framework",
+		"row": 5.2,
+		"shape": "band",
+		"spanRows": 1,
+		"maxSpanYears": 5000
+	},
+	{
+		"id": "divine",
+		"label": "DIVINE PLAN EPOCHS",
+		"tone": "divine",
+		"maxSpanYears": 5000,
+		"sequential": true,
+		"row": 6.3,
+		"shape": "band",
+		"spanRows": 1
+	},
+	{
+		"id": "plan",
+		"label": "TEACHING PLANS",
+		"tone": "plan",
+		"maxSpanYears": 5000,
+		"sequential": true,
+		"row": 7.5,
+		"shape": "band",
+		"spanRows": 1,
+		"guides": true
+	},
+	{
+		"id": "event",
+		"label": "EVENTS & MILESTONES",
+		"tone": "event",
+		"maxSpanYears": 5000,
+		"row": 9,
+		"shape": "band",
+		"spanRows": 1
+	}
+]

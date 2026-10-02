@@ -1,0 +1,31 @@
+{
+	"kind": "institution",
+	"scheme": "leadership",
+	"laneId": "ministry",
+	"parentId": "formative-age",
+	"status": "published",
+	"id": "custodianship-hands",
+	"title": "Custodianship of the Hands of the Cause",
+	"shortTitle": "Hands of the Cause",
+	"abbreviation": "Hands",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1957,
+			"month": 11,
+			"day": 4,
+			"precision": "day"
+		},
+		"end": {
+			"year": 1963,
+			"month": 4,
+			"day": 21,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["shoghi-passing", "uhj-constitution"],
+	"summary": "The Hands of the Cause guided the community after the passing of Shoghi Effendi, through the completion of the Ten Year Crusade and the first election of the Universal House of Justice.",
+	"importance": 3,
+	"relatedIds": ["ministry-shoghi-effendi", "universal-house-of-justice", "election-uhj"],
+	"editorialNote": "This span represents the interregnum following the Guardian’s passing, not the date of appointment of the Hands or the election of the nine Custodians."
+}

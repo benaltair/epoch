@@ -1,0 +1,25 @@
+{
+	"id": "formative-2",
+	"title": "Second epoch · Formative Age",
+	"kind": "epoch",
+	"scheme": "formative",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1946,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1963,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "Consolidation of institutions and expansion of coordinated teaching.",
+	"importance": 2,
+	"shortTitle": "2nd epoch",
+	"laneId": "formative",
+	"status": "published",
+	"abbreviation": "2nd"
+}

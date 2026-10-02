@@ -1,0 +1,25 @@
+{
+	"id": "divine-2",
+	"title": "Second epoch · Divine Plan",
+	"kind": "epoch",
+	"scheme": "divine-plan",
+	"parentId": "divine-plan",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1964,
+			"precision": "year"
+		},
+		"end": {
+			"year": 2021,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages", "divine"],
+	"summary": "Successive global plans, beginning with the Nine Year Plan.",
+	"importance": 2,
+	"shortTitle": "2nd epoch",
+	"laneId": "divine",
+	"status": "published",
+	"abbreviation": "2nd"
+}

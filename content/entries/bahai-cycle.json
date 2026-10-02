@@ -1,0 +1,24 @@
+{
+	"id": "bahai-cycle",
+	"title": "The Bahá’í Cycle",
+	"kind": "cycle",
+	"scheme": "context",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1844,
+			"precision": "year"
+		},
+		"minimumYears": 500000,
+		"endNote": "At least 500,000 years; the eventual endpoint is not known."
+	},
+	"sourceIds": ["cycle"],
+	"summary": "A vast horizon for the unfolding of spiritual civilization.",
+	"importance": 5,
+	"focusRange": {
+		"start": -46021,
+		"end": 182575229
+	},
+	"laneId": "cycle",
+	"status": "published"
+}

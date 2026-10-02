@@ -1,0 +1,25 @@
+{
+	"kind": "institution",
+	"scheme": "leadership",
+	"laneId": "ministry",
+	"parentId": "formative-age",
+	"status": "published",
+	"id": "universal-house-of-justice",
+	"title": "The Universal House of Justice",
+	"shortTitle": "Universal House of Justice",
+	"abbreviation": "UHJ",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1963,
+			"month": 4,
+			"day": 21,
+			"precision": "day"
+		},
+		"endNote": "Continuing institution; no end date is assigned."
+	},
+	"sourceIds": ["uhj", "uhj-constitution"],
+	"summary": "The international governing institution of the Bahá’í Faith, first elected on 21 April 1963.",
+	"importance": 5,
+	"relatedIds": ["election-uhj", "custodianship-hands", "ministry-shoghi-effendi", "nine-year-plan"]
+}

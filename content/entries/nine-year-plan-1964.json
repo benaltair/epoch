@@ -1,0 +1,24 @@
+{
+	"id": "nine-year-plan-1964",
+	"title": "Nine Year Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-2",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1964,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1973,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "The first global plan launched by the Universal House of Justice.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published",
+	"abbreviation": "9YP"
+}

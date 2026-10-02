@@ -11,3 +11,10 @@ vite.config.ts.timestamp-*
 
 # Local Netlify folder
 .netlify
+test-results/
+playwright-report/
+
+.generated/
+
+.wrangler/
+.dev.vars*

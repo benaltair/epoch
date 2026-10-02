@@ -1,0 +1,21 @@
+{
+	"id": "century-reflection",
+	"title": "Reflecting on a century of the Formative Age",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "formative-age",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 2023,
+			"month": 11,
+			"day": 28,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["century"],
+	"summary": "A message reviewed the development of the community over the preceding century.",
+	"importance": 3,
+	"laneId": "event",
+	"status": "published"
+}

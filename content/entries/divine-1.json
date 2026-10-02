@@ -1,0 +1,25 @@
+{
+	"id": "divine-1",
+	"title": "First epoch · Divine Plan",
+	"kind": "epoch",
+	"scheme": "divine-plan",
+	"parentId": "divine-plan",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1937,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1963,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "From the First Seven Year Plan through the Ten Year Crusade.",
+	"importance": 2,
+	"shortTitle": "1st epoch",
+	"laneId": "divine",
+	"status": "published",
+	"abbreviation": "1st"
+}

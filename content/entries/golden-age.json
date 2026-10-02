@@ -1,0 +1,19 @@
+{
+	"id": "golden-age",
+	"laneId": "age",
+	"status": "published",
+	"title": "The Golden Age",
+	"shortTitle": "Golden Age",
+	"kind": "age",
+	"scheme": "ages",
+	"parentId": "bahai-cycle",
+	"temporal": {
+		"type": "undated",
+		"label": "Future age · dates not specified"
+	},
+	"summary": "The Golden Age follows the Formative Age. Its dates are unspecified.",
+	"sourceIds": ["ages"],
+	"relatedIds": ["formative-age"],
+	"importance": 5,
+	"editorialNote": "Kept in navigation and reading pages; never assigned an invented position or duration."
+}

@@ -1,0 +1,24 @@
+{
+	"id": "tablets-divine-plan",
+	"title": "The Tablets of the Divine Plan",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-abdulbaha",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1916,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1917,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["divine", "abdulbaha"],
+	"summary": "Tablets revealed during 1916–1917 set out a vision for sharing the teachings throughout the world.",
+	"importance": 4,
+	"relatedIds": ["divine-plan"],
+	"laneId": "event",
+	"status": "published"
+}

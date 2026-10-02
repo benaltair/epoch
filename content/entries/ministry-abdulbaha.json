@@ -1,0 +1,29 @@
+{
+	"id": "ministry-abdulbaha",
+	"title": "The Ministry of ‘Abdu’l-Bahá",
+	"kind": "ministry",
+	"scheme": "ministries",
+	"parentId": "heroic-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1892,
+			"month": 5,
+			"day": 29,
+			"precision": "day"
+		},
+		"end": {
+			"year": 1921,
+			"month": 11,
+			"day": 28,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["abdulbaha"],
+	"summary": "A ministry of interpretation, service, and the preservation of unity.",
+	"importance": 2,
+	"shortTitle": "‘Abdu’l-Bahá",
+	"relatedIds": ["travels-west", "ascension-abdulbaha"],
+	"laneId": "ministry",
+	"status": "published"
+}

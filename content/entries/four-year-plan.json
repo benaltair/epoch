@@ -1,0 +1,24 @@
+{
+	"id": "four-year-plan",
+	"title": "Four Year Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-2",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1996,
+			"precision": "year"
+		},
+		"end": {
+			"year": 2000,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["community"],
+	"summary": "A focus on developing capacity through training institutes.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published",
+	"abbreviation": "4YP"
+}

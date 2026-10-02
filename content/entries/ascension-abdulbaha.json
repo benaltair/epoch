@@ -1,0 +1,21 @@
+{
+	"id": "ascension-abdulbaha",
+	"title": "The Ascension of ‘Abdu’l-Bahá",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "heroic-age",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1921,
+			"month": 11,
+			"day": 28,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["abdulbaha"],
+	"summary": "His passing marked the transition into the Formative Age.",
+	"importance": 5,
+	"laneId": "event",
+	"status": "published"
+}

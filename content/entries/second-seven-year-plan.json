@@ -1,0 +1,24 @@
+{
+	"id": "second-seven-year-plan",
+	"title": "Second Seven Year Plan",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-1",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1946,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1953,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["century"],
+	"summary": "A further stage in the execution of the Divine Plan.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published",
+	"abbreviation": "7YP"
+}

@@ -1,0 +1,21 @@
+{
+	"id": "declaration-bab",
+	"title": "The Declaration of the Báb",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-bab",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1844,
+			"month": 5,
+			"day": 23,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["bab"],
+	"summary": "In Shíráz, the Báb announced His mission to Mullá Ḥusayn.",
+	"importance": 5,
+	"laneId": "event",
+	"status": "published"
+}

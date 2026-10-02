@@ -1,0 +1,289 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"type": "object",
+	"properties": {
+		"id": {
+			"type": "string",
+			"pattern": "^[a-z0-9-]+$"
+		},
+		"title": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 300
+		},
+		"shortTitle": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 100
+		},
+		"abbreviation": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 24
+		},
+		"kind": {
+			"type": "string",
+			"enum": [
+				"cycle",
+				"era",
+				"dispensation",
+				"age",
+				"ministry",
+				"institution",
+				"epoch",
+				"plan",
+				"event"
+			]
+		},
+		"scheme": {
+			"type": "string",
+			"pattern": "^[a-z0-9-]+$"
+		},
+		"laneId": {
+			"type": "string",
+			"pattern": "^[a-z0-9-]+$"
+		},
+		"parentId": {
+			"type": "string",
+			"pattern": "^[a-z0-9-]+$"
+		},
+		"temporal": {
+			"oneOf": [
+				{
+					"type": "object",
+					"properties": {
+						"type": {
+							"type": "string",
+							"const": "undated"
+						},
+						"label": {
+							"type": "string",
+							"minLength": 1
+						}
+					},
+					"required": ["type", "label"],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"type": {
+							"type": "string",
+							"const": "point"
+						},
+						"date": {
+							"type": "object",
+							"properties": {
+								"year": {
+									"type": "integer",
+									"minimum": -10000,
+									"maximum": 999999
+								},
+								"month": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 12
+								},
+								"day": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 31
+								},
+								"precision": {
+									"type": "string",
+									"enum": ["year", "month", "day"]
+								},
+								"approximate": {
+									"type": "boolean"
+								}
+							},
+							"required": ["year", "precision"],
+							"additionalProperties": false
+						}
+					},
+					"required": ["type", "date"],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"type": {
+							"type": "string",
+							"const": "period"
+						},
+						"start": {
+							"type": "object",
+							"properties": {
+								"year": {
+									"type": "integer",
+									"minimum": -10000,
+									"maximum": 999999
+								},
+								"month": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 12
+								},
+								"day": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 31
+								},
+								"precision": {
+									"type": "string",
+									"enum": ["year", "month", "day"]
+								},
+								"approximate": {
+									"type": "boolean"
+								}
+							},
+							"required": ["year", "precision"],
+							"additionalProperties": false
+						},
+						"end": {
+							"type": "object",
+							"properties": {
+								"year": {
+									"type": "integer",
+									"minimum": -10000,
+									"maximum": 999999
+								},
+								"month": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 12
+								},
+								"day": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 31
+								},
+								"precision": {
+									"type": "string",
+									"enum": ["year", "month", "day"]
+								},
+								"approximate": {
+									"type": "boolean"
+								}
+							},
+							"required": ["year", "precision"],
+							"additionalProperties": false
+						},
+						"endLatest": {
+							"type": "object",
+							"properties": {
+								"year": {
+									"type": "integer",
+									"minimum": -10000,
+									"maximum": 999999
+								},
+								"month": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 12
+								},
+								"day": {
+									"type": "integer",
+									"minimum": 1,
+									"maximum": 31
+								},
+								"precision": {
+									"type": "string",
+									"enum": ["year", "month", "day"]
+								},
+								"approximate": {
+									"type": "boolean"
+								}
+							},
+							"required": ["year", "precision"],
+							"additionalProperties": false
+						},
+						"minimumYears": {
+							"type": "integer",
+							"exclusiveMinimum": 0,
+							"maximum": 1000000
+						},
+						"endNote": {
+							"type": "string"
+						}
+					},
+					"required": ["type", "start"],
+					"additionalProperties": false
+				}
+			]
+		},
+		"summary": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 2000
+		},
+		"sourceIds": {
+			"minItems": 1,
+			"type": "array",
+			"items": {
+				"type": "string",
+				"pattern": "^[a-z0-9-]+$"
+			}
+		},
+		"relatedIds": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"pattern": "^[a-z0-9-]+$"
+			}
+		},
+		"importance": {
+			"type": "integer",
+			"minimum": 0,
+			"maximum": 5
+		},
+		"focusRange": {
+			"type": "object",
+			"properties": {
+				"start": {
+					"type": "number"
+				},
+				"end": {
+					"type": "number"
+				}
+			},
+			"required": ["start", "end"],
+			"additionalProperties": false
+		},
+		"display": {
+			"type": "string",
+			"enum": ["timeline", "navigation"]
+		},
+		"displayHorizon": {
+			"type": "object",
+			"properties": {
+				"minimumOf": {
+					"type": "string",
+					"pattern": "^[a-z0-9-]+$"
+				}
+			},
+			"required": ["minimumOf"],
+			"additionalProperties": false
+		},
+		"status": {
+			"type": "string",
+			"enum": ["draft", "published"]
+		},
+		"editorialNote": {
+			"type": "string"
+		}
+	},
+	"required": [
+		"id",
+		"title",
+		"kind",
+		"scheme",
+		"laneId",
+		"temporal",
+		"summary",
+		"sourceIds",
+		"importance",
+		"status"
+	],
+	"additionalProperties": false
+}

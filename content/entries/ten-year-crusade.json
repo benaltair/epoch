@@ -1,0 +1,24 @@
+{
+	"id": "ten-year-crusade",
+	"title": "Ten Year Crusade",
+	"kind": "plan",
+	"scheme": "divine-plan",
+	"parentId": "divine-1",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1953,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1963,
+			"precision": "year"
+		}
+	},
+	"sourceIds": ["ages"],
+	"summary": "A coordinated worldwide teaching enterprise.",
+	"importance": 2,
+	"laneId": "plan",
+	"status": "published",
+	"abbreviation": "10YC"
+}

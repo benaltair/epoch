@@ -1,0 +1,26 @@
+{
+	"id": "heroic-2",
+	"title": "Second epoch · Heroic Age",
+	"shortTitle": "2nd epoch",
+	"abbreviation": "2nd",
+	"kind": "epoch",
+	"scheme": "heroic",
+	"laneId": "formative",
+	"parentId": "heroic-age",
+	"temporal": {
+		"type": "period",
+		"start": {
+			"year": 1853,
+			"precision": "year"
+		},
+		"end": {
+			"year": 1892,
+			"precision": "year"
+		}
+	},
+	"summary": "The second of the three epochs of the Heroic Age.",
+	"sourceIds": ["ages"],
+	"importance": 2,
+	"status": "published",
+	"editorialNote": "Year boundaries follow the nine-, thirty-nine-, and twenty-nine-year historical divisions described by Shoghi Effendi. These are epoch divisions, not replacements for the separately sourced dates of earthly ministries or dispensations."
+}

@@ -1,0 +1,21 @@
+{
+	"id": "martyrdom-bab",
+	"title": "The Martyrdom of the Báb",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-bab",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1850,
+			"month": 7,
+			"day": 9,
+			"precision": "day"
+		}
+	},
+	"sourceIds": ["bab"],
+	"summary": "The Báb was executed in Tabríz.",
+	"importance": 4,
+	"laneId": "event",
+	"status": "published"
+}

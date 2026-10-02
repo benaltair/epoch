@@ -1,0 +1,20 @@
+{
+	"id": "third-divine-epoch",
+	"title": "A new epoch of the Divine Plan",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "divine-3",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 2021,
+			"month": 4,
+			"precision": "month"
+		}
+	},
+	"sourceIds": ["divine"],
+	"summary": "The Riḍván message announced the third epoch of the Divine Plan.",
+	"importance": 3,
+	"laneId": "event",
+	"status": "published"
+}

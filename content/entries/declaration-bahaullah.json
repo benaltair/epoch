@@ -1,0 +1,20 @@
+{
+	"id": "declaration-bahaullah",
+	"title": "The Declaration of Bahá’u’lláh",
+	"kind": "event",
+	"scheme": "events",
+	"parentId": "ministry-bahaullah",
+	"temporal": {
+		"type": "point",
+		"date": {
+			"year": 1863,
+			"month": 4,
+			"precision": "month"
+		}
+	},
+	"sourceIds": ["bahaullah"],
+	"summary": "In the garden of Riḍván, Bahá’u’lláh disclosed His mission to His companions.",
+	"importance": 5,
+	"laneId": "event",
+	"status": "published"
+}
